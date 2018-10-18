@@ -12,7 +12,7 @@ public class UserModel {
     private String phoneNumber;
     private boolean isAdmin = false;
 
-    public UserModel(int userID,String userName, String password, String dateOfBirth, String firstName, String lastName,
+    public UserModel(int userID, String userName, String password, String dateOfBirth, String firstName, String lastName,
                      String emailAddress, String phoneNumber, boolean isAdmin) {
         super();
         this.userID = userID;

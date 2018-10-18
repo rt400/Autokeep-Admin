@@ -1,24 +1,21 @@
-package com.autokeep.AutoKeep;
+package com.autokeep.AutoKeep.Communication;
 
 import android.os.AsyncTask;
-
-import com.autokeep.AutoKeep.UserMode.CommunicationInterpreter;
-import com.autokeep.AutoKeep.UserMode.ProtocolMessage;
 
 import java.io.IOException;
 import java.net.Socket;
 import java.util.LinkedList;
 import java.util.Queue;
 
-class clientOB extends AsyncTask <Void, Void, Void> {
-    public static String getDataServer;
-    public static String status;
-    public static boolean isAdmin;
+public class clientOB extends AsyncTask <Void, Void, Void> {
+    private static String getDataServer;
+    private static String status;
+    private static boolean isAdmin;
     private static Socket socket;
     public ProtocolMessage prtMsg;
-    CommunicationInterpreter cdataConverter = new CommunicationInterpreter();
-    Queue <String> keys = new LinkedList <>();
-    Queue <String> values = new LinkedList <>();
+    private CommunicationInterpreter cdataConverter = new CommunicationInterpreter();
+    private Queue <String> keys = new LinkedList <>();
+    private Queue <String> values = new LinkedList <>();
     private Protocol protocol;
     private int port;
     private String ip;
@@ -33,15 +30,15 @@ class clientOB extends AsyncTask <Void, Void, Void> {
         return status;
     }
 
-    public static void setStatus(String data) {
+    private static void setStatus(String data) {
         status = data;
     }
 
-    public static String getGetDataServer() {
+    private static String getGetDataServer() {
         return getDataServer;
     }
 
-    public static void setGetDataServer(String data) {
+    private static void setGetDataServer(String data) {
         getDataServer = data;
     }
 

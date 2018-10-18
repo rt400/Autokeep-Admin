@@ -3,8 +3,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:fitsSystemWindows="true"
-    android:paddingTop="20dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingTop="20dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -36,10 +36,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:focusableInTouchMode="false"
             android:inputType="date"
             android:paddingTop="26dp"
             android:singleLine="true"
-            android:focusableInTouchMode="false"
             android:text="Start Date" />
 
         <TextView
@@ -52,10 +52,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:focusableInTouchMode="false"
             android:inputType="date"
             android:paddingTop="10dp"
             android:singleLine="true"
-            android:focusableInTouchMode="false"
             android:text="End Date" />
 
         <TextView
@@ -72,11 +72,11 @@
 
         <Spinner
             android:id="@+id/_cartype"
-            android:text="Car Type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:spinnerMode="dialog"
 
-            android:spinnerMode="dialog" />
+            android:text="Car Type" />
 
         <TextView
             android:id="@+id/textView4"

@@ -1,4 +1,4 @@
-package com.autokeep.AutoKeep;
+package com.autokeep.AutoKeep.UserActivityPack;
 
 import android.app.DatePickerDialog;
 import android.graphics.Color;
@@ -14,6 +14,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.autokeep.AutoKeep.R;
+
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -26,10 +28,13 @@ import butterknife.ButterKnife;
 public class UserNewOrders extends AppCompatActivity {
     private static final String TAG = "UserNewOrders";
 
-    @BindView(R.id._start_date) TextView startDate;
-    @BindView(R.id._end_date) TextView endDate;
-    @BindView(R.id._search) TextView searchButton;
-    private DatePickerDialog.OnDateSetListener mDateSetListener_Start , mDateSetListener_End;
+    @BindView(R.id._start_date)
+    TextView startDate;
+    @BindView(R.id._end_date)
+    TextView endDate;
+    @BindView(R.id._search)
+    TextView searchButton;
+    private DatePickerDialog.OnDateSetListener mDateSetListener_Start, mDateSetListener_End;
 
 
     @Override
@@ -77,19 +82,19 @@ public class UserNewOrders extends AppCompatActivity {
                 Log.d(TAG, "onDateSet: mm/dd/yyy: " + month + "/" + day + "/" + year);
                 String start_Date = month + "/" + day + "/" + year;
                 startDate.setText(start_Date);
-                Toast.makeText(getBaseContext(),start_Date, Toast.LENGTH_LONG).show();
+                Toast.makeText(getBaseContext(), start_Date, Toast.LENGTH_LONG).show();
             }
         };
         mDateSetListener_End = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker_end, int year, int month, int day) {
-                Date sDate=null,eDate = null;
+                Date sDate = null, eDate = null;
                 month = month + 1;
                 Log.d(TAG, "onDateSet: mm/dd/yyy: " + month + "/" + day + "/" + year);
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
                 String start_End = month + "/" + day + "/" + year;
                 endDate.setError(null);
-                if( startDate.getText() != null){
+                if (startDate.getText() != null) {
                     try {
                         sDate = sdf.parse(startDate.getText().toString());
                         eDate = sdf.parse(start_End);
@@ -97,18 +102,17 @@ public class UserNewOrders extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
-                if(sDate.after(eDate)){
+                if (sDate.after(eDate)) {
                     endDate.setError("");
                     //Toast.makeText(getBaseContext(),"Wrong Date", Toast.LENGTH_LONG).show();
                     endDate.setText("Wrong Date");
-                }
-                else {
+                } else {
                     endDate.setText(start_End);
                 }
             }
         };
         final Spinner carType = findViewById(R.id._cartype);
-        ArrayAdapter<String> carTypeAdaptor = new ArrayAdapter<>(UserNewOrders.this,
+        ArrayAdapter <String> carTypeAdaptor = new ArrayAdapter <>(UserNewOrders.this,
                 android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.cartype));
         carTypeAdaptor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         carType.setPrompt("Select Car Type :");
@@ -121,24 +125,24 @@ public class UserNewOrders extends AppCompatActivity {
                         this));
         carType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemSelected(AdapterView <?> adapterView, View view, int i, long l) {
                 if (i == 0) {
                     //Toast.makeText(getBaseContext(),carType.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
                 } else if (i == 1) {
-                   // Toast.makeText(getBaseContext(),carType.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
-                }else if (i == 2) {
-                   // Toast.makeText(getBaseContext(),carType.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
+                    // Toast.makeText(getBaseContext(),carType.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
+                } else if (i == 2) {
+                    // Toast.makeText(getBaseContext(),carType.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
                 }
             }
 
 
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
+            public void onNothingSelected(AdapterView <?> adapterView) {
 
             }
         });
         final Spinner carSit = findViewById(R.id._carsit);
-        ArrayAdapter<String> carSitAdaptor = new ArrayAdapter<String>(UserNewOrders.this,
+        ArrayAdapter <String> carSitAdaptor = new ArrayAdapter <String>(UserNewOrders.this,
                 android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.carsit));
         carSitAdaptor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         carSit.setPrompt("Select How Many Car Sits :");
@@ -151,21 +155,21 @@ public class UserNewOrders extends AppCompatActivity {
                         this));
         carSit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemSelected(AdapterView <?> adapterView, View view, int i, long l) {
                 if (i == 0) {
                     //Toast.makeText(getBaseContext(),carSit.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
                 } else if (i == 1) {
-                   // Toast.makeText(getBaseContext(),carSit.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
-                }else if (i == 2) {
+                    // Toast.makeText(getBaseContext(),carSit.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
+                } else if (i == 2) {
                     //Toast.makeText(getBaseContext(),carSit.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
-                }else if (i == 3) {
+                } else if (i == 3) {
                     //Toast.makeText(getBaseContext(),carSit.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
                 }
             }
 
 
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
+            public void onNothingSelected(AdapterView <?> adapterView) {
 
             }
         });
@@ -175,8 +179,8 @@ public class UserNewOrders extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    LoginActivity.client.SendSearch(startDate.getText().toString(),endDate.getText().toString()
-                    , carType.getSelectedItem().toString(),carSit.getSelectedItem().toString());
+                    LoginActivity.client.SendSearch(startDate.getText().toString(), endDate.getText().toString()
+                            , carType.getSelectedItem().toString(), carSit.getSelectedItem().toString());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

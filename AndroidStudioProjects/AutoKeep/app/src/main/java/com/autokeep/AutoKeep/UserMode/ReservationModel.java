@@ -9,7 +9,7 @@ public class ReservationModel {
     private VehicleModel vehicle;
 
     public ReservationModel(int reservationID, UserModel user, String reservationDate, String reservationStart,
-                            String reservationEnd,VehicleModel vehicle) {
+                            String reservationEnd, VehicleModel vehicle) {
         super();
         this.user = user;
         this.vehicle = vehicle;

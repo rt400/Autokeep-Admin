@@ -1,4 +1,4 @@
-package com.autokeep.AutoKeep.UserMode;
+package com.autokeep.AutoKeep.Communication;
 
 public enum ProtocolMessage {
     OK,

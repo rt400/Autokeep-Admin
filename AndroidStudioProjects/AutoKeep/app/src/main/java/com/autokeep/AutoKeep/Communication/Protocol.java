@@ -1,4 +1,4 @@
-package com.autokeep.AutoKeep;
+package com.autokeep.AutoKeep.Communication;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,23 +15,26 @@ public class Protocol {
     /**
      * Constructs output and input object stream.
      * The ObjectOutputStream is constructed 1st so that when ObjectInputStream handshake occurs
-     *  the output response can be delivered.
-     * @param in - server client socket InputStream
+     * the output response can be delivered.
+     *
+     * @param in  - server client socket InputStream
      * @param out - server client socket OutputStream
      * @throws IOException - thrown by the construction of ObjectOutputStream and ObjectInputStream
      */
-    public Protocol(InputStream in, OutputStream out)throws IOException{
+    public Protocol(InputStream in, OutputStream out) throws IOException {
         this.out = new ObjectOutputStream(out);
         this.in = new ObjectInputStream(in);
     }
     // ***** message handling ***** //
+
     /**
      * Reads serialized Message object from the TCP socket and converts it to a Message object
+     *
      * @return Message
-     * @throws IOException - thrown by the socket
+     * @throws IOException            - thrown by the socket
      * @throws ClassNotFoundException - thrown by serialization
      */
-    public String read() throws IOException{
+    public String read() throws IOException {
         String msg = null;
         try {
             msg = (String) in.readObject();
@@ -43,16 +46,19 @@ public class Protocol {
 
     /**
      * Serialize a Message object to the TCP socket
+     *
      * @param msg - Message
      * @throws IOException - thrown by the socket
      */
-    public void write(String msg) throws IOException{
+    public void write(String msg) throws IOException {
         out.writeObject(msg);
     }
+
     public void reset() throws IOException {
         out.reset();
 
     }
+
     public void flush() throws IOException {
         out.flush();
     }

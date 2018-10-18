@@ -1,37 +1,32 @@
-package com.autokeep.AutoKeep;
+package com.autokeep.AutoKeep.UserActivityPack;
 
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.TextView;
 
-import com.autokeep.AutoKeep.UserMode.ProtocolMessage;
-
-import java.util.Calendar;
+import com.autokeep.AutoKeep.Communication.ProtocolMessage;
+import com.autokeep.AutoKeep.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.autokeep.AutoKeep.LoginActivity.client;
+import static com.autokeep.AutoKeep.UserActivityPack.LoginActivity.client;
 
 public class UserMenu extends AppCompatActivity {
     private static final String TAG = "UserMenu";
-    public ProtocolMessage prtMsg=ProtocolMessage.USER_MODEL;
+    public ProtocolMessage prtMsg = ProtocolMessage.USER_MODEL;
 
-    @BindView(R.id._new_order) Button new_order;
-    @BindView(R.id._change_password) Button change_password;
-    
+    @BindView(R.id._new_order)
+    Button new_order;
+    @BindView(R.id._change_password)
+    Button change_password;
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,6 +52,7 @@ public class UserMenu extends AppCompatActivity {
             }
         });
     }
+
     @Override
     public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -77,10 +73,10 @@ public class UserMenu extends AppCompatActivity {
         });
         builder.show();
         // Disable going back to the MainActivity
-        if(LoginActivity.isIsLogged()) {
+        if (LoginActivity.isIsLogged()) {
 
         }
-       // moveTaskToBack(true);
+        // moveTaskToBack(true);
     }
 
 

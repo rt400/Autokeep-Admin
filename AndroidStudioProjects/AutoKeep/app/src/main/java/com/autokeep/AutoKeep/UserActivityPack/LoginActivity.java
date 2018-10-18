@@ -1,4 +1,4 @@
-package com.autokeep.AutoKeep;
+package com.autokeep.AutoKeep.UserActivityPack;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -10,6 +10,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.autokeep.AutoKeep.Communication.clientOB;
+import com.autokeep.AutoKeep.R;
 
 import java.io.IOException;
 import java.util.regex.Matcher;
@@ -93,7 +96,7 @@ public class LoginActivity extends AppCompatActivity {
         // TODO: Implement your own authentication logic here.
         try {
             client = new clientOB("shahak18.ddns.net", 40501);
-            client.SendLogin(_emailText.getText().toString(),_passwordText.getText().toString());
+            client.SendLogin(_emailText.getText().toString(), _passwordText.getText().toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -132,7 +135,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onLoginFailed() {
         Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
-        if(client !=null){
+        if (client != null) {
             client.close();
         }
         client = null;

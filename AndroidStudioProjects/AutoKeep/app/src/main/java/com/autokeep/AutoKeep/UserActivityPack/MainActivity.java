@@ -1,10 +1,12 @@
-package com.autokeep.AutoKeep;
+package com.autokeep.AutoKeep.UserActivityPack;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.autokeep.AutoKeep.R;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -15,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        Intent intent = new Intent(this, LoginActivity.class);
+        Intent intent = new Intent(this, OrderResult.class);
         startActivity(intent);
     }
 

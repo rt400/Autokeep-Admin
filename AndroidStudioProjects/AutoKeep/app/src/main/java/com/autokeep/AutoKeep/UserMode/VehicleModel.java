@@ -1,29 +1,52 @@
 package com.autokeep.AutoKeep.UserMode;
 
 public class VehicleModel {
-    private int carID;
+    private String carID;
     private String manufacturer;
-    private int manufactureDate;
-    private int seatsNumber;
-    private int engineCapacity;
+    private String manufactureDate;
+    private String seatsNumber;
+    private String engineCapacity;
+    private String image;
     private boolean isUsable = true;
 
-    public VehicleModel(int carID ,String manufacturer, int manufactureDate, int seatsNumber, int engineCapacity,
-                        boolean isUsable) {
+    public VehicleModel(String carID, String manufacturer, String manufactureDate, String seatsNumber,
+                        String engineCapacity, String image, boolean isUsable) {
         this.carID = carID;
         this.manufacturer = manufacturer;
         this.manufactureDate = manufactureDate;
         this.seatsNumber = seatsNumber;
         this.engineCapacity = engineCapacity;
+        this.image = image;
         this.isUsable = isUsable;
     }
 
+    public VehicleModel() {
 
-    public int getCarID() {
+    }
+
+    public VehicleModel(String carID, String manufacturer, String manufactureDate, String seatsNumber,
+                        String engineCapacity, String image) {
+        this.carID = carID;
+        this.manufacturer = manufacturer;
+        this.manufactureDate = manufactureDate;
+        this.seatsNumber = seatsNumber;
+        this.engineCapacity = engineCapacity;
+        this.image = image;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getCarID() {
         return carID;
     }
 
-    public void setCarID(int carID) {
+    public void setCarID(String carID) {
         this.carID = carID;
     }
 
@@ -35,27 +58,27 @@ public class VehicleModel {
         this.manufacturer = manufacturer;
     }
 
-    public int getManufactureDate() {
+    public String getManufactureDate() {
         return manufactureDate;
     }
 
-    public void setManufactureDate(int manufactureDate) {
+    public void setManufactureDate(String manufactureDate) {
         this.manufactureDate = manufactureDate;
     }
 
-    public int getSeatsNumber() {
+    public String getSeatsNumber() {
         return seatsNumber;
     }
 
-    public void setSeatsNumber(int seatsNumber) {
+    public void setSeatsNumber(String seatsNumber) {
         this.seatsNumber = seatsNumber;
     }
 
-    public int getEngineCapacity() {
+    public String getEngineCapacity() {
         return engineCapacity;
     }
 
-    public void setEngineCapacity(int engineCapacity) {
+    public void setEngineCapacity(String engineCapacity) {
         this.engineCapacity = engineCapacity;
     }
 
@@ -65,5 +88,9 @@ public class VehicleModel {
 
     public void setUsable(boolean usable) {
         isUsable = usable;
+    }
+
+    public String getShortdesc() {
+        return "Engine: " + getEngineCapacity() + " , Seats: " + getSeatsNumber();
     }
 }

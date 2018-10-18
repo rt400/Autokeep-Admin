@@ -1,5 +1,8 @@
-package com.autokeep.AutoKeep.UserMode;
+package com.autokeep.AutoKeep.Communication;
 
+import com.autokeep.AutoKeep.UserMode.ReservationModel;
+import com.autokeep.AutoKeep.UserMode.UserModel;
+import com.autokeep.AutoKeep.UserMode.VehicleModel;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
