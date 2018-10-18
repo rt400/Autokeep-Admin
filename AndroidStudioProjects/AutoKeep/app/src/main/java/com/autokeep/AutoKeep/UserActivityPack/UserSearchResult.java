@@ -1,5 +1,8 @@
 package com.autokeep.AutoKeep.UserActivityPack;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,7 +25,7 @@ public class UserSearchResult extends AppCompatActivity {
     //the recyclerview
     RecyclerView recyclerView;
     Cars_Adapter adapter;
-
+    VehicleModel selectedCar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +38,28 @@ public class UserSearchResult extends AppCompatActivity {
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(UserSearchResult.this, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
+                selectedCar = adapter.getCarSelected(position);
+                AlertDialog.Builder builder = new AlertDialog.Builder(recyclerView.getContext());
+                builder.setTitle("Car Keep :");
+                builder.setMessage(selectedCar.getManufacturer() + " " + selectedCar.getManufactureDate() + "\n" +
+                        selectedCar.getShortdesc() + "\n ID: " + selectedCar.getCarID() + "\n\nPlease confirm ?");
+                builder.setPositiveButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                });
+                builder.setNegativeButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        LoginActivity.setIsLogged(false);
+                        Intent intent = new Intent(getApplicationContext(), UserMenu.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+                builder.show();
+                // Disable going back to the MainActivity
+                if (LoginActivity.isIsLogged()) {
 
+                }
                 Toast.makeText(getBaseContext(), adapter.getSelectedCarID(position), Toast.LENGTH_LONG).show();
 
             }
@@ -94,5 +118,11 @@ public class UserSearchResult extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        // moveTaskToBack(true);
     }
 }

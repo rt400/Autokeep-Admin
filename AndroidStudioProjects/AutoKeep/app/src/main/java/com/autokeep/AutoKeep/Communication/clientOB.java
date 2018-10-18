@@ -59,12 +59,14 @@ public class clientOB extends AsyncTask <Void, Void, Void> {
     }
 
     public void SendSearch(String startDate, String endDate, String carType, String carSit) throws IOException {
-        keys.add("user");
-        values.add("{emailAddress:" + startDate + ",password:" + endDate + "}");
+        keys.add("searchCar");
+        values.add("{startDate:" + startDate + ",endDate:" + endDate + ",carType:" +
+                carType + ",carSit:" + carSit + "}");
         String str = cdataConverter.encodeParametersToJson(ProtocolMessage.LOGIN, keys, values);
         protocol.write(str);
         protocol.flush();
     }
+
 
     public String readFromServer() {
         try {

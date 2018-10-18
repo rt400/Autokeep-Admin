@@ -24,6 +24,8 @@ public class UserMenu extends AppCompatActivity {
 
     @BindView(R.id._new_order)
     Button new_order;
+    @BindView(R.id._orders)
+    Button orders;
     @BindView(R.id._change_password)
     Button change_password;
 
@@ -39,6 +41,14 @@ public class UserMenu extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), UserNewOrders.class);
+                startActivity(intent);
+                //finish();
+            }
+        });
+        orders.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), OrderResult.class);
                 startActivity(intent);
                 //finish();
             }

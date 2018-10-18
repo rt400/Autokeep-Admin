@@ -62,8 +62,12 @@ public class Cars_Adapter extends RecyclerView.Adapter <Cars_Adapter.CarsViewHol
         return calLists.size();
     }
 
-    public String getSelectedCarID(int postion) {
-        return calLists.get(postion).getCarID();
+    public String getSelectedCarID(int position) {
+        return calLists.get(position).getCarID();
+    }
+
+    public VehicleModel getCarSelected(int position) {
+        return calLists.get(position);
     }
 
     class CarsViewHolder extends RecyclerView.ViewHolder {
