@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Toast;
 
 import com.autokeep.AutoKeep.R;
 import com.autokeep.AutoKeep.UserMode.VehicleModel;
@@ -49,24 +48,17 @@ public class UserSearchResult extends AppCompatActivity {
                 });
                 builder.setNegativeButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        LoginActivity.setIsLogged(false);
                         Intent intent = new Intent(getApplicationContext(), UserMenu.class);
                         startActivity(intent);
                         finish();
                     }
                 });
                 builder.show();
-                // Disable going back to the MainActivity
-                if (LoginActivity.isIsLogged()) {
-
-                }
-                Toast.makeText(getBaseContext(), adapter.getSelectedCarID(position), Toast.LENGTH_LONG).show();
-
             }
 
         }));
 
-        //initializing the productlist
+        //initializing the carlist
         carsList = new ArrayList <>();
 
 

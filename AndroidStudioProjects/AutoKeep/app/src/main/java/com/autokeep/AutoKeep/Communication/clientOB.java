@@ -8,11 +8,10 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class clientOB extends AsyncTask <Void, Void, Void> {
-    private static String getDataServer;
+    private static String serverReadData;
     private static String status;
     private static boolean isAdmin;
     private static Socket socket;
-    public ProtocolMessage prtMsg;
     private CommunicationInterpreter cdataConverter = new CommunicationInterpreter();
     private Queue <String> keys = new LinkedList <>();
     private Queue <String> values = new LinkedList <>();
@@ -34,12 +33,12 @@ public class clientOB extends AsyncTask <Void, Void, Void> {
         status = data;
     }
 
-    private static String getGetDataServer() {
-        return getDataServer;
+    private static String getServerReadData() {
+        return serverReadData;
     }
 
-    private static void setGetDataServer(String data) {
-        getDataServer = data;
+    private static void setServerReadData(String data) {
+        serverReadData = data;
     }
 
     public static boolean isIsAdmin() {
@@ -62,7 +61,16 @@ public class clientOB extends AsyncTask <Void, Void, Void> {
         keys.add("searchCar");
         values.add("{startDate:" + startDate + ",endDate:" + endDate + ",carType:" +
                 carType + ",carSit:" + carSit + "}");
-        String str = cdataConverter.encodeParametersToJson(ProtocolMessage.LOGIN, keys, values);
+        String str = cdataConverter.encodeParametersToJson(ProtocolMessage.SEARCH_CAR, keys, values);
+        protocol.write(str);
+        protocol.flush();
+    }
+
+    public void SendOrders(String startDate, String endDate, String carType, String carSit) throws IOException {
+        keys.add("orders");
+        values.add("{startDate:" + startDate + ",endDate:" + endDate + ",carType:" +
+                carType + ",carSit:" + carSit + "}");
+        String str = cdataConverter.encodeParametersToJson(ProtocolMessage.SEARCH_CAR, keys, values);
         protocol.write(str);
         protocol.flush();
     }
@@ -70,23 +78,21 @@ public class clientOB extends AsyncTask <Void, Void, Void> {
 
     public String readFromServer() {
         try {
-            setGetDataServer(protocol.read());
+            setServerReadData(protocol.read());
         } catch (IOException e) {
             e.printStackTrace();
         }
-        switch (cdataConverter.getProtocolMsg(getGetDataServer())) {
+        switch (cdataConverter.getProtocolMsg(getServerReadData())) {
             case OK:
                 setStatus("OK");
-                System.out.println("ok");
+                //System.out.println("ok");
                 break;
             case WRONG_CREDENTIAL:
                 setStatus("ERROR");
-                System.out.println("Error");
-
+                //System.out.println("Error");
                 break;
             default:
-                System.out.println("not");
-
+                //System.out.println("not");
                 break;
         }
         return null;// msg;

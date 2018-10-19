@@ -1,5 +1,6 @@
 package com.autokeep.AutoKeep.UserActivityPack;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -44,7 +45,6 @@ public class OrderResult extends AppCompatActivity {
 
         //initializing the productlist
         carsList = new ArrayList <>();
-
 
         //this method will fetch and parse json 
         //to display it in recyclerview
@@ -94,5 +94,12 @@ public class OrderResult extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(getApplicationContext(), UserMenu.class);
+        startActivity(intent);
+        finish();
     }
 }
