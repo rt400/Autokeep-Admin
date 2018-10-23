@@ -1,84 +1,77 @@
 package com.autokeep.AutoKeep.UserMode;
 
 public class VehicleModel {
-    private String carID;
-    private String manufacturer;
-    private String manufactureDate;
-    private String seatsNumber;
-    private String engineCapacity;
-    private String image;
+    private String plateNumber;
+    private String manufactureName;
+    private String model;
+    private String vehicleType;
+    private int manufactureYear;
+    private int seatsNumber;
+    private int engineCapacity;
     private boolean isUsable = true;
+    private int kilometers;
+    private String vehicleImage;
 
-    public VehicleModel(String carID, String manufacturer, String manufactureDate, String seatsNumber,
-                        String engineCapacity, String image, boolean isUsable) {
-        this.carID = carID;
-        this.manufacturer = manufacturer;
-        this.manufactureDate = manufactureDate;
+    public VehicleModel(String plateNumber, String manufactureName, String model, String vehicleType, int manufactureYear,
+                        int seatsNumber, int engineCapacity, boolean isUsable, int kilometers, String vehicleImage) {
+        super();
+        this.plateNumber = plateNumber;
+        this.manufactureName = manufactureName;
+        this.model = model;
+        this.vehicleType = vehicleType;
+        this.manufactureYear = manufactureYear;
         this.seatsNumber = seatsNumber;
         this.engineCapacity = engineCapacity;
-        this.image = image;
         this.isUsable = isUsable;
+        this.kilometers = kilometers;
+        this.vehicleImage = vehicleImage;
     }
 
-    public VehicleModel() {
-
+    public String getPlateNumber() {
+        return plateNumber;
     }
 
-    public VehicleModel(String carID, String manufacturer, String manufactureDate, String seatsNumber,
-                        String engineCapacity, String image) {
-        this.carID = carID;
-        this.manufacturer = manufacturer;
-        this.manufactureDate = manufactureDate;
-        this.seatsNumber = seatsNumber;
-        this.engineCapacity = engineCapacity;
-        this.image = image;
+    public void setPlateNumber(String plateNumber) {
+        this.plateNumber = plateNumber;
     }
 
-    public String getImage() {
-        return image;
+    public String getManufactureName() {
+        return manufactureName;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setManufactureName(String manufactureName) {
+        this.manufactureName = manufactureName;
     }
 
-    public String getCarID() {
-        return carID;
+    public String getModel() {
+        return model;
     }
 
-    public void setCarID(String carID) {
-        this.carID = carID;
+    public void setModel(String model) {
+        this.model = model;
     }
 
-    public String getManufacturer() {
-        return manufacturer;
+    public int getManufactureYear() {
+        return manufactureYear;
     }
 
-    public void setManufacturer(String manufacturer) {
-        this.manufacturer = manufacturer;
+    public void setManufactureYear(int manufactureYear) {
+        this.manufactureYear = manufactureYear;
     }
 
-    public String getManufactureDate() {
-        return manufactureDate;
-    }
-
-    public void setManufactureDate(String manufactureDate) {
-        this.manufactureDate = manufactureDate;
-    }
-
-    public String getSeatsNumber() {
+    public int getSeatsNumber() {
         return seatsNumber;
     }
 
-    public void setSeatsNumber(String seatsNumber) {
+    public void setSeatsNumber(int seatsNumber) {
         this.seatsNumber = seatsNumber;
     }
 
-    public String getEngineCapacity() {
+    public int getEngineCapacity() {
         return engineCapacity;
     }
 
-    public void setEngineCapacity(String engineCapacity) {
+    public void setEngineCapacity(int engineCapacity) {
         this.engineCapacity = engineCapacity;
     }
 
@@ -86,11 +79,46 @@ public class VehicleModel {
         return isUsable;
     }
 
-    public void setUsable(boolean usable) {
-        isUsable = usable;
+    public void setUsable(boolean isUsable) {
+        this.isUsable = isUsable;
     }
 
-    public String getShortdesc() {
-        return "Engine: " + getEngineCapacity() + " , Seats: " + getSeatsNumber();
+    public int getKilometers() {
+        return kilometers;
     }
+
+    public void setKilometers(int kilometers) {
+        this.kilometers = kilometers;
+    }
+
+    public String getVehicleImage() {
+        return vehicleImage;
+    }
+
+    public void setVehicleImage(String vehicleImage) {
+        this.vehicleImage = vehicleImage;
+    }
+
+    public String getVehicleType() {
+        return vehicleType;
+    }
+
+    public void setVehicleType(String vehicleType) {
+        this.vehicleType = vehicleType;
+    }
+
+    public String getVehicleFullName() {
+        return getManufactureName() + " " + getModel() + " " + String.valueOf(getManufactureYear());
+    }
+
+    public String getCarFixedID() {
+        String id = getPlateNumber();
+        return id;
+    }
+
+    public String getCarShortdesc() {
+        return "Engine: " + getEngineCapacity() + " , Seats : " + getSeatsNumber() + "\n" +
+                "Type : " + getVehicleType() + " , Km :" + getKilometers();
+    }
+
 }

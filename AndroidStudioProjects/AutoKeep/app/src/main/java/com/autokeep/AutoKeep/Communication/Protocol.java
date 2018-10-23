@@ -62,4 +62,9 @@ public class Protocol {
     public void flush() throws IOException {
         out.flush();
     }
+
+    public void close() throws IOException {
+        in.close();
+        out.close();
+    }
 }

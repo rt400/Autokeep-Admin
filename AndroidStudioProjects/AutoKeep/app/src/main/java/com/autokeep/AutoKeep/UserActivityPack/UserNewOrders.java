@@ -1,6 +1,8 @@
 package com.autokeep.AutoKeep.UserActivityPack;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -25,20 +27,27 @@ import java.util.Date;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.autokeep.AutoKeep.UserActivityPack.LoginActivity.client;
+
 public class UserNewOrders extends AppCompatActivity {
     private static final String TAG = "UserNewOrders";
-
+    public String start_Date, end_Date;
     @BindView(R.id._start_date)
     TextView startDate;
     @BindView(R.id._end_date)
     TextView endDate;
+    @BindView(R.id._cartype)
+    Spinner carType;
+    @BindView(R.id._carsit)
+    Spinner carSit;
     @BindView(R.id._search)
     TextView searchButton;
     private DatePickerDialog.OnDateSetListener mDateSetListener_Start, mDateSetListener_End;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_new_orders);
         ButterKnife.bind(this);
@@ -80,36 +89,38 @@ public class UserNewOrders extends AppCompatActivity {
             public void onDateSet(DatePicker datePicker_start, int year, int month, int day) {
                 month = month + 1;
                 Log.d(TAG, "onDateSet: mm/dd/yyy: " + month + "/" + day + "/" + year);
-                String start_Date = month + "/" + day + "/" + year;
-                startDate.setText(start_Date);
-                Toast.makeText(getBaseContext(), start_Date, Toast.LENGTH_LONG).show();
+                start_Date = year + "-" + month + "-" + day;
+                startDate.setText(day + "/" + month + "/" + year);
             }
         };
         mDateSetListener_End = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker_end, int year, int month, int day) {
-                Date sDate = null, eDate = null;
+                Date sDate = new java.util.Date(), eDate = new java.util.Date();
                 month = month + 1;
                 Log.d(TAG, "onDateSet: mm/dd/yyy: " + month + "/" + day + "/" + year);
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                String start_End = month + "/" + day + "/" + year;
+                end_Date = year + "-" + month + "-" + day;
                 endDate.setError(null);
-                if (startDate.getText() != null) {
+                if (!startDate.getText().toString().equals("Start Date")) {
                     try {
                         sDate = sdf.parse(startDate.getText().toString());
-                        eDate = sdf.parse(start_End);
+                        eDate = sdf.parse(day + "/" + month + "/" + year);
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
                 }
                 if (sDate.after(eDate)) {
                     endDate.setError("");
-                    //Toast.makeText(getBaseContext(),"Wrong Date", Toast.LENGTH_LONG).show();
-                    endDate.setText("Wrong Date");
+                    endDate.setText("Date can not be early !! ");
+                } else if (sDate.equals(eDate)) {
+                    endDate.setError("");
+                    endDate.setText("Date cannot be the same !!");
                 } else {
-                    endDate.setText(start_End);
+                    endDate.setText(day + "/" + month + "/" + year);
                 }
             }
+
         };
         final Spinner carType = findViewById(R.id._cartype);
         ArrayAdapter <String> carTypeAdaptor = new ArrayAdapter <>(UserNewOrders.this,
@@ -121,7 +132,6 @@ public class UserNewOrders extends AppCompatActivity {
                 new NothingSelectedSpinnerAdapter(
                         carTypeAdaptor,
                         R.layout.car_type_spinner,
-                        // R.layout.contact_spinner_nothing_selected_dropdown, // Optional
                         this));
         carType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -176,16 +186,59 @@ public class UserNewOrders extends AppCompatActivity {
 
         searchButton.setOnClickListener(new View.OnClickListener() {
 
+
             @Override
             public void onClick(View v) {
-                try {
-                    LoginActivity.client.SendSearch(startDate.getText().toString(), endDate.getText().toString()
-                            , carType.getSelectedItem().toString(), carSit.getSelectedItem().toString());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                final ProgressDialog progressDialog = new ProgressDialog(UserNewOrders.this,
+                        R.style.AppTheme_Dark_Dialog);
+                progressDialog.setIndeterminate(true);
+                progressDialog.setMessage("Searching...");
+                progressDialog.show();
+                boolean run = false;
+                // TODO: Implement your own authentication logic here.
+
+                new android.os.Handler().postDelayed(
+                        new Runnable() {
+                            public void run() {
+                                // On complete call either onLoginSuccess or onLoginFailed
+                                if (checkValidate()) {
+                                    try {
+                                        client.SendSearch(start_Date, end_Date
+                                                , carType.getSelectedItem().toString(), carSit.getSelectedItem().toString());
+                                        Intent intent = new Intent(getApplicationContext(), UserSearchResult.class);
+                                        startActivity(intent);
+                                        finish();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                } else {
+
+                                }
+                                progressDialog.dismiss();
+                            }
+                        }, 3000);
             }
+
         });
+
     }
 
+    public boolean checkValidate() {
+        if (startDate.getText().toString().equals("Start Date")) {
+            Toast.makeText(getBaseContext(), "Start date not set ! \nPlease fix it", Toast.LENGTH_LONG).show();
+            return false;
+        } else if (endDate.getText().toString().equals("End Date")) {
+            Toast.makeText(getBaseContext(), "End date not set ! \nPlease fix it", Toast.LENGTH_LONG).show();
+            return false;
+        } else if (carType.getSelectedItem() == null) {
+            Toast.makeText(getBaseContext(), "Car type not selected ! \nPlease fix it", Toast.LENGTH_LONG).show();
+            return false;
+        } else if (carSit.getSelectedItem() == null) {
+            Toast.makeText(getBaseContext(), "Sit car not selected ! \nPlease fix it", Toast.LENGTH_LONG).show();
+            return false;
+
+        }
+        return true;
+    }
 }
+

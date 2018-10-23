@@ -76,7 +76,7 @@ public class UserMenu extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int id) {
                 LoginActivity.setIsLogged(false);
                 client.close();
-                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                Intent intent = new Intent(getApplicationContext(), UserSearchResult.class);
                 startActivity(intent);
                 finish();
             }

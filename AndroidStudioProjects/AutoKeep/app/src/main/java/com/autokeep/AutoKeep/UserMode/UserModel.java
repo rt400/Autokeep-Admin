@@ -10,10 +10,10 @@ public class UserModel {
     private String lastName;
     private String emailAddress;
     private String phoneNumber;
-    private boolean isAdmin = false;
+    private boolean IsAdministrator = false;
 
     public UserModel(int userID, String userName, String password, String dateOfBirth, String firstName, String lastName,
-                     String emailAddress, String phoneNumber, boolean isAdmin) {
+                     String emailAddress, String phoneNumber, boolean IsAdministrator) {
         super();
         this.userID = userID;
         this.userName = userName;
@@ -23,11 +23,11 @@ public class UserModel {
         this.lastName = lastName;
         this.emailAddress = emailAddress;
         this.phoneNumber = phoneNumber;
-        this.isAdmin = isAdmin;
+        this.IsAdministrator = IsAdministrator;
     }
 
     public UserModel(String userName, String password, String dateOfBirth, String firstName, String lastName,
-                     String emailAddress, String phoneNumber, boolean isAdmin) {
+                     String emailAddress, String phoneNumber, boolean IsAdministrator) {
         super();
         this.userName = userName;
         this.password = password;
@@ -36,7 +36,7 @@ public class UserModel {
         this.lastName = lastName;
         this.emailAddress = emailAddress;
         this.phoneNumber = phoneNumber;
-        this.isAdmin = isAdmin;
+        this.IsAdministrator = IsAdministrator;
     }
 
     public int getUserID() {
@@ -95,7 +95,7 @@ public class UserModel {
         this.phoneNumber = phoneNumber;
     }
 
-    public boolean isAdmin() {
-        return isAdmin;
+    public boolean isAdministrator() {
+        return IsAdministrator;
     }
 }

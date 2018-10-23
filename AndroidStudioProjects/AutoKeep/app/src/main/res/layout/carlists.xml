@@ -29,8 +29,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_toRightOf="@id/imageView"
-            android:text="Toyota Corolla"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
+            android:text="Toyota Corolla 2018"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
 
         <TextView
             android:id="@+id/textViewShortDesc"
@@ -44,7 +44,7 @@
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
 
         <TextView
-            android:id="@+id/textViewYear"
+            android:id="@+id/textViewID"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/textViewShortDesc"
@@ -54,20 +54,8 @@
             android:background="@color/white"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
-            android:text="2018"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small.Inverse"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/textViewID"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/textViewYear"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_toRightOf="@id/imageView"
             android:text="83-206-75"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium.Inverse"
             android:textStyle="bold" />
 
     </RelativeLayout>

@@ -38,12 +38,11 @@ public class Cars_Adapter extends RecyclerView.Adapter <Cars_Adapter.CarsViewHol
         holder.itemView.setSelected(selectedPos == position);
         //loading the image
         Glide.with(mCtx)
-                .load(car.getImage())
+                .load(car.getVehicleImage())
                 .into(holder.imageView);
-        holder.textViewName.setText(car.getManufacturer());
-        holder.textViewShortDesc.setText(car.getShortdesc());
-        holder.textViewYear.setText(String.valueOf(car.getManufactureDate()));
-        holder.textViewID.setText(String.valueOf(car.getCarID()));
+        holder.textViewName.setText(car.getVehicleFullName());
+        holder.textViewShortDesc.setText(car.getCarShortdesc());
+        holder.textViewID.setText(car.getCarFixedID());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,7 +62,7 @@ public class Cars_Adapter extends RecyclerView.Adapter <Cars_Adapter.CarsViewHol
     }
 
     public String getSelectedCarID(int position) {
-        return calLists.get(position).getCarID();
+        return calLists.get(position).getPlateNumber();
     }
 
     public VehicleModel getCarSelected(int position) {
@@ -72,7 +71,7 @@ public class Cars_Adapter extends RecyclerView.Adapter <Cars_Adapter.CarsViewHol
 
     class CarsViewHolder extends RecyclerView.ViewHolder {
 
-        TextView textViewName, textViewShortDesc, textViewYear, textViewID;
+        TextView textViewName, textViewShortDesc, textViewID;
         ImageView imageView;
 
         public CarsViewHolder(View itemView) {
@@ -80,7 +79,6 @@ public class Cars_Adapter extends RecyclerView.Adapter <Cars_Adapter.CarsViewHol
 
             textViewName = itemView.findViewById(R.id.textViewCarName);
             textViewShortDesc = itemView.findViewById(R.id.textViewShortDesc);
-            textViewYear = itemView.findViewById(R.id.textViewYear);
             textViewID = itemView.findViewById(R.id.textViewID);
             imageView = itemView.findViewById(R.id.imageView);
         }

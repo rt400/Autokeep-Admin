@@ -3,15 +3,18 @@ package com.autokeep.AutoKeep.UserActivityPack;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.StrictMode;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.autokeep.AutoKeep.Communication.clientOB;
+import com.autokeep.AutoKeep.Communication.clientSocket;
 import com.autokeep.AutoKeep.R;
 
 import java.io.IOException;
@@ -23,15 +26,18 @@ import butterknife.ButterKnife;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
-    public static clientOB client;
+    public static clientSocket client;
     private static boolean isLogged = false;
     private static String password = null;
     @BindView(R.id.input_email)
     EditText _emailText;
     @BindView(R.id.input_password)
     EditText _passwordText;
+    @BindView(R.id.message)
+    TextView _msg;
     @BindView(R.id.btn_login)
     Button _loginButton;
+    private int retryLogin = 5;
 
     public static boolean isIsLogged() {
         return isLogged;
@@ -66,12 +72,47 @@ public class LoginActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
+        client = new clientSocket();
         _loginButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                login();
+
+                if (validate()) {
+                    if (client.isOnline()) {
+                        login();
+                    } else {
+                        Toast.makeText(getBaseContext(), "Sorry. Server Not Avalible!", Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    Toast.makeText(getBaseContext(), "Wrong email or address", Toast.LENGTH_LONG).show();
+                }
+                retryLogin++;
+                if (retryLogin >= 5) {
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                    builder.setTitle("Failed Login");
+                    builder.setMessage("");
+                    final AlertDialog alert = builder.create();
+                    alert.show();
+                    alert.setCancelable(false);
+                    alert.setCanceledOnTouchOutside(false);
+                    new CountDownTimer(30000, 1000) {
+                        @Override
+                        public void onTick(long l) {
+                            alert.setMessage("To many retry to logging to server \nwith wrong email or password\n\n" +
+                                    "The Server block you\nto login for 30s !\n\n" +
+                                    "Time Left : " + l / 1000);
+                        }
+
+                        @Override
+                        public void onFinish() {
+                            retryLogin = 0;
+                            alert.cancel();
+                        }
+                    }.start();
+                }
             }
+
         });
 
     }
@@ -83,9 +124,7 @@ public class LoginActivity extends AppCompatActivity {
             onLoginFailed();
             return;
         }
-
         _loginButton.setEnabled(false);
-
 
         final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
                 R.style.AppTheme_Dark_Dialog);
@@ -93,16 +132,16 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.setMessage("Authenticating...");
         progressDialog.show();
         boolean run = false;
-        // TODO: Implement your own authentication logic here.
-        try {
-            client = new clientOB("shahak18.ddns.net", 40501);
-            client.SendLogin(_emailText.getText().toString(), _passwordText.getText().toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        client.readFromServer();
-        if (client.getStatusData().equals("OK")) {
-            run = true;
+        if (client.connection()) {
+            try {
+                client.SendLogin(_emailText.getText().toString(), _passwordText.getText().toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            client.readFromServer();
+            if (client.getStatusData().equals("OK")) {
+                run = true;
+            }
         }
         final boolean finalRun = run;
         new android.os.Handler().postDelayed(
@@ -123,6 +162,7 @@ public class LoginActivity extends AppCompatActivity {
     public void onBackPressed() {
         // Disable going back to the MainActivity
         moveTaskToBack(true);
+        client.close();
     }
 
     public void onLoginSuccess() {
@@ -134,12 +174,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onLoginFailed() {
-        Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
-        if (client != null) {
-            client.close();
-        }
-        client = null;
-        _loginButton.setEnabled(true);
+        Toast.makeText(getBaseContext(), client.getStatusData(), Toast.LENGTH_LONG).show();
     }
 
     public boolean validate() {

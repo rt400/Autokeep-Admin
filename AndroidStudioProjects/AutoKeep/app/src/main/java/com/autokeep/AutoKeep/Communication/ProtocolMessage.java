@@ -4,46 +4,46 @@ public enum ProtocolMessage {
     OK,
     WRONG_CREDENTIAL,
     LOGIN,
-    VALIDATE_CREDENTIAL,
-    SEARCH_CAR,
-    VIEW_ORDERS,
-    USER_CHANGE_PASSWORD,
+    SEARCH_VEHICLE,
+    NO_AVAILABLE_VEHICLES,
     USER_MODEL,
     RESERVATION_MODEL,
     VEHICLE_MODEL,
     USER_MODEL_LIST,
     RESERVATION_MODEL_LIST,
-    VECHILE_MODEL_LIST,
-    ERROR;
+    VEHICLE_MODEL_LIST,
+    //Error Messages - Except ERROR all other error used for messages only
+    ERROR,
+    TOO_MANY_AUTHENTICATION_RETRIES,
+    INTERNAL_ERROR;
 
-    public static String getRate(ProtocolMessage protocolMessage) {
+    public static String getMessage(ProtocolMessage protocolMessage) {
         String messageString;
 
         switch (protocolMessage) {
-            case LOGIN:
-                messageString = "The Class type is UserModel.class";
+            case OK:
+                messageString = "OK";
                 break;
-            case RESERVATION_MODEL:
-                messageString = "The Class type is .class";
-                break;
-            case VEHICLE_MODEL:
-                messageString = "The Class type is .class";
-                break;
-            case USER_MODEL_LIST:
-                messageString = "The Class type is .class";
-                break;
-            case RESERVATION_MODEL_LIST:
-                messageString = "The Class type is .class";
-                break;
-            case VECHILE_MODEL_LIST:
-                messageString = "The Class type is .class";
-                break;
-            case ERROR:
-                messageString = "Fatal error. Please contact suppport";
-            default:
-                messageString = "";
-        }
 
+            case WRONG_CREDENTIAL:
+                messageString = "Email or password is incorrect";
+                break;
+
+            case TOO_MANY_AUTHENTICATION_RETRIES:
+                messageString = "You have been tried to connect 5 times.\nPlease Try again later";
+                break;
+
+            case NO_AVAILABLE_VEHICLES:
+                messageString = "There is no available vehicles for correct parameters";
+                break;
+
+            case INTERNAL_ERROR:
+                messageString = "Internal error.\nPlease contact suppport";
+                break;
+
+            default:
+                messageString = "Protocol Message case is not defined";
+        }
         return messageString;
     }
 }

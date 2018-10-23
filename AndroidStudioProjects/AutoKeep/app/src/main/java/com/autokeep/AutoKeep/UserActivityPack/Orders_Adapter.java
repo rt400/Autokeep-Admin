@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.autokeep.AutoKeep.R;
 import com.autokeep.AutoKeep.UserMode.VehicleModel;
-import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -37,13 +36,13 @@ public class Orders_Adapter extends RecyclerView.Adapter <Orders_Adapter.CarsVie
         VehicleModel car = calLists.get(position);
         holder.itemView.setSelected(selectedPos == position);
         //loading the image
-        Glide.with(mCtx)
-                .load(car.getImage())
-                .into(holder.imageView);
-        holder.textViewName.setText(car.getManufacturer());
-        holder.textViewShortDesc.setText(car.getShortdesc());
-        holder.textViewYear.setText(String.valueOf(car.getManufactureDate()));
-        holder.textViewID.setText(String.valueOf(car.getCarID()));
+        //Glide.with(mCtx)
+        //      .load(car.getImage())
+        //    .into(holder.imageView);
+        //holder.textViewName.setText(car.getManufacturer());
+        //holder.textViewShortDesc.setText(car.getShortdesc());
+        //holder.textViewYear.setText(String.valueOf(car.getManufactureDate()));
+        // holder.textViewID.setText(String.valueOf(car.getCarID()));
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,8 +61,8 @@ public class Orders_Adapter extends RecyclerView.Adapter <Orders_Adapter.CarsVie
         return calLists.size();
     }
 
-    public String getSelectedCarID(int postion) {
-        return calLists.get(postion).getCarID();
+    public void getSelectedCarID(int postion) {
+        calLists.get(postion);
     }
 
     class CarsViewHolder extends RecyclerView.ViewHolder {
@@ -76,8 +75,7 @@ public class Orders_Adapter extends RecyclerView.Adapter <Orders_Adapter.CarsVie
 
             textViewName = itemView.findViewById(R.id.textViewCarName);
             textViewShortDesc = itemView.findViewById(R.id.textViewShortDesc);
-            textViewYear = itemView.findViewById(R.id.textViewYear);
-            textViewID = itemView.findViewById(R.id.textViewID);
+            textViewYear = itemView.findViewById(R.id.textViewID);
             imageView = itemView.findViewById(R.id.imageView);
         }
     }

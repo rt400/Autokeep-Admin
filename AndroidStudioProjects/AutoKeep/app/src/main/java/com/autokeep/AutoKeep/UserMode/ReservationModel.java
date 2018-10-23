@@ -3,28 +3,20 @@ package com.autokeep.AutoKeep.UserMode;
 public class ReservationModel {
     private int reservationID;
     private UserModel user;
-    private String reservationDate;
-    private String reservationStart;
-    private String reservationEnd;
     private VehicleModel vehicle;
+    private String reservationDate;
+    private String reservationStartDate;
+    private String reservationEndDate;
 
-    public ReservationModel(int reservationID, UserModel user, String reservationDate, String reservationStart,
-                            String reservationEnd, VehicleModel vehicle) {
+    public ReservationModel(int reservationID, UserModel user, VehicleModel vehicle, String reservationDate,
+                            String reservationStartDate, String reservationEndDate) {
         super();
+        this.reservationID = reservationID;
         this.user = user;
         this.vehicle = vehicle;
-        this.reservationID = reservationID;
         this.reservationDate = reservationDate;
-        this.reservationStart = reservationStart;
-        this.reservationEnd = reservationEnd;
-    }
-
-    public VehicleModel getVehicle() {
-        return vehicle;
-    }
-
-    public void setVehicle(VehicleModel vehicle) {
-        this.vehicle = vehicle;
+        this.reservationStartDate = reservationStartDate;
+        this.reservationEndDate = reservationEndDate;
     }
 
     public int getReservationID() {
@@ -35,12 +27,20 @@ public class ReservationModel {
         this.reservationID = reservationID;
     }
 
-    public UserModel getReservedByUserID() {
+    public UserModel getUser() {
         return user;
     }
 
-    public void setReservedByUserID(UserModel user) {
+    public void setUser(UserModel user) {
         this.user = user;
+    }
+
+    public VehicleModel getVehicle() {
+        return vehicle;
+    }
+
+    public void setVehicle(VehicleModel vehicle) {
+        this.vehicle = vehicle;
     }
 
     public String getReservationDate() {
@@ -51,20 +51,19 @@ public class ReservationModel {
         this.reservationDate = reservationDate;
     }
 
-    public String getReservationStart() {
-        return reservationStart;
+    public String getReservationStartDate() {
+        return reservationStartDate;
     }
 
-    public void setReservationStart(String reservationStart) {
-        this.reservationStart = reservationStart;
+    public void setReservationStartDate(String reservationStartDate) {
+        this.reservationStartDate = reservationStartDate;
     }
 
-    public String getReservationEnd() {
-        return reservationEnd;
+    public String getReservationEndDate() {
+        return reservationEndDate;
     }
 
-    public void setReservationEnd(String reservationEnd) {
-        this.reservationEnd = reservationEnd;
+    public void setReservationEndDate(String reservationEndDate) {
+        this.reservationEndDate = reservationEndDate;
     }
-
 }
