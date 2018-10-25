@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketAddress;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -20,8 +21,23 @@ public class clientSocket extends AsyncTask <Void, Void, Boolean> {
     private Queue <String> keys = new LinkedList <>();
     private Queue <String> values = new LinkedList <>();
     private Protocol protocol;
-
     public clientSocket() {
+    }
+
+    public static int getPort() {
+        return port;
+    }
+
+    public static void setPort(int port) {
+        clientSocket.port = port;
+    }
+
+    public static String getIp() {
+        return ip;
+    }
+
+    public static void setIp(String ip) {
+        clientSocket.ip = ip;
     }
 
     public static String getServerMSG() {
@@ -59,9 +75,9 @@ public class clientSocket extends AsyncTask <Void, Void, Boolean> {
     public static boolean isOnline() {
         boolean avalibale = true;
         try {
-            InetSocketAddress sa = new InetSocketAddress(ip, port);
+            SocketAddress sa = new InetSocketAddress(getIp(), getPort());
             Socket ss = new Socket();
-            ss.connect(sa, 1);
+            ss.connect(sa, 5000);
             ss.close();
         } catch (Exception e) {
             avalibale = false;
@@ -152,12 +168,8 @@ public class clientSocket extends AsyncTask <Void, Void, Boolean> {
     protected Boolean doInBackground(Void... voids) {
         try {
             if (socket == null) {
-                if (isOnline()) {
-                    socket = new Socket(ip, port);
+                socket = new Socket(getIp(), getPort());
                     protocol = new Protocol(socket.getInputStream(), socket.getOutputStream());
-                } else {
-                    return false;
-                }
             } else if (isConncet()) {
                 return true;
             }

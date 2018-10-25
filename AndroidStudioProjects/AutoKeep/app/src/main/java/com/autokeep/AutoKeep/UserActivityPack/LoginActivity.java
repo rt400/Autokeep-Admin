@@ -37,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
     TextView _msg;
     @BindView(R.id.btn_login)
     Button _loginButton;
-    private int retryLogin = 5;
+    private int retryLogin = 0;
 
     public static boolean isIsLogged() {
         return isLogged;
@@ -77,14 +77,10 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-
+                //new CheckServerConnection().execute();
                 if (validate()) {
-                    if (client.isOnline()) {
                         login();
                     } else {
-                        Toast.makeText(getBaseContext(), "Sorry. Server Not Avalible!", Toast.LENGTH_LONG).show();
-                    }
-                } else {
                     Toast.makeText(getBaseContext(), "Wrong email or address", Toast.LENGTH_LONG).show();
                 }
                 retryLogin++;
@@ -119,11 +115,11 @@ public class LoginActivity extends AppCompatActivity {
 
     public void login() {
         Log.d(TAG, "Login");
-
+/*
         if (!validate()) {
             onLoginFailed();
             return;
-        }
+        }*/
         _loginButton.setEnabled(false);
 
         final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
@@ -131,31 +127,27 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Authenticating...");
         progressDialog.show();
-        boolean run = false;
-        if (client.connection()) {
-            try {
-                client.SendLogin(_emailText.getText().toString(), _passwordText.getText().toString());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            client.readFromServer();
-            if (client.getStatusData().equals("OK")) {
-                run = true;
-            }
-        }
-        final boolean finalRun = run;
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
-                        // On complete call either onLoginSuccess or onLoginFailed
-                        if (finalRun) {
-                            onLoginSuccess();
-                        } else {
-                            onLoginFailed();
+                        boolean run = false;
+                        if (client.connection()) {
+                            try {
+                                client.SendLogin(_emailText.getText().toString(), _passwordText.getText().toString());
+                            } catch (IOException e) {
+                                onLoginFailed();
+                            }
+                            client.readFromServer();
+                            if (client.getStatusData().equals("OK")) {
+                                onLoginSuccess();
+                            } else {
+                                onLoginFailed();
+                            }
                         }
+
                         progressDialog.dismiss();
                     }
-                }, 3000);
+                }, 5000);
     }
 
     @Override
@@ -174,7 +166,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onLoginFailed() {
-        Toast.makeText(getBaseContext(), client.getStatusData(), Toast.LENGTH_LONG).show();
+        if (client.getServerMSG().equals("")) {
+            Toast.makeText(getBaseContext(), "Failed to login...", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getBaseContext(), client.getServerMSG(), Toast.LENGTH_LONG).show();
+        }
+        _loginButton.setEnabled(true);
     }
 
     public boolean validate() {
@@ -197,4 +194,6 @@ public class LoginActivity extends AppCompatActivity {
 
         return valid;
     }
+
+
 }
