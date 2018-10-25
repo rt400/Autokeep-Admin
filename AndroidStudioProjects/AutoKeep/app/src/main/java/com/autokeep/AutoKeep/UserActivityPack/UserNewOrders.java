@@ -47,7 +47,6 @@ public class UserNewOrders extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_new_orders);
         ButterKnife.bind(this);
@@ -136,19 +135,9 @@ public class UserNewOrders extends AppCompatActivity {
         carType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView <?> adapterView, View view, int i, long l) {
-                if (i == 0) {
-                    //Toast.makeText(getBaseContext(),carType.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
-                } else if (i == 1) {
-                    // Toast.makeText(getBaseContext(),carType.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
-                } else if (i == 2) {
-                    // Toast.makeText(getBaseContext(),carType.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
-                }
             }
-
-
             @Override
             public void onNothingSelected(AdapterView <?> adapterView) {
-
             }
         });
         final Spinner carSit = findViewById(R.id._carsit);
@@ -161,26 +150,13 @@ public class UserNewOrders extends AppCompatActivity {
                 new NothingSelectedSpinnerAdapter(
                         carSitAdaptor,
                         R.layout.car_sit_spinner,
-                        // R.layout.contact_spinner_nothing_selected_dropdown, // Optional
                         this));
         carSit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView <?> adapterView, View view, int i, long l) {
-                if (i == 0) {
-                    //Toast.makeText(getBaseContext(),carSit.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
-                } else if (i == 1) {
-                    // Toast.makeText(getBaseContext(),carSit.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
-                } else if (i == 2) {
-                    //Toast.makeText(getBaseContext(),carSit.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
-                } else if (i == 3) {
-                    //Toast.makeText(getBaseContext(),carSit.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
-                }
             }
-
-
             @Override
             public void onNothingSelected(AdapterView <?> adapterView) {
-
             }
         });
 
@@ -194,20 +170,16 @@ public class UserNewOrders extends AppCompatActivity {
                 progressDialog.setIndeterminate(true);
                 progressDialog.setMessage("Searching...");
                 progressDialog.show();
-                boolean run = false;
-                // TODO: Implement your own authentication logic here.
-
                 new android.os.Handler().postDelayed(
                         new Runnable() {
                             public void run() {
-                                // On complete call either onLoginSuccess or onLoginFailed
                                 if (checkValidate()) {
                                     try {
                                         client.SendSearch(start_Date, end_Date
                                                 , carType.getSelectedItem().toString(), carSit.getSelectedItem().toString());
                                         Intent intent = new Intent(getApplicationContext(), UserSearchResult.class);
                                         startActivity(intent);
-                                        finish();
+                                        //finish();
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
@@ -220,7 +192,6 @@ public class UserNewOrders extends AppCompatActivity {
             }
 
         });
-
     }
 
     public boolean checkValidate() {

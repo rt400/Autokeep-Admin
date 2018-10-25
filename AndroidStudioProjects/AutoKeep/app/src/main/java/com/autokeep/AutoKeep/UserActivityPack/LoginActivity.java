@@ -1,10 +1,12 @@
 package com.autokeep.AutoKeep.UserActivityPack;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.StrictMode;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -29,6 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     public static clientSocket client;
     private static boolean isLogged = false;
     private static String password = null;
+    private int retryLogin = 0;
     @BindView(R.id.input_email)
     EditText _emailText;
     @BindView(R.id.input_password)
@@ -37,7 +40,6 @@ public class LoginActivity extends AppCompatActivity {
     TextView _msg;
     @BindView(R.id.btn_login)
     Button _loginButton;
-    private int retryLogin = 0;
 
     public static boolean isIsLogged() {
         return isLogged;
@@ -99,7 +101,6 @@ public class LoginActivity extends AppCompatActivity {
                                     "The Server block you\nto login for 30s !\n\n" +
                                     "Time Left : " + l / 1000);
                         }
-
                         @Override
                         public void onFinish() {
                             retryLogin = 0;
@@ -152,9 +153,23 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        // Disable going back to the MainActivity
-        moveTaskToBack(true);
-        client.close();
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        builder.setTitle("Closing KeepCar ");
+        builder.setMessage("Are you sure you want to exit ? ");
+        builder.setPositiveButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+            }
+        });
+        builder.setNegativeButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                if (client != null) {
+                    client.close();
+                }
+                finish();
+                ActivityCompat.finishAffinity(LoginActivity.this);
+            }
+        });
+        builder.show();
     }
 
     public void onLoginSuccess() {

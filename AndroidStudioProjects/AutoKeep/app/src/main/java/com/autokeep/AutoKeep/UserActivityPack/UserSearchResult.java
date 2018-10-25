@@ -29,7 +29,6 @@ public class UserSearchResult extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_search_result);
-
         //getting the recyclerview from xml 
         recyclerView = findViewById(R.id.recylcerView);
         recyclerView.setHasFixedSize(true);
@@ -57,38 +56,37 @@ public class UserSearchResult extends AppCompatActivity {
             }
 
         }));
-
         //initializing the carlist
         carsList = new ArrayList <>();
-
-
-        //this method will fetch and parse json 
-        //to display it in recyclerview
-
         loadCarsData();
 
     }
 
     private void loadCarsData() {
 
-
         Queue <VehicleModel> list = (Queue <VehicleModel>) client.readFromServer();
         while (!list.isEmpty()) {
             carsList.add(list.poll());
-
-
         }
-
         //creating adapter object and setting it to recyclerview
         adapter = new Cars_Adapter(UserSearchResult.this, carsList);
         recyclerView.setAdapter(adapter);
-
     }
-
 
     @Override
     public void onBackPressed() {
-
-        // moveTaskToBack(true);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Warnning !!!");
+        builder.setMessage("All search data will lost...\n\nAre you sure ? ");
+        builder.setPositiveButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+            }
+        });
+        builder.setNegativeButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                finish();
+            }
+        });
+        builder.show();
     }
 }

@@ -158,7 +158,8 @@ public class clientSocket extends AsyncTask <Void, Void, Boolean> {
         try {
             protocol.close();
             socket.close();
-        } catch (IOException e) {
+            socket = null;
+        } catch (NullPointerException | IOException e) {
             return false;
         }
         return true;
@@ -169,7 +170,7 @@ public class clientSocket extends AsyncTask <Void, Void, Boolean> {
         try {
             if (socket == null) {
                 socket = new Socket(getIp(), getPort());
-                    protocol = new Protocol(socket.getInputStream(), socket.getOutputStream());
+                protocol = new Protocol(socket.getInputStream(), socket.getOutputStream());
             } else if (isConncet()) {
                 return true;
             }

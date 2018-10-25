@@ -36,13 +36,11 @@ public class UserMenu extends AppCompatActivity {
         setContentView(R.layout.user_menu);
         ButterKnife.bind(this);
 
-
         new_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), UserNewOrders.class);
                 startActivity(intent);
-                //finish();
             }
         });
         orders.setOnClickListener(new View.OnClickListener() {
@@ -50,7 +48,6 @@ public class UserMenu extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), OrderResult.class);
                 startActivity(intent);
-                //finish();
             }
         });
         change_password.setOnClickListener(new View.OnClickListener() {
@@ -58,7 +55,6 @@ public class UserMenu extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), UserChangePassword.class);
                 startActivity(intent);
-                //finish();
             }
         });
     }
@@ -75,18 +71,17 @@ public class UserMenu extends AppCompatActivity {
         builder.setNegativeButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 LoginActivity.setIsLogged(false);
-                client.close();
-                Intent intent = new Intent(getApplicationContext(), UserSearchResult.class);
+                try {
+                    client.close();
+                } catch (NullPointerException e) {
+                    finish();
+                }
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(intent);
                 finish();
             }
         });
         builder.show();
-        // Disable going back to the MainActivity
-        if (LoginActivity.isIsLogged()) {
-
-        }
-        // moveTaskToBack(true);
     }
 
 
