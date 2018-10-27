@@ -11,15 +11,22 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:paddingLeft="24dp"
-        android:paddingTop="26dp"
+        android:paddingTop="6dp"
         android:paddingRight="24dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="142dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="0dp"
+            android:src="@drawable/logo_user_menu_empty" />
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:paddingTop="26dp"
+            android:paddingTop="0dp"
             android:text="New Order"
             android:textSize="36sp"
             android:textStyle="bold" />
@@ -73,10 +80,7 @@
         <Spinner
             android:id="@+id/_cartype"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:spinnerMode="dialog"
-
-            android:text="Car Type" />
+            android:layout_height="wrap_content" />
 
         <TextView
             android:id="@+id/textView4"
@@ -85,7 +89,6 @@
 
         <Spinner
             android:id="@+id/_carsit"
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

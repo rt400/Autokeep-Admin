@@ -9,14 +9,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.autokeep.AutoKeep.Communication.clientSocket;
 import com.autokeep.AutoKeep.R;
 import com.autokeep.AutoKeep.UserMode.VehicleModel;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
-
-import static com.autokeep.AutoKeep.UserActivityPack.LoginActivity.client;
 
 public class UserSearchResult extends AppCompatActivity {
     List <VehicleModel> carsList;
@@ -64,7 +63,7 @@ public class UserSearchResult extends AppCompatActivity {
 
     private void loadCarsData() {
 
-        Queue <VehicleModel> list = (Queue <VehicleModel>) client.readFromServer();
+        Queue <VehicleModel> list = (Queue <VehicleModel>) clientSocket.getInstance().readFromServer();
         while (!list.isEmpty()) {
             carsList.add(list.poll());
         }

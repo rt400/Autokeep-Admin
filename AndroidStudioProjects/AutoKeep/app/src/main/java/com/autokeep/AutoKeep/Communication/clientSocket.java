@@ -21,7 +21,11 @@ public class clientSocket extends AsyncTask <Void, Void, Boolean> {
     private Queue <String> keys = new LinkedList <>();
     private Queue <String> values = new LinkedList <>();
     private Protocol protocol;
-    public clientSocket() {
+
+    private final static clientSocket client = new clientSocket();
+
+    public static clientSocket getInstance() {
+        return clientSocket.client;
     }
 
     public static int getPort() {
@@ -109,6 +113,7 @@ public class clientSocket extends AsyncTask <Void, Void, Boolean> {
         String str = dataConverter.encodeParametersToJson(ProtocolMessage.SEARCH_VEHICLE, keys, values);
         protocol.write(str);
         protocol.flush();
+
     }
 
     public void SendOrders(String startDate, String endDate, String carType, String carSit) throws IOException {

@@ -16,6 +16,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.autokeep.AutoKeep.Communication.clientSocket;
 import com.autokeep.AutoKeep.R;
 
 import java.io.IOException;
@@ -26,8 +27,6 @@ import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static com.autokeep.AutoKeep.UserActivityPack.LoginActivity.client;
 
 public class UserNewOrders extends AppCompatActivity {
     private static final String TAG = "UserNewOrders";
@@ -136,6 +135,7 @@ public class UserNewOrders extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView <?> adapterView, View view, int i, long l) {
             }
+
             @Override
             public void onNothingSelected(AdapterView <?> adapterView) {
             }
@@ -155,6 +155,7 @@ public class UserNewOrders extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView <?> adapterView, View view, int i, long l) {
             }
+
             @Override
             public void onNothingSelected(AdapterView <?> adapterView) {
             }
@@ -162,20 +163,19 @@ public class UserNewOrders extends AppCompatActivity {
 
         searchButton.setOnClickListener(new View.OnClickListener() {
 
-
             @Override
             public void onClick(View v) {
-                final ProgressDialog progressDialog = new ProgressDialog(UserNewOrders.this,
-                        R.style.AppTheme_Dark_Dialog);
-                progressDialog.setIndeterminate(true);
-                progressDialog.setMessage("Searching...");
-                progressDialog.show();
-                new android.os.Handler().postDelayed(
-                        new Runnable() {
-                            public void run() {
-                                if (checkValidate()) {
+                if (checkValidate()) {
+                    final ProgressDialog progressDialog = new ProgressDialog(UserNewOrders.this,
+                            R.style.AppTheme_Dark_Dialog);
+                    progressDialog.setIndeterminate(true);
+                    progressDialog.setMessage("Searching...");
+                    progressDialog.show();
+                    new android.os.Handler().postDelayed(
+                            new Runnable() {
+                                public void run() {
                                     try {
-                                        client.SendSearch(start_Date, end_Date
+                                        clientSocket.getInstance().SendSearch(start_Date, end_Date
                                                 , carType.getSelectedItem().toString(), carSit.getSelectedItem().toString());
                                         Intent intent = new Intent(getApplicationContext(), UserSearchResult.class);
                                         startActivity(intent);
@@ -183,15 +183,13 @@ public class UserNewOrders extends AppCompatActivity {
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
-                                } else {
-
+                                    progressDialog.dismiss();
                                 }
-                                progressDialog.dismiss();
-                            }
-                        }, 3000);
+                            }, 3000);
+                }
             }
-
         });
+
     }
 
     public boolean checkValidate() {

@@ -11,12 +11,11 @@ import android.view.View;
 import android.widget.Button;
 
 import com.autokeep.AutoKeep.Communication.ProtocolMessage;
+import com.autokeep.AutoKeep.Communication.clientSocket;
 import com.autokeep.AutoKeep.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static com.autokeep.AutoKeep.UserActivityPack.LoginActivity.client;
 
 public class UserMenu extends AppCompatActivity {
     private static final String TAG = "UserMenu";
@@ -72,7 +71,7 @@ public class UserMenu extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int id) {
                 LoginActivity.setIsLogged(false);
                 try {
-                    client.close();
+                    clientSocket.getInstance().close();
                 } catch (NullPointerException e) {
                     finish();
                 }

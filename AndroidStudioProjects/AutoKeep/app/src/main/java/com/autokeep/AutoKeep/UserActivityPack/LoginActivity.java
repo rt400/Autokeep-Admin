@@ -28,7 +28,6 @@ import butterknife.ButterKnife;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
-    public static clientSocket client;
     private static boolean isLogged = false;
     private static String password = null;
     private int retryLogin = 0;
@@ -74,7 +73,6 @@ public class LoginActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        client = new clientSocket();
         _loginButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -132,14 +130,14 @@ public class LoginActivity extends AppCompatActivity {
                 new Runnable() {
                     public void run() {
                         boolean run = false;
-                        if (client.connection()) {
+                        if (clientSocket.getInstance().connection()) {
                             try {
-                                client.SendLogin(_emailText.getText().toString(), _passwordText.getText().toString());
+                                clientSocket.getInstance().SendLogin(_emailText.getText().toString(), _passwordText.getText().toString());
                             } catch (IOException e) {
                                 onLoginFailed();
                             }
-                            client.readFromServer();
-                            if (client.getStatusData().equals("OK")) {
+                            clientSocket.getInstance().readFromServer();
+                            if (clientSocket.getInstance().getStatusData().equals("OK")) {
                                 onLoginSuccess();
                             } else {
                                 onLoginFailed();
@@ -162,8 +160,8 @@ public class LoginActivity extends AppCompatActivity {
         });
         builder.setNegativeButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                if (client != null) {
-                    client.close();
+                if (clientSocket.getInstance() != null) {
+                    clientSocket.getInstance().close();
                 }
                 finish();
                 ActivityCompat.finishAffinity(LoginActivity.this);
@@ -181,10 +179,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onLoginFailed() {
-        if (client.getServerMSG().equals("")) {
+        if (clientSocket.getInstance().getServerMSG().equals("")) {
             Toast.makeText(getBaseContext(), "Failed to login...", Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(getBaseContext(), client.getServerMSG(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getBaseContext(), clientSocket.getInstance().getServerMSG(), Toast.LENGTH_LONG).show();
         }
         _loginButton.setEnabled(true);
     }

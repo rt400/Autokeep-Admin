@@ -15,16 +15,36 @@
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="172dp"
+            android:layout_height="142dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="24dp"
-            android:src="@drawable/logo_user_menu" />
+            android:layout_marginBottom="0dp"
+            android:src="@drawable/logo_user_menu_empty" />
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingTop="0dp"
+            android:text="Menu"
+            android:textSize="36sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <Button
             android:id="@+id/_new_order"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="0dp"
             android:text="New Orders"
             android:textSize="18sp"
             android:textStyle="bold" />
