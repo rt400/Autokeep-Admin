@@ -171,6 +171,8 @@ public class UserNewOrders extends AppCompatActivity {
                     progressDialog.setIndeterminate(true);
                     progressDialog.setMessage("Searching...");
                     progressDialog.show();
+                    progressDialog.setCancelable(false);
+                    progressDialog.setCanceledOnTouchOutside(false);
                     new android.os.Handler().postDelayed(
                             new Runnable() {
                                 public void run() {

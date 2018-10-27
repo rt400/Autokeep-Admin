@@ -69,7 +69,6 @@ public class UserMenu extends AppCompatActivity {
         });
         builder.setNegativeButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                LoginActivity.setIsLogged(false);
                 try {
                     clientSocket.getInstance().close();
                 } catch (NullPointerException e) {

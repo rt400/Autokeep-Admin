@@ -18,7 +18,7 @@
             android:layout_height="142dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="0dp"
-            android:src="@drawable/logo_user_menu_empty" />
+            android:src="@drawable/logo_fix" />
 
         <TextView
             android:id="@+id/textView11"
