@@ -6,12 +6,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.autokeep.AutoKeep.Communication.clientSocket;
 import com.autokeep.AutoKeep.R;
+
+import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.autokeep.AutoKeep.UserActivityPack.LoginActivity.getPassword;
 import static com.autokeep.AutoKeep.UserActivityPack.LoginActivity.passwordValidation;
 
 public class UserChangePassword extends AppCompatActivity {
@@ -42,32 +44,53 @@ public class UserChangePassword extends AppCompatActivity {
                 old_Password = oldPassword.getText().toString();
                 new_Password = newPassword.getText().toString();
                 retype = retypePassword.getText().toString();
-                Boolean check[] = new Boolean[3];
-                if (!old_Password.equals(getPassword())) {
-                    oldPassword.setError("Password didn't match");
-                    check[0] = false;
-                } else {
-                    oldPassword.setError(null);
-                    check[0] = true;
-                }
-                if (new_Password.isEmpty() || new_Password.length() < 8 || passwordValidation(new_Password)) {
-                    newPassword.setError("wrong password conditions");
-                    check[1] = false;
-                } else {
-                    newPassword.setError(null);
-                    check[1] = true;
-                }
-                if (!new_Password.equals(retype)) {
-                    retypePassword.setError("Password not match");
-                    check[2] = false;
-                } else {
-                    retypePassword.setError(null);
-                    check[2] = true;
+                if (Validate()) {
+                    try {
+                        clientSocket.getInstance().SendNewPassword(new_Password);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
 
             }
 
         });
 
+    }
+
+    private boolean Validate() {
+        if (checkOldPassword()) {
+            if (checkValidateNewPassword()) {
+                return checkMatchNewPassword();
+            }
+        }
+        return false;
+    }
+
+    private boolean checkOldPassword() {
+        if (old_Password.equals(clientSocket.getPassword())) {
+            oldPassword.setError(null);
+            return true;
+        }
+        oldPassword.setError("Password didn't match");
+        return false;
+    }
+
+    private boolean checkValidateNewPassword() {
+        if (new_Password.isEmpty() || new_Password.length() < 6 || passwordValidation(new_Password)) {
+            newPassword.setError("wrong password conditions");
+            return false;
+        }
+        newPassword.setError(null);
+        return true;
+    }
+
+    private boolean checkMatchNewPassword() {
+        if (new_Password.equals(retype)) {
+            retypePassword.setError(null);
+            return true;
+        }
+        retypePassword.setError("Password not match");
+        return false;
     }
 }

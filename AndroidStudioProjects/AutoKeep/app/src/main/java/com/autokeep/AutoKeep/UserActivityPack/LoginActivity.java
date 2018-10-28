@@ -6,10 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.StrictMode;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -38,10 +36,9 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher, Com
     private static final String KEY_REMEMBER = "remember";
     private static final String KEY_USERNAME = "username";
     private static final String KEY_PASS = "password";
+    private static String password = null;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
-    private static String password = null;
-    private int retryLogin = 0;
     @BindView(R.id.input_email)
     EditText _emailText;
     @BindView(R.id.input_password)
@@ -52,14 +49,6 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher, Com
     CheckBox remember;
     @BindView(R.id.btn_login)
     Button _loginButton;
-
-    public static String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public static boolean passwordValidation(String passwordEd) {
         String PASSWORD_PATTERN = "^(?=.*[A-z])(?=.*[@_.]).*$";
@@ -80,13 +69,15 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher, Com
         ButterKnife.bind(this);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        if (sharedPreferences.getBoolean(KEY_REMEMBER, false))
-            remember.setChecked(true);
-        else
-            remember.setChecked(false);
-
         _emailText.setText(sharedPreferences.getString(KEY_USERNAME, ""));
         _passwordText.setText(sharedPreferences.getString(KEY_PASS, ""));
+        if (sharedPreferences.getBoolean(KEY_REMEMBER, false)) {
+            if (validate()) {
+                login();
+            }
+            remember.setChecked(true);
+        } else
+            remember.setChecked(false);
 
         _emailText.addTextChangedListener(this);
         _passwordText.addTextChangedListener(this);
@@ -97,37 +88,10 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher, Com
             public void onClick(View v) {
 
                 if (validate()) {
-                        login();
-                    } else {
-                    Toast.makeText(getBaseContext(), "Wrong email or address", Toast.LENGTH_LONG).show();
-                }
-                retryLogin++;
-                if (retryLogin >= 5) {
-                    final AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                    builder.setTitle("Failed Login");
-                    builder.setMessage("");
-                    final AlertDialog alert = builder.create();
-                    alert.show();
-                    alert.setCancelable(false);
-                    alert.setCanceledOnTouchOutside(false);
-                    new CountDownTimer(30000, 1000) {
-                        @Override
-                        public void onTick(long l) {
-                            alert.setMessage("To many retry to logging to server \nwith wrong email or password\n\n" +
-                                    "The Server block you\nto login for 30s !\n\n" +
-                                    "Time Left : " + l / 1000);
-                        }
-                        @Override
-                        public void onFinish() {
-                            retryLogin = 0;
-                            alert.cancel();
-                        }
-                    }.start();
+                    login();
                 }
             }
-
         });
-
     }
 
     public void login() {
@@ -152,16 +116,15 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher, Com
                                 onLoginFailed();
                             }
                             clientSocket.getInstance().readFromServer();
-                            if (clientSocket.getInstance().getStatusData().equals("OK")) {
+                            if (clientSocket.getStatusData().equals("OK")) {
                                 onLoginSuccess();
                             } else {
                                 onLoginFailed();
                             }
                         }
-
                         progressDialog.dismiss();
                     }
-                }, 5000);
+                }, 3000);
     }
 
     @Override
@@ -187,24 +150,22 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher, Com
 
     public void onLoginSuccess() {
         _loginButton.setEnabled(true);
-
         Intent intent = new Intent(getApplicationContext(), UserMenu.class);
         startActivity(intent);
         finish();
     }
 
     public void onLoginFailed() {
-        if (clientSocket.getInstance().getServerMSG().equals("")) {
+        if (clientSocket.getServerMSG().equals("")) {
             Toast.makeText(getBaseContext(), "Failed to login...", Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(getBaseContext(), clientSocket.getInstance().getServerMSG(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getBaseContext(), clientSocket.getServerMSG(), Toast.LENGTH_LONG).show();
         }
         _loginButton.setEnabled(true);
     }
 
     public boolean validate() {
         boolean valid = true;
-        setPassword(_passwordText.getText().toString());
 
         if (_emailText.getText().toString().isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(_emailText.getText().toString()).matches()) {
             _emailText.setError("enter a valid email address");
@@ -213,7 +174,7 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher, Com
             _emailText.setError(null);
         }
 
-        if (getPassword().isEmpty() || getPassword().length() < 6 || passwordValidation(getPassword())) {
+        if (_passwordText.getText().toString().isEmpty() || _passwordText.getText().toString().length() < 6 || passwordValidation(_passwordText.getText().toString())) {
             _passwordText.setError("wrong password");
             valid = false;
         } else {
@@ -253,8 +214,8 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher, Com
             editor.apply();
         } else {
             editor.putBoolean(KEY_REMEMBER, false);
-            editor.remove(KEY_PASS);//editor.putString(KEY_PASS,"");
-            editor.remove(KEY_USERNAME);//editor.putString(KEY_USERNAME, "");
+            editor.remove(KEY_PASS);
+            editor.remove(KEY_USERNAME);
             editor.apply();
         }
     }

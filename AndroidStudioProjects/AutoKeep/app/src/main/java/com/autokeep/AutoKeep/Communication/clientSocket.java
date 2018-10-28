@@ -10,45 +10,40 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class clientSocket extends AsyncTask <Void, Void, Boolean> {
+    private final static clientSocket client = new clientSocket();
     private static String reciveData;
     private static String status;
     private static String serverMSG;
-    private static boolean isAdmin;
+    private static String userName;
+    private static String password;
     private static Socket socket;
     private static int port = 40500;
     private static String ip = "shahak18.ddns.net";
     private CommunicationInterpreter dataConverter = new CommunicationInterpreter();
-    private Queue <String> keys = new LinkedList <>();
-    private Queue <String> values = new LinkedList <>();
     private Protocol protocol;
 
-    private final static clientSocket client = new clientSocket();
+    public static String getPassword() {
+        return password;
+    }
+
+    public static String getUserName() {
+        return userName;
+    }
+
+    private void setUserName(String userName) {
+        clientSocket.userName = userName;
+    }
 
     public static clientSocket getInstance() {
         return clientSocket.client;
     }
 
-    public static int getPort() {
-        return port;
-    }
-
-    public static void setPort(int port) {
-        clientSocket.port = port;
-    }
-
-    public static String getIp() {
-        return ip;
-    }
-
-    public static void setIp(String ip) {
-        clientSocket.ip = ip;
-    }
 
     public static String getServerMSG() {
         return serverMSG;
     }
 
-    public static void setServerMSG(String serverMSG) {
+    private static void setServerMSG(String serverMSG) {
         clientSocket.serverMSG = serverMSG;
     }
 
@@ -56,30 +51,10 @@ public class clientSocket extends AsyncTask <Void, Void, Boolean> {
         return status;
     }
 
-    private static void setStatus(String data) {
-        status = data;
-    }
-
-    public static String getReciveData() {
-        return reciveData;
-    }
-
-    private static void setReciveData(String data) {
-        reciveData = data;
-    }
-
-    public static boolean isIsAdmin() {
-        return isAdmin;
-    }
-
-    public static void setIsAdmin(boolean isAdmin) {
-        clientSocket.isAdmin = isAdmin;
-    }
-
     public static boolean isOnline() {
         boolean avalibale = true;
         try {
-            SocketAddress sa = new InetSocketAddress(getIp(), getPort());
+            SocketAddress sa = new InetSocketAddress(ip, port);
             Socket ss = new Socket();
             ss.connect(sa, 5000);
             ss.close();
@@ -90,13 +65,15 @@ public class clientSocket extends AsyncTask <Void, Void, Boolean> {
     }
 
     public boolean connection() {
-        if (doInBackground()) {
-            return true;
-        }
-        return false;
+        setUserName("Yuval");
+        return doInBackground();
     }
 
-    public void SendLogin(String username, String password) throws IOException {
+    public void SendLogin(String username, String user_password) throws IOException {
+        userName = username;
+        password = user_password;
+        Queue <String> keys = new LinkedList <>();
+        Queue <String> values = new LinkedList <>();
         keys.add("user");
         values.add("{emailAddress:" + username + ",password:" + password + "}");
         String str = dataConverter.encodeParametersToJson(ProtocolMessage.LOGIN, keys, values);
@@ -105,6 +82,8 @@ public class clientSocket extends AsyncTask <Void, Void, Boolean> {
     }
 
     public void SendSearch(String reservationStartDate, String reservationEndDate, String vehicleType, String seatsNumber) throws IOException {
+        Queue <String> keys = new LinkedList <>();
+        Queue <String> values = new LinkedList <>();
         keys.add("reservation");
         values.add("{reservationStartDate:" + reservationStartDate
                 + ",reservationEndDate:" + reservationEndDate
@@ -117,6 +96,8 @@ public class clientSocket extends AsyncTask <Void, Void, Boolean> {
     }
 
     public void SendOrders(String startDate, String endDate, String carType, String carSit) throws IOException {
+        Queue <String> keys = new LinkedList <>();
+        Queue <String> values = new LinkedList <>();
         keys.add("orders");
         values.add("{startDate:" + startDate + ",endDate:" + endDate + ",carType:" +
                 carType + ",carSit:" + carSit + "}");
@@ -125,37 +106,46 @@ public class clientSocket extends AsyncTask <Void, Void, Boolean> {
         protocol.flush();
     }
 
+    public void SendNewPassword(String new_password) throws IOException {
+        Queue <String> keys = new LinkedList <>();
+        Queue <String> values = new LinkedList <>();
+        keys.add("user");
+        values.add("{emailAddress:" + userName + ",password:" + new_password + "}");
+        String str = dataConverter.encodeParametersToJson(ProtocolMessage.USER_CHANGE_PASSWORD, keys, values);
+        protocol.write(str);
+        protocol.flush();
+    }
+
     public Object readFromServer() {
         try {
-            setReciveData(protocol.read());
+            reciveData = protocol.read();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(getReciveData());
-        switch (dataConverter.getProtocolMsg(getReciveData())) {
+        //System.out.println(getReciveData());
+        switch (dataConverter.getProtocolMsg(reciveData)) {
             case OK:
-                setStatus("OK");
+                status = ("OK");
                 break;
             case VEHICLE_MODEL_LIST:
                 return dataConverter.decodeFromJsonToObj(ProtocolMessage.VEHICLE_MODEL_LIST, reciveData);
             //break;
             case WRONG_CREDENTIAL:
-                setStatus((String) dataConverter.decodeFromJsonToObj(ProtocolMessage.WRONG_CREDENTIAL, getReciveData()));
+                status = ((String) dataConverter.decodeFromJsonToObj(ProtocolMessage.WRONG_CREDENTIAL, reciveData));
                 setServerMSG(ProtocolMessage.WRONG_CREDENTIAL.toString());
                 break;
             case TOO_MANY_AUTHENTICATION_RETRIES:
-                setStatus((String) dataConverter.decodeFromJsonToObj(ProtocolMessage.TOO_MANY_AUTHENTICATION_RETRIES, getReciveData()));
+                status = ((String) dataConverter.decodeFromJsonToObj(ProtocolMessage.TOO_MANY_AUTHENTICATION_RETRIES, reciveData));
                 break;
             case ERROR:
 
             default:
-                //System.out.println("not");
                 break;
         }
         return null;// msg;
     }
 
-    public boolean isConncet() {
+    private boolean isConncet() {
         return socket.isConnected();
     }
 
@@ -174,7 +164,7 @@ public class clientSocket extends AsyncTask <Void, Void, Boolean> {
     protected Boolean doInBackground(Void... voids) {
         try {
             if (socket == null) {
-                socket = new Socket(getIp(), getPort());
+                socket = new Socket(ip, port);
                 protocol = new Protocol(socket.getInputStream(), socket.getOutputStream());
             } else if (isConncet()) {
                 return true;

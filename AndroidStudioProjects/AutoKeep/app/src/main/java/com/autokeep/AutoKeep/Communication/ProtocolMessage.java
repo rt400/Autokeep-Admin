@@ -34,7 +34,7 @@ public enum ProtocolMessage {
                 break;
 
             case TOO_MANY_AUTHENTICATION_RETRIES:
-
+                messageString = "To many login request retries !";
                 break;
 
             case NO_AVAILABLE_VEHICLES:
