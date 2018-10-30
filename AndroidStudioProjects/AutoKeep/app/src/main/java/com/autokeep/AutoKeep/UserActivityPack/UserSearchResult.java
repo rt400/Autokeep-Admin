@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Toast;
 
 import com.autokeep.AutoKeep.Communication.clientSocket;
 import com.autokeep.AutoKeep.R;
@@ -62,8 +63,11 @@ public class UserSearchResult extends AppCompatActivity {
     }
 
     private void loadCarsData() {
-
         Queue <VehicleModel> list = (Queue <VehicleModel>) clientSocket.getInstance().readFromServer();
+        if (list == null) {
+            Toast.makeText(getBaseContext(), "Error , please try again later", Toast.LENGTH_LONG).show();
+            finish();
+        }
         while (!list.isEmpty()) {
             carsList.add(list.poll());
         }

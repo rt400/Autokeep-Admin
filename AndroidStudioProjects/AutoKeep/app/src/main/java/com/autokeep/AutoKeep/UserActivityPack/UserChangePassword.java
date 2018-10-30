@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.autokeep.AutoKeep.Communication.clientSocket;
 import com.autokeep.AutoKeep.R;
@@ -51,9 +52,13 @@ public class UserChangePassword extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
-
+                if (clientSocket.getStatusData().equals("OK")) {
+                    Toast.makeText(getBaseContext(), "Password changed successfully", Toast.LENGTH_LONG).show();
+                    finish();
+                } else {
+                    Toast.makeText(getBaseContext(), clientSocket.getServerMSG(), Toast.LENGTH_LONG).show();
+                }
             }
-
         });
 
     }

@@ -30,7 +30,7 @@ import butterknife.ButterKnife;
 
 public class UserNewOrders extends AppCompatActivity {
     private static final String TAG = "UserNewOrders";
-    public String start_Date, end_Date;
+    public String start_Date, end_Date, car_type, sit_car;
     @BindView(R.id._start_date)
     TextView startDate;
     @BindView(R.id._end_date)
@@ -178,7 +178,8 @@ public class UserNewOrders extends AppCompatActivity {
                                 public void run() {
                                     try {
                                         clientSocket.getInstance().SendSearch(start_Date, end_Date
-                                                , carType.getSelectedItem().toString(), carSit.getSelectedItem().toString());
+                                                , car_type, sit_car);
+
                                         Intent intent = new Intent(getApplicationContext(), UserSearchResult.class);
                                         startActivity(intent);
                                         //finish();
@@ -201,13 +202,16 @@ public class UserNewOrders extends AppCompatActivity {
         } else if (endDate.getText().toString().equals("End Date")) {
             Toast.makeText(getBaseContext(), "End date not set ! \nPlease fix it", Toast.LENGTH_LONG).show();
             return false;
-        } else if (carType.getSelectedItem() == null) {
-            Toast.makeText(getBaseContext(), "Car type not selected ! \nPlease fix it", Toast.LENGTH_LONG).show();
-            return false;
-        } else if (carSit.getSelectedItem() == null) {
-            Toast.makeText(getBaseContext(), "Sit car not selected ! \nPlease fix it", Toast.LENGTH_LONG).show();
-            return false;
-
+        }
+        if (carType.getSelectedItem() == null) {
+            car_type = "\"\"";
+        } else {
+            car_type = carType.getSelectedItem().toString();
+        }
+        if (carSit.getSelectedItem() == null) {
+            sit_car = "\"\"";
+        } else {
+            sit_car = carSit.getSelectedItem().toString();
         }
         return true;
     }

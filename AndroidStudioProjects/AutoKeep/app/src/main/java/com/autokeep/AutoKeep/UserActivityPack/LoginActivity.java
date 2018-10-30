@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.autokeep.AutoKeep.Communication.NetworkUtils;
 import com.autokeep.AutoKeep.Communication.clientSocket;
 import com.autokeep.AutoKeep.R;
 
@@ -36,7 +37,6 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher, Com
     private static final String KEY_REMEMBER = "remember";
     private static final String KEY_USERNAME = "username";
     private static final String KEY_PASS = "password";
-    private static String password = null;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     @BindView(R.id.input_email)
@@ -86,10 +86,14 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher, Com
 
             @Override
             public void onClick(View v) {
-
-                if (validate()) {
-                    login();
+                if (NetworkUtils.isNetworkConnected(v.getContext())) {
+                    if (validate()) {
+                        login();
+                    }
+                } else {
+                    Toast.makeText(getBaseContext(), "No Internet connection found ...\n\nPlease check your conncetion.", Toast.LENGTH_LONG).show();
                 }
+
             }
         });
     }
@@ -108,14 +112,12 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher, Com
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
-                        boolean run = false;
                         if (clientSocket.getInstance().connection()) {
                             try {
                                 clientSocket.getInstance().SendLogin(_emailText.getText().toString(), _passwordText.getText().toString());
                             } catch (IOException e) {
                                 onLoginFailed();
                             }
-                            clientSocket.getInstance().readFromServer();
                             if (clientSocket.getStatusData().equals("OK")) {
                                 onLoginSuccess();
                             } else {
@@ -125,6 +127,7 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher, Com
                         progressDialog.dismiss();
                     }
                 }, 3000);
+        _loginButton.setEnabled(true);
     }
 
     @Override

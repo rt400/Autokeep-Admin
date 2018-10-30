@@ -17,10 +17,14 @@ public class clientSocket extends AsyncTask <Void, Void, Boolean> {
     private static String userName;
     private static String password;
     private static Socket socket;
-    private static int port = 40500;
+    private static int port = 40501;
     private static String ip = "shahak18.ddns.net";
     private CommunicationInterpreter dataConverter = new CommunicationInterpreter();
     private Protocol protocol;
+
+    public static clientSocket getClient() {
+        return client;
+    }
 
     public static String getPassword() {
         return password;
@@ -79,6 +83,7 @@ public class clientSocket extends AsyncTask <Void, Void, Boolean> {
         String str = dataConverter.encodeParametersToJson(ProtocolMessage.LOGIN, keys, values);
         protocol.write(str);
         protocol.flush();
+        readFromServer();
     }
 
     public void SendSearch(String reservationStartDate, String reservationEndDate, String vehicleType, String seatsNumber) throws IOException {
@@ -88,22 +93,33 @@ public class clientSocket extends AsyncTask <Void, Void, Boolean> {
         values.add("{reservationStartDate:" + reservationStartDate
                 + ",reservationEndDate:" + reservationEndDate
                 + ",vehicle:{vehicleType:" + vehicleType + ",seatsNumber:" + seatsNumber + "}}");
-        System.out.println(reservationStartDate);
         String str = dataConverter.encodeParametersToJson(ProtocolMessage.SEARCH_VEHICLE, keys, values);
+        System.out.println(str);
         protocol.write(str);
         protocol.flush();
-
+        //readFromServer();
     }
 
-    public void SendOrders(String startDate, String endDate, String carType, String carSit) throws IOException {
+    public void SendNewOrder(String plateNumber) throws IOException {
+        Queue <String> keys = new LinkedList <>();
+        Queue <String> values = new LinkedList <>();
+        keys.add("reservation");
+        values.add("{vehicle:{plateNumber:" + plateNumber + "}}");
+        String str = dataConverter.encodeParametersToJson(ProtocolMessage.NEW_ORDER, keys, values);
+        protocol.write(str);
+        protocol.flush();
+        readFromServer();
+    }
+
+    public void SendOrders() throws IOException {
         Queue <String> keys = new LinkedList <>();
         Queue <String> values = new LinkedList <>();
         keys.add("orders");
-        values.add("{startDate:" + startDate + ",endDate:" + endDate + ",carType:" +
-                carType + ",carSit:" + carSit + "}");
-        String str = dataConverter.encodeParametersToJson(ProtocolMessage.SEARCH_VEHICLE, keys, values);
+        values.add("{}");
+        String str = dataConverter.encodeParametersToJson(ProtocolMessage.VIEW_ORDERS, keys, values);
         protocol.write(str);
         protocol.flush();
+        readFromServer();
     }
 
     public void SendNewPassword(String new_password) throws IOException {
@@ -114,6 +130,7 @@ public class clientSocket extends AsyncTask <Void, Void, Boolean> {
         String str = dataConverter.encodeParametersToJson(ProtocolMessage.USER_CHANGE_PASSWORD, keys, values);
         protocol.write(str);
         protocol.flush();
+        readFromServer();
     }
 
     public Object readFromServer() {
@@ -130,15 +147,30 @@ public class clientSocket extends AsyncTask <Void, Void, Boolean> {
             case VEHICLE_MODEL_LIST:
                 return dataConverter.decodeFromJsonToObj(ProtocolMessage.VEHICLE_MODEL_LIST, reciveData);
             //break;
+            case NO_AVAILABLE_VEHICLES:
+                status = "ERROR";
+                serverMSG = ((String) dataConverter.decodeFromJsonToObj(ProtocolMessage.NO_AVAILABLE_VEHICLES, reciveData));
+                break;
             case WRONG_CREDENTIAL:
-                status = ((String) dataConverter.decodeFromJsonToObj(ProtocolMessage.WRONG_CREDENTIAL, reciveData));
-                setServerMSG(ProtocolMessage.WRONG_CREDENTIAL.toString());
+                status = "ERROR";
+                serverMSG = ((String) dataConverter.decodeFromJsonToObj(ProtocolMessage.WRONG_CREDENTIAL, reciveData));
                 break;
             case TOO_MANY_AUTHENTICATION_RETRIES:
-                status = ((String) dataConverter.decodeFromJsonToObj(ProtocolMessage.TOO_MANY_AUTHENTICATION_RETRIES, reciveData));
+                status = "ERROR";
+                serverMSG = ((String) dataConverter.decodeFromJsonToObj(ProtocolMessage.TOO_MANY_AUTHENTICATION_RETRIES, reciveData));
+                break;
+            case USER_IS_BANNED:
+                status = "ERROR";
+                serverMSG = ((String) dataConverter.decodeFromJsonToObj(ProtocolMessage.USER_IS_BANNED, reciveData));
+                break;
+            case PASSWORD_CHANGED_SUCCESSFULLY:
+                status = "OK";
+                serverMSG = ((String) dataConverter.decodeFromJsonToObj(ProtocolMessage.PASSWORD_CHANGED_SUCCESSFULLY, reciveData));
                 break;
             case ERROR:
-
+                status = "ERROR";
+                serverMSG = ((String) dataConverter.decodeFromJsonToObj(ProtocolMessage.NO_AVAILABLE_VEHICLES, reciveData));
+                break;
             default:
                 break;
         }

@@ -49,6 +49,11 @@ public class UserMenu extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_menu);
+        if (clientSocket.getUserName() == null) {
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
         sharedPreferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
         ButterKnife.bind(this);
