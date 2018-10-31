@@ -57,6 +57,7 @@ public class UserChangePassword extends AppCompatActivity {
                     finish();
                 } else {
                     Toast.makeText(getBaseContext(), clientSocket.getServerMSG(), Toast.LENGTH_LONG).show();
+                    finish();
                 }
             }
         });

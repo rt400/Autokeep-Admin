@@ -98,4 +98,8 @@ public class UserModel {
     public boolean isAdministrator() {
         return IsAdministrator;
     }
+
+    public String getFullName() {
+        return getFirstName() + " " + getLastName();
+    }
 }

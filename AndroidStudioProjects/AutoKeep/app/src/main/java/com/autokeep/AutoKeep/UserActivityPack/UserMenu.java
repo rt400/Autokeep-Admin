@@ -49,7 +49,7 @@ public class UserMenu extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_menu);
-        if (clientSocket.getUserName() == null) {
+        if (clientSocket.getUser() == null) {
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(intent);
             finish();
@@ -57,7 +57,7 @@ public class UserMenu extends AppCompatActivity {
         sharedPreferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
         ButterKnife.bind(this);
-        welcome_msg.setText("Yor are connect as : " + clientSocket.getUserName());
+        welcome_msg.setText("Yor are connect as : " + clientSocket.getUser().getFullName());
         new_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -14,6 +14,7 @@ import com.autokeep.AutoKeep.Communication.clientSocket;
 import com.autokeep.AutoKeep.R;
 import com.autokeep.AutoKeep.UserMode.VehicleModel;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
@@ -29,7 +30,10 @@ public class UserSearchResult extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_search_result);
-        //getting the recyclerview from xml 
+        final String start_Date = getIntent().getStringExtra("StartDate");
+        final String end_Date = getIntent().getStringExtra("EndDate");
+
+        //getting the recyclerview from xml
         recyclerView = findViewById(R.id.recylcerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -47,9 +51,19 @@ public class UserSearchResult extends AppCompatActivity {
                 });
                 builder.setNegativeButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Intent intent = new Intent(getApplicationContext(), UserMenu.class);
-                        startActivity(intent);
-                        finish();
+                        try {
+                            clientSocket.getInstance().SendNewOrder(selectedCar.getPlateNumber(), start_Date, end_Date);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        if (clientSocket.getStatusData().equals("OK")) {
+                            Toast.makeText(getBaseContext(), clientSocket.getServerMSG(), Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(getApplicationContext(), UserMenu.class);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            Toast.makeText(getBaseContext(), clientSocket.getServerMSG(), Toast.LENGTH_LONG).show();
+                        }
                     }
                 });
                 builder.show();
@@ -63,7 +77,7 @@ public class UserSearchResult extends AppCompatActivity {
     }
 
     private void loadCarsData() {
-        Queue <VehicleModel> list = (Queue <VehicleModel>) clientSocket.getInstance().readFromServer();
+        Queue <VehicleModel> list = clientSocket.getCarList();
         if (list == null) {
             Toast.makeText(getBaseContext(), "Error , please try again later", Toast.LENGTH_LONG).show();
             finish();

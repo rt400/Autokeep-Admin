@@ -85,10 +85,25 @@ public class UserNewOrders extends AppCompatActivity {
         mDateSetListener_Start = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker_start, int year, int month, int day) {
+                Date sDate = new java.util.Date(), now = new java.util.Date();
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
                 month = month + 1;
                 Log.d(TAG, "onDateSet: mm/dd/yyy: " + month + "/" + day + "/" + year);
                 start_Date = year + "-" + month + "-" + day;
-                startDate.setText(day + "/" + month + "/" + year);
+                startDate.setError(null);
+                if (!startDate.getText().toString().equals("Start Date")) {
+                    try {
+                        sDate = sdf.parse(startDate.getText().toString());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (now.after(sDate)) {
+                    startDate.setError("");
+                    startDate.setText("Date can not be in the past !! ");
+                } else {
+                    startDate.setText(day + "/" + month + "/" + year);
+                }
             }
         };
         mDateSetListener_End = new DatePickerDialog.OnDateSetListener() {
@@ -100,7 +115,7 @@ public class UserNewOrders extends AppCompatActivity {
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
                 end_Date = year + "-" + month + "-" + day;
                 endDate.setError(null);
-                if (!startDate.getText().toString().equals("Start Date")) {
+                if (!endDate.getText().toString().equals("End Date")) {
                     try {
                         sDate = sdf.parse(startDate.getText().toString());
                         eDate = sdf.parse(day + "/" + month + "/" + year);
@@ -111,9 +126,6 @@ public class UserNewOrders extends AppCompatActivity {
                 if (sDate.after(eDate)) {
                     endDate.setError("");
                     endDate.setText("Date can not be early !! ");
-                } else if (sDate.equals(eDate)) {
-                    endDate.setError("");
-                    endDate.setText("Date cannot be the same !!");
                 } else {
                     endDate.setText(day + "/" + month + "/" + year);
                 }
@@ -179,9 +191,14 @@ public class UserNewOrders extends AppCompatActivity {
                                     try {
                                         clientSocket.getInstance().SendSearch(start_Date, end_Date
                                                 , car_type, sit_car);
-
-                                        Intent intent = new Intent(getApplicationContext(), UserSearchResult.class);
-                                        startActivity(intent);
+                                        if (clientSocket.getStatusData().equals("OK")) {
+                                            Intent intent = new Intent(getApplicationContext(), UserSearchResult.class);
+                                            intent.putExtra("StartDate", start_Date);
+                                            intent.putExtra("EndDate", end_Date);
+                                            startActivity(intent);
+                                        } else {
+                                            Toast.makeText(getBaseContext(), clientSocket.getServerMSG(), Toast.LENGTH_LONG).show();
+                                        }
                                         //finish();
                                     } catch (IOException e) {
                                         e.printStackTrace();
@@ -209,7 +226,7 @@ public class UserNewOrders extends AppCompatActivity {
             car_type = carType.getSelectedItem().toString();
         }
         if (carSit.getSelectedItem() == null) {
-            sit_car = "\"\"";
+            sit_car = "-1";
         } else {
             sit_car = carSit.getSelectedItem().toString();
         }
