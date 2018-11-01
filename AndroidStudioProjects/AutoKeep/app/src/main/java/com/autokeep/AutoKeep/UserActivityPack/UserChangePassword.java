@@ -74,7 +74,7 @@ public class UserChangePassword extends AppCompatActivity {
     }
 
     private boolean checkOldPassword() {
-        if (old_Password.equals(clientSocket.getPassword())) {
+        if (old_Password.equals(clientSocket.getUser().getPassword())) {
             oldPassword.setError(null);
             return true;
         }

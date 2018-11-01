@@ -2,6 +2,7 @@ package com.autokeep.AutoKeep.Communication;
 
 import android.os.AsyncTask;
 
+import com.autokeep.AutoKeep.UserMode.ReservationModel;
 import com.autokeep.AutoKeep.UserMode.UserModel;
 import com.autokeep.AutoKeep.UserMode.VehicleModel;
 
@@ -16,9 +17,9 @@ public class clientSocket extends AsyncTask <Void, Void, Boolean> {
     private static String status;
     private static String serverMSG;
     private static Socket socket;
-    private static int port = 40500;
-    private static String ip = "shahak18.ddns.net";
     private static Queue <VehicleModel> carList;
+
+    private static Queue <ReservationModel> reservationList;
     private CommunicationInterpreter dataConverter = new CommunicationInterpreter();
     private Protocol protocol;
     private static UserModel user;
@@ -41,6 +42,10 @@ public class clientSocket extends AsyncTask <Void, Void, Boolean> {
 
     public static UserModel getUser() {
         return user;
+    }
+
+    public static Queue <ReservationModel> getReservationList() {
+        return reservationList;
     }
 
     public boolean connection() {
@@ -86,11 +91,7 @@ public class clientSocket extends AsyncTask <Void, Void, Boolean> {
     }
 
     public void SendOrders() throws IOException {
-        Queue <String> keys = new LinkedList <>();
-        Queue <String> values = new LinkedList <>();
-        keys.add("orders");
-        values.add("{}");
-        String str = dataConverter.encodeParametersToJson(ProtocolMessage.VIEW_ORDERS, keys, values);
+        String str = dataConverter.setProtocolMsg(ProtocolMessage.RESERVATION_HISTORY);
         protocol.write(str);
         protocol.flush();
         readFromServer();
@@ -106,6 +107,7 @@ public class clientSocket extends AsyncTask <Void, Void, Boolean> {
         protocol.flush();
         readFromServer();
     }
+
 
     public Object readFromServer() {
         try {
@@ -147,6 +149,14 @@ public class clientSocket extends AsyncTask <Void, Void, Boolean> {
                 status = "ERROR";
                 serverMSG = ((String) dataConverter.decodeFromJsonToObj(ProtocolMessage.ORDER_FAILED, reciveData));
                 break;
+            case HISTORY_RESULT:
+                status = "OK";
+                reservationList = (Queue <ReservationModel>) dataConverter.decodeFromJsonToObj(ProtocolMessage.RESERVATION_MODEL_LIST, reciveData);
+                break;
+            case NO_HISTORY:
+                status = "ERROR";
+                serverMSG = ((String) dataConverter.decodeFromJsonToObj(ProtocolMessage.NO_HISTORY, reciveData));
+                break;
             case PASSWORD_CHANGED_SUCCESSFULLY:
                 status = "OK";
                 serverMSG = ((String) dataConverter.decodeFromJsonToObj(ProtocolMessage.PASSWORD_CHANGED_SUCCESSFULLY, reciveData));
@@ -184,7 +194,7 @@ public class clientSocket extends AsyncTask <Void, Void, Boolean> {
     protected Boolean doInBackground(Void... voids) {
         try {
             if (socket == null) {
-                socket = new Socket(ip, port);
+                socket = new Socket("shahak18.ddns.net", 40500);
                 protocol = new Protocol(socket.getInputStream(), socket.getOutputStream());
             } else if (isConncet()) {
                 return true;

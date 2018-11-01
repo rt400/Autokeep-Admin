@@ -20,6 +20,9 @@ public enum ProtocolMessage {
     USER_MODEL_LIST,
     RESERVATION_MODEL_LIST,
     VEHICLE_MODEL_LIST,
+    RESERVATION_HISTORY,
+    NO_HISTORY,
+    HISTORY_RESULT,
     //Error Messages - Except ERROR all other error used for messages only
     ERROR,
     TOO_MANY_AUTHENTICATION_RETRIES,

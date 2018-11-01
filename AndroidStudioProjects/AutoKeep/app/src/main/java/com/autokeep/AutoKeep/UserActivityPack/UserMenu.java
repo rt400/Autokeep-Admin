@@ -13,10 +13,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.autokeep.AutoKeep.Communication.ProtocolMessage;
 import com.autokeep.AutoKeep.Communication.clientSocket;
 import com.autokeep.AutoKeep.R;
+
+import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -68,8 +71,19 @@ public class UserMenu extends AppCompatActivity {
         orders.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), OrderResult.class);
-                startActivity(intent);
+                try {
+                    clientSocket.getInstance().SendOrders();
+                    if (clientSocket.getStatusData().equals("OK")) {
+                        Intent intent = new Intent(getApplicationContext(), OrderResult.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(getBaseContext(), clientSocket.getServerMSG(), Toast.LENGTH_LONG).show();
+                        finish();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
             }
         });
         change_password.setOnClickListener(new View.OnClickListener() {

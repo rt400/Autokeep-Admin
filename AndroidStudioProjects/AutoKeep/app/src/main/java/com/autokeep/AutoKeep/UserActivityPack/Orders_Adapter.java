@@ -9,40 +9,43 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.autokeep.AutoKeep.R;
-import com.autokeep.AutoKeep.UserMode.VehicleModel;
+import com.autokeep.AutoKeep.UserMode.ReservationModel;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
-public class Orders_Adapter extends RecyclerView.Adapter <Orders_Adapter.CarsViewHolder> {
+public class Orders_Adapter extends RecyclerView.Adapter <Orders_Adapter.OrdersViewHolder> {
 
     private Context mCtx;
-    private List <VehicleModel> calLists;
+    private List <ReservationModel> ordersList;
     private int selectedPos = RecyclerView.NO_POSITION;
 
-    public Orders_Adapter(Context mCtx, List <VehicleModel> calLists) {
+    public Orders_Adapter(Context mCtx, List <ReservationModel> list) {
         this.mCtx = mCtx;
-        this.calLists = calLists;
+        this.ordersList = list;
     }
 
     @Override
-    public CarsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public OrdersViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(mCtx);
-        View view = inflater.inflate(R.layout.carlists, null);
-        return new CarsViewHolder(view);
+        View view = inflater.inflate(R.layout.orderlists, null);
+        return new OrdersViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final CarsViewHolder holder, final int position) {
-        VehicleModel car = calLists.get(position);
+    public void onBindViewHolder(final OrdersViewHolder holder, final int position) {
+        ReservationModel order = ordersList.get(position);
         holder.itemView.setSelected(selectedPos == position);
+        System.out.println(order.getVehicle().getVehicleFullName());
+        System.out.println(order.getOrderShortdesc());
+        System.out.println(order.getVehicle().getPlateNumber());
         //loading the image
-        //Glide.with(mCtx)
-        //      .load(car.getImage())
-        //    .into(holder.imageView);
-        //holder.textViewName.setText(car.getManufacturer());
-        //holder.textViewShortDesc.setText(car.getShortdesc());
-        //holder.textViewYear.setText(String.valueOf(car.getManufactureDate()));
-        // holder.textViewID.setText(String.valueOf(car.getCarID()));
+        Glide.with(mCtx)
+                .load(order.getVehicle().getVehicleImage())
+                .into(holder.imageView);
+        holder.orderCarName.setText(order.getVehicle().getVehicleFullName());
+        holder.orderShortDesc.setText(order.getOrderShortdesc());
+        holder.orderCarID.setText(order.orderIsActive());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,27 +58,25 @@ public class Orders_Adapter extends RecyclerView.Adapter <Orders_Adapter.CarsVie
 
     }
 
-
+    public ReservationModel getOrderSelected(int position) {
+        return ordersList.get(position);
+    }
     @Override
     public int getItemCount() {
-        return calLists.size();
+        return ordersList.size();
     }
 
-    public void getSelectedCarID(int postion) {
-        calLists.get(postion);
-    }
+    class OrdersViewHolder extends RecyclerView.ViewHolder {
 
-    class CarsViewHolder extends RecyclerView.ViewHolder {
-
-        TextView textViewName, textViewShortDesc, textViewYear, textViewID;
+        TextView orderCarName, orderShortDesc, orderCarID;
         ImageView imageView;
 
-        public CarsViewHolder(View itemView) {
+        public OrdersViewHolder(View itemView) {
             super(itemView);
 
-            textViewName = itemView.findViewById(R.id.textViewCarName);
-            textViewShortDesc = itemView.findViewById(R.id.textViewShortDesc);
-            textViewYear = itemView.findViewById(R.id.textViewID);
+            orderCarName = itemView.findViewById(R.id.OrderCarName);
+            orderShortDesc = itemView.findViewById(R.id.OrderShortDesc);
+            orderCarID = itemView.findViewById(R.id.OrderCarID);
             imageView = itemView.findViewById(R.id.imageView);
         }
     }

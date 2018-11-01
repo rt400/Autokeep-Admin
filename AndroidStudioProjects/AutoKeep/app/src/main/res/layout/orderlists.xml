@@ -24,7 +24,7 @@
             android:padding="4dp" />
 
         <TextView
-            android:id="@+id/textViewCarName"
+            android:id="@+id/OrderCarName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
@@ -33,21 +33,20 @@
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
 
         <TextView
-            android:id="@+id/textViewShortDesc"
+            android:id="@+id/OrderShortDesc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/textViewCarName"
+            android:layout_below="@id/OrderCarName"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="5dp"
             android:layout_toRightOf="@id/imageView"
-            android:text="5 Sit"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
 
         <TextView
-            android:id="@+id/textViewID"
+            android:id="@+id/OrderCarID"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/textViewShortDesc"
+            android:layout_below="@id/OrderShortDesc"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="5dp"
             android:layout_toRightOf="@id/imageView"
