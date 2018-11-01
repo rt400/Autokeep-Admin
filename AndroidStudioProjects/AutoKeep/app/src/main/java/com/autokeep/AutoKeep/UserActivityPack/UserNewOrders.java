@@ -136,7 +136,7 @@ public class UserNewOrders extends AppCompatActivity {
         ArrayAdapter <String> carTypeAdaptor = new ArrayAdapter <>(UserNewOrders.this,
                 android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.cartype));
         carTypeAdaptor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        carType.setPrompt("Select Car Type :");
+        carType.setPrompt("Select A Car Category:");
         carType.setAdapter(carTypeAdaptor);
         carType.setAdapter(
                 new NothingSelectedSpinnerAdapter(
@@ -156,7 +156,7 @@ public class UserNewOrders extends AppCompatActivity {
         ArrayAdapter <String> carSitAdaptor = new ArrayAdapter <String>(UserNewOrders.this,
                 android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.carsit));
         carSitAdaptor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        carSit.setPrompt("Select How Many Car Sits :");
+        carSit.setPrompt("Select Number Of Seats:");
         carSit.setAdapter(carSitAdaptor);
         carSit.setAdapter(
                 new NothingSelectedSpinnerAdapter(
@@ -214,10 +214,10 @@ public class UserNewOrders extends AppCompatActivity {
 
     public boolean checkValidate() {
         if (startDate.getText().toString().equals("Start Date")) {
-            Toast.makeText(getBaseContext(), "Start date not set ! \nPlease fix it", Toast.LENGTH_LONG).show();
+            Toast.makeText(getBaseContext(), "Start Date is not set Please Fill The Date", Toast.LENGTH_LONG).show();
             return false;
         } else if (endDate.getText().toString().equals("End Date")) {
-            Toast.makeText(getBaseContext(), "End date not set ! \nPlease fix it", Toast.LENGTH_LONG).show();
+            Toast.makeText(getBaseContext(), "Start Date is not set Please Fill The Date", Toast.LENGTH_LONG).show();
             return false;
         }
         if (carType.getSelectedItem() == null) {

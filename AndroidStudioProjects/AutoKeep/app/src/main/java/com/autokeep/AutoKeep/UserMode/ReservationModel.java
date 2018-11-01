@@ -24,6 +24,15 @@ public class ReservationModel {
         this.reservationEndDate = reservationEndDate;
     }
 
+    private static String modifyDateLayout(String inputDate) throws ParseException {
+        if (inputDate.length() == 10) {
+            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(inputDate);
+            return new SimpleDateFormat("dd/MM/yyyy").format(date);
+        }
+        Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(inputDate);
+        return new SimpleDateFormat("dd/MM/yyyy HH:mm").format(date);
+    }
+
     public int getReservationID() {
         return reservationID;
     }
@@ -48,15 +57,6 @@ public class ReservationModel {
         this.vehicle = vehicle;
     }
 
-    private static String modifyDateLayout(String inputDate) throws ParseException {
-        if (inputDate.length() == 10) {
-            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(inputDate);
-            return new SimpleDateFormat("dd/MM/yyyy").format(date);
-        }
-        Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(inputDate);
-        return new SimpleDateFormat("dd/MM/yyyy HH:mm").format(date);
-    }
-
     public String getReservationDate() {
         try {
             return modifyDateLayout(reservationDate);
@@ -74,10 +74,6 @@ public class ReservationModel {
         return "None";
     }
 
-    public void setReservationStartDate(String reservationStartDate) {
-        this.reservationStartDate = reservationStartDate;
-    }
-
     public String getReservationStartDate() {
         try {
             return modifyDateLayout(reservationStartDate);
@@ -85,6 +81,10 @@ public class ReservationModel {
             e.printStackTrace();
         }
         return reservationStartDate;
+    }
+
+    public void setReservationStartDate(String reservationStartDate) {
+        this.reservationStartDate = reservationStartDate;
     }
 
     public String getReservationEndDate() {

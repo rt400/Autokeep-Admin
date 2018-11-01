@@ -20,9 +20,9 @@ public class clientSocket extends AsyncTask <Void, Void, Boolean> {
     private static Queue <VehicleModel> carList;
 
     private static Queue <ReservationModel> reservationList;
+    private static UserModel user;
     private CommunicationInterpreter dataConverter = new CommunicationInterpreter();
     private Protocol protocol;
-    private static UserModel user;
 
     public static Queue <VehicleModel> getCarList() {
         return carList;
@@ -101,8 +101,9 @@ public class clientSocket extends AsyncTask <Void, Void, Boolean> {
         Queue <String> keys = new LinkedList <>();
         Queue <String> values = new LinkedList <>();
         keys.add("user");
-        values.add("{emailAddress:" + user.getUserName() + ",password:" + new_password + "}");
+        values.add("{emailAddress:" + user.getEmailAddress() + ",password:" + new_password + "}");
         String str = dataConverter.encodeParametersToJson(ProtocolMessage.USER_CHANGE_PASSWORD, keys, values);
+        System.out.println(str);
         protocol.write(str);
         protocol.flush();
         readFromServer();

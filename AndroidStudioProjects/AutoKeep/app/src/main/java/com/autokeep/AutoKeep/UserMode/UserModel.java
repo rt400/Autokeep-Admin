@@ -2,21 +2,17 @@ package com.autokeep.AutoKeep.UserMode;
 
 public class UserModel {
 
-    private int userID;
-    private String userName;
+    private String emailAddress;
     private String password;
-    private String dateOfBirth;//1989-12-27
+    private String dateOfBirth;
     private String firstName;
     private String lastName;
-    private String emailAddress;
     private String phoneNumber;
     private boolean IsAdministrator = false;
 
-    public UserModel(int userID, String userName, String password, String dateOfBirth, String firstName, String lastName,
-                     String emailAddress, String phoneNumber, boolean IsAdministrator) {
+    public UserModel(String emailAddress, String password, String dateOfBirth, String firstName, String lastName,
+                     String phoneNumber, boolean IsAdministrator) {
         super();
-        this.userID = userID;
-        this.userName = userName;
         this.password = password;
         this.dateOfBirth = dateOfBirth;
         this.firstName = firstName;
@@ -24,27 +20,6 @@ public class UserModel {
         this.emailAddress = emailAddress;
         this.phoneNumber = phoneNumber;
         this.IsAdministrator = IsAdministrator;
-    }
-
-    public UserModel(String userName, String password, String dateOfBirth, String firstName, String lastName,
-                     String emailAddress, String phoneNumber, boolean IsAdministrator) {
-        super();
-        this.userName = userName;
-        this.password = password;
-        this.dateOfBirth = dateOfBirth;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.emailAddress = emailAddress;
-        this.phoneNumber = phoneNumber;
-        this.IsAdministrator = IsAdministrator;
-    }
-
-    public int getUserID() {
-        return userID;
-    }
-
-    public String getUserName() {
-        return userName;
     }
 
     public String getPassword() {

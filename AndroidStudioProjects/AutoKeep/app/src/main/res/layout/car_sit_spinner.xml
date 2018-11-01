@@ -6,6 +6,6 @@
     android:layout_height="wrap_content"
     android:ellipsize="marquee"
     android:singleLine="true"
-    android:text="[Select How Many Car Sits ...]"
+    android:text="[Select Number Of Seats...]"
     android:textColor="#808080"
     android:textSize="18sp" />

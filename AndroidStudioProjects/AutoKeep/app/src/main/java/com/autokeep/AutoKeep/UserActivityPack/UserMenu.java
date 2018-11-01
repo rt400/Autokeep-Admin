@@ -78,7 +78,6 @@ public class UserMenu extends AppCompatActivity {
                         startActivity(intent);
                     } else {
                         Toast.makeText(getBaseContext(), clientSocket.getServerMSG(), Toast.LENGTH_LONG).show();
-                        finish();
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -98,7 +97,7 @@ public class UserMenu extends AppCompatActivity {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
                 builder.setTitle("You are still connected..");
-                builder.setMessage("Do you want to logoff and return to login page? \n\n All login data will be erase...");
+                builder.setMessage("Do you want to logoff and return to login page? \n\n All Login Data Will be erased...");
                 builder.setPositiveButton("No", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                     }

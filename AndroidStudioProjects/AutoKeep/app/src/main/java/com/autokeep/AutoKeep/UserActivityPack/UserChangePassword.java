@@ -48,18 +48,19 @@ public class UserChangePassword extends AppCompatActivity {
                 if (Validate()) {
                     try {
                         clientSocket.getInstance().SendNewPassword(new_Password);
+                        if (clientSocket.getStatusData().equals("OK")) {
+                            Toast.makeText(getBaseContext(), "Password changed successfully", Toast.LENGTH_LONG).show();
+                            clientSocket.getUser().setPassword(new_Password);
+                            finish();
+                        } else {
+                            Toast.makeText(getBaseContext(), clientSocket.getServerMSG(), Toast.LENGTH_LONG).show();
+                            finish();
+                        }
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
-                if (clientSocket.getStatusData().equals("OK")) {
-                    Toast.makeText(getBaseContext(), "Password changed successfully", Toast.LENGTH_LONG).show();
-                    clientSocket.getUser().setPassword(new_Password);
-                    finish();
-                } else {
-                    Toast.makeText(getBaseContext(), clientSocket.getServerMSG(), Toast.LENGTH_LONG).show();
-                    finish();
-                }
+
             }
         });
 

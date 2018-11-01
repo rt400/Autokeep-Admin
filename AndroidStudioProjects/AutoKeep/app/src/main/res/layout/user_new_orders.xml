@@ -36,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="26dp"
-            android:text="Please select start and end date for keep" />
+            android:text="Please select reservation dates:" />
 
         <EditText
             android:id="@+id/_start_date"
@@ -95,7 +95,7 @@
         <TextView
             android:id="@+id/textView6"
             android:layout_width="match_parent"
-            android:layout_height="48dp" />
+            android:layout_height="28dp" />
 
         <Button
             android:id="@+id/_search"

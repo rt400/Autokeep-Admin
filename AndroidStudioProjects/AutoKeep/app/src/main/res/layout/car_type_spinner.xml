@@ -6,6 +6,6 @@
     android:layout_height="wrap_content"
     android:ellipsize="marquee"
     android:singleLine="true"
-    android:text="[Select Car Type...]"
+    android:text="[Select A Car Category...]"
     android:textColor="#808080"
     android:textSize="18sp" />

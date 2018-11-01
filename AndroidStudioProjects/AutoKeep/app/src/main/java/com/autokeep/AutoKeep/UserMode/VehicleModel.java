@@ -118,7 +118,7 @@ public class VehicleModel {
 
     public String getCarShortdesc() {
         return "Engine: " + getEngineCapacity() + " , Seats : " + getSeatsNumber() + "\n" +
-                "Type : " + getVehicleType() + " , Km :" + getKilometers();
+                "Category : " + getVehicleType() + " , Km :" + getKilometers();
     }
 
 }

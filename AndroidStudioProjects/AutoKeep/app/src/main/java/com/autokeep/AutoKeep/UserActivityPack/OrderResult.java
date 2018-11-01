@@ -41,13 +41,13 @@ public class OrderResult extends AppCompatActivity {
                 builder.setTitle("Order No' : " + selectedOrder.getReservationID() + "\n----------------------\n");
                 builder.setMessage(
                         "Date Order : " + selectedOrder.getReservationDate() + "\n" +
-                        "Rental Start Date : " + selectedOrder.getReservationStartDate() + "\n" +
-                        "Rental End Date : " + selectedOrder.getReservationEndDate() +
+                                "Rental Start Date : " + selectedOrder.getReservationStartDate() + "\n" +
+                                "Rental End Date : " + selectedOrder.getReservationEndDate() +
                                 "\n\nOrder Status : " + selectedOrder.orderIsActive() +
-                        "\n\n" +
-                        "Vehicle Order :\n-----------------\n" + selectedOrder.getVehicle().getVehicleFullName() + "\n" +
-                        selectedOrder.getVehicle().getCarShortdesc() + "\nID : " + selectedOrder.getVehicle().getPlateNumber() +
-                        "\n\nNotes : \n--------\n" + selectedOrder.getNotes() + "\n\n----------------\n\n"
+                                "\n\n" +
+                                "Vehicle Order :\n-----------------\n" + selectedOrder.getVehicle().getVehicleFullName() + "\n" +
+                                selectedOrder.getVehicle().getCarShortdesc() + "\nID : " + selectedOrder.getVehicle().getPlateNumber() +
+                                "\n\nNotes : \n--------\n" + selectedOrder.getNotes() + "\n\n----------------\n\n"
                 );
                 builder.setPositiveButton("Return", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {

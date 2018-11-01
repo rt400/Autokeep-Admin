@@ -37,9 +37,6 @@ public class Orders_Adapter extends RecyclerView.Adapter <Orders_Adapter.OrdersV
     public void onBindViewHolder(final OrdersViewHolder holder, final int position) {
         ReservationModel order = ordersList.get(position);
         holder.itemView.setSelected(selectedPos == position);
-        System.out.println(order.getVehicle().getVehicleFullName());
-        System.out.println(order.getOrderShortdesc());
-        System.out.println(order.getVehicle().getPlateNumber());
         //loading the image
         Glide.with(mCtx)
                 .load(order.getVehicle().getVehicleImage())
@@ -69,6 +66,7 @@ public class Orders_Adapter extends RecyclerView.Adapter <Orders_Adapter.OrdersV
     public ReservationModel getOrderSelected(int position) {
         return ordersList.get(position);
     }
+
     @Override
     public int getItemCount() {
         return ordersList.size();
