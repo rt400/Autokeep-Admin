@@ -115,6 +115,8 @@ public class clientSocket extends AsyncTask <Void, Void, Boolean> {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        status = "";
+        serverMSG = "";
         System.out.println(reciveData);
         switch (dataConverter.getProtocolMsg(reciveData)) {
             case OK:

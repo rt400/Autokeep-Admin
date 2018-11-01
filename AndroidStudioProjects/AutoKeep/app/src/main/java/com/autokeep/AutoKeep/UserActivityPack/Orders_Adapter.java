@@ -1,6 +1,7 @@
 package com.autokeep.AutoKeep.UserActivityPack;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,6 +47,13 @@ public class Orders_Adapter extends RecyclerView.Adapter <Orders_Adapter.OrdersV
         holder.orderCarName.setText(order.getVehicle().getVehicleFullName());
         holder.orderShortDesc.setText(order.getOrderShortdesc());
         holder.orderCarID.setText(order.orderIsActive());
+        if (order.orderIsActive().equals("Order is Active")) {
+            holder.orderCarID.setBackgroundColor(Color.parseColor("red"));
+        } else if (order.orderIsActive().equals("Order is Waiting")) {
+            holder.orderCarID.setBackgroundColor(Color.parseColor("green"));
+        } else {
+            holder.orderCarID.setBackgroundColor(Color.parseColor("white"));
+        }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

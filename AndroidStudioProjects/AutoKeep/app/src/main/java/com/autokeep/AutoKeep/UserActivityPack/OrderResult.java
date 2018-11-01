@@ -38,12 +38,12 @@ public class OrderResult extends AppCompatActivity {
             public void onItemClick(View view, int position) {
                 selectedOrder = adapter.getOrderSelected(position);
                 AlertDialog.Builder builder = new AlertDialog.Builder(recyclerView.getContext());
-                builder.setTitle("Order No' : " + selectedOrder.getReservationID());
-                builder.setMessage("----------------------\n" +
+                builder.setTitle("Order No' : " + selectedOrder.getReservationID() + "\n----------------------\n");
+                builder.setMessage(
                         "Date Order : " + selectedOrder.getReservationDate() + "\n" +
                         "Rental Start Date : " + selectedOrder.getReservationStartDate() + "\n" +
                         "Rental End Date : " + selectedOrder.getReservationEndDate() +
-                        "\nOrder Status : " + selectedOrder.orderIsActive() +
+                                "\n\nOrder Status : " + selectedOrder.orderIsActive() +
                         "\n\n" +
                         "Vehicle Order :\n-----------------\n" + selectedOrder.getVehicle().getVehicleFullName() + "\n" +
                         selectedOrder.getVehicle().getCarShortdesc() + "\nID : " + selectedOrder.getVehicle().getPlateNumber() +

@@ -54,6 +54,7 @@ public class UserChangePassword extends AppCompatActivity {
                 }
                 if (clientSocket.getStatusData().equals("OK")) {
                     Toast.makeText(getBaseContext(), "Password changed successfully", Toast.LENGTH_LONG).show();
+                    clientSocket.getUser().setPassword(new_Password);
                     finish();
                 } else {
                     Toast.makeText(getBaseContext(), clientSocket.getServerMSG(), Toast.LENGTH_LONG).show();

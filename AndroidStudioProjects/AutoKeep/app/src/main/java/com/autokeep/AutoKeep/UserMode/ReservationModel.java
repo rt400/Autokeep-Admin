@@ -129,6 +129,6 @@ public class ReservationModel {
     }
 
     public String getOrderShortdesc() {
-        return "Order No': " + getReservationID() + "\nOrder Date : \n" + getReservationDate();
+        return "Order No': " + getReservationID() + "\n" + getReservationDate();
     }
 }
