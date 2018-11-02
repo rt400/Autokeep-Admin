@@ -198,7 +198,6 @@ public class UserNewOrders extends AppCompatActivity {
                                             startActivity(intent);
                                         } else {
                                             Toast.makeText(getBaseContext(), clientSocket.getServerMSG(), Toast.LENGTH_LONG).show();
-                                            finish();
                                         }
                                     } catch (IOException e) {
                                         e.printStackTrace();
