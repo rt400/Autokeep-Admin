@@ -132,8 +132,12 @@ public class clientSocket extends AsyncTask <Void, Void, Boolean> {
                 status = "ERROR";
                 serverMSG = ((String) dataConverter.decodeFromJsonToObj(ProtocolMessage.TOO_MANY_AUTHENTICATION_RETRIES, reciveData));
                 break;
-            case USER_IS_BANNED:
+            case USER_ALREADY_CONNECTED:
                 status = "ERROR";
+                serverMSG = ((String) dataConverter.decodeFromJsonToObj(ProtocolMessage.USER_ALREADY_CONNECTED, reciveData));
+                break;
+            case USER_IS_BANNED:
+                status = "BANNED";
                 serverMSG = ((String) dataConverter.decodeFromJsonToObj(ProtocolMessage.USER_IS_BANNED, reciveData));
                 break;
             case VEHICLE_MODEL_LIST:

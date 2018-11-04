@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.StrictMode;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -164,6 +165,20 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher, Com
         } else {
             Toast.makeText(getBaseContext(), clientSocket.getServerMSG(), Toast.LENGTH_LONG).show();
         }
+        if (clientSocket.getStatusData().equals("BANNED")) {
+            _loginButton.setEnabled(false);
+            new CountDownTimer(30000, 1000) {
+                public void onTick(long millisUntilFinished) {
+                    _msg.setText("You are BANNED !\nseconds remaining: " + millisUntilFinished / 1000);
+                }
+
+                public void onFinish() {
+                    _msg.setText("done!");
+                }
+
+            }.start();
+        }
+        _msg.setText("");
         _loginButton.setEnabled(true);
     }
 
