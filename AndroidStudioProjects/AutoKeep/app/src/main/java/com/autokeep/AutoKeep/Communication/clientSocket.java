@@ -132,7 +132,7 @@ public class clientSocket extends AsyncTask <Void, Void, Boolean> {
                 serverMSG = ((String) dataConverter.decodeFromJsonToObj(ProtocolMessage.WRONG_CREDENTIAL, reciveData));
                 break;
             case TOO_MANY_AUTHENTICATION_RETRIES:
-                status = "ERROR";
+                status = "BANNED";
                 serverMSG = ((String) dataConverter.decodeFromJsonToObj(ProtocolMessage.TOO_MANY_AUTHENTICATION_RETRIES, reciveData));
                 break;
             case USER_ALREADY_CONNECTED:

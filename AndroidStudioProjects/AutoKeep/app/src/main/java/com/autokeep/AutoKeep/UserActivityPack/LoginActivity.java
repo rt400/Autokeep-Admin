@@ -161,6 +161,7 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher, Com
     }
 
     public void onLoginFailed() {
+
         if (clientSocket.getServerMSG().equals("")) {
             Toast.makeText(getBaseContext(), "Failed to login...", Toast.LENGTH_LONG).show();
         } else {
@@ -168,19 +169,21 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher, Com
         }
         if (clientSocket.getStatusData().equals("BANNED")) {
             _loginButton.setEnabled(false);
-            new CountDownTimer(30000, 1000) {
+            clientSocket.getInstance().close();
+            new CountDownTimer(60000, 1000) {
                 public void onTick(long millisUntilFinished) {
                     _msg.setText("You are BANNED !\nseconds remaining: " + millisUntilFinished / 1000);
                 }
 
                 public void onFinish() {
+                    _loginButton.setEnabled(true);
                     _msg.setText("done!");
                 }
 
             }.start();
         }
         _msg.setText("");
-        _loginButton.setEnabled(true);
+
     }
 
     public boolean validate() {
