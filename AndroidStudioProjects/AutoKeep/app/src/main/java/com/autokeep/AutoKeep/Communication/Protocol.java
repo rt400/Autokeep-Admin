@@ -34,14 +34,8 @@ public class Protocol {
      * @throws IOException            - thrown by the socket
      * @throws ClassNotFoundException - thrown by serialization
      */
-    public String read() throws IOException {
-        String msg = null;
-        try {
-            msg = (String) in.readObject();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return msg;
+    public String read() throws IOException, ClassNotFoundException {
+        return (String) in.readObject();
     }
 
     /**

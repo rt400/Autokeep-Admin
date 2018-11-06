@@ -33,7 +33,10 @@ public class clientSocket extends AsyncTask <Void, Void, Boolean> {
     }
 
     public static String getServerMSG() {
-        return serverMSG;
+        if (serverMSG != null) {
+            return serverMSG;
+        }
+        return "";
     }
 
     public static String getStatusData() {
@@ -113,8 +116,8 @@ public class clientSocket extends AsyncTask <Void, Void, Boolean> {
     public Object readFromServer() {
         try {
             reciveData = protocol.read();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException | ClassNotFoundException e1) {
+            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         }
         status = "";
         serverMSG = "";
@@ -192,6 +195,7 @@ public class clientSocket extends AsyncTask <Void, Void, Boolean> {
             socket.close();
             socket = null;
         } catch (NullPointerException | IOException e) {
+            System.out.println("Socket close");
             return false;
         }
         return true;

@@ -117,6 +117,7 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher, Com
                             try {
                                 clientSocket.getInstance().SendLogin(_emailText.getText().toString(), _passwordText.getText().toString());
                             } catch (IOException e) {
+                                clientSocket.getInstance().close();
                                 onLoginFailed();
                             }
                             if (clientSocket.getStatusData().equals("OK")) {
