@@ -57,6 +57,9 @@ public class CommunicationInterpreter {
         try {
             switch (protocolMsg) {
                 case OK:
+                case CREATE_NEW_USER:
+                case UPDATE_USER:
+                case DELETE_USER:    
                 case USER_MODEL:
                     jsonObj.add("user", gson.toJsonTree((UserModel) obj, UserModel.class));
                     return jsonObj.toString();
@@ -65,9 +68,10 @@ public class CommunicationInterpreter {
                 case RESERVATION_MODEL:
                     jsonObj.add("reservation", gson.toJsonTree((ReservationModel) obj, ReservationModel.class));
                     return jsonObj.toString();
-
+                case UPDATE_VEHICLE:
+                case DELETE_VEHICLE:    
                 case VEHICLE_MODEL:
-                    jsonObj.add("vehicle", gson.toJsonTree((VehicleModel) obj, VehicleModel.class));
+                    jsonObj.add("vehicle", gson.toJsonTree((VehicleModel)obj,VehicleModel.class));
                     return jsonObj.toString();
 
                 case USER_MODEL_LIST:
@@ -86,7 +90,7 @@ public class CommunicationInterpreter {
                 case VEHICLE_MODEL_LIST:
                     listType = new TypeToken<Queue<VehicleModel>>() {
                     }.getType();
-                    jsonObj.add("vechiles", gson.toJsonTree(obj, listType));
+                    jsonObj.add("vehicles", gson.toJsonTree(obj,listType));
                     return jsonObj.toString();
 
                 default:
@@ -120,8 +124,8 @@ public class CommunicationInterpreter {
                 return reservation;
 
             case VEHICLE_MODEL:
-                VehicleModel vechile = gson.fromJson(jsonObj.get("vechile").toString(), VehicleModel.class);
-                return vechile;
+                VehicleModel vehicle = gson.fromJson(jsonObj.get("vehicle").toString(), VehicleModel.class);
+                return vehicle;
 
             case USER_MODEL_LIST:
                 listType = new TypeToken<Queue<UserModel>>() {
@@ -138,7 +142,7 @@ public class CommunicationInterpreter {
             case VEHICLE_MODEL_LIST:
                 listType = new TypeToken<Queue<VehicleModel>>() {
                 }.getType();
-                Queue<VehicleModel> vechiles = gson.fromJson(jsonObj.get("vechiles").toString(), listType);
+                Queue<VehicleModel> vechiles = gson.fromJson(jsonObj.get("vehicles").toString(),listType);
                 return vechiles;
 
             default:

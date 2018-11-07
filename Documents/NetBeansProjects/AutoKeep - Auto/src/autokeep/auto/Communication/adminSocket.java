@@ -17,6 +17,10 @@ public class adminSocket implements Serializable {
     private static String serverMSG;
     private static Socket socket;
     private static Queue<VehicleModel> carsList;
+
+    public static Queue<VehicleModel> getCarsList() {
+        return carsList;
+    }
     private static Queue<UserModel> usersList;
 
     public static Queue<UserModel> getUsersList() {
@@ -170,6 +174,7 @@ public class adminSocket implements Serializable {
             case VEHICLE_MODEL_LIST:
                 status = "OK";
                 carsList = (Queue<VehicleModel>) dataConverter.decodeFromJsonToObj(ProtocolMessage.VEHICLE_MODEL_LIST, reciveData);
+                break;
             case ERROR:
                 status = "ERROR";
                 serverMSG = ((String) dataConverter.decodeFromJsonToObj(ProtocolMessage.NO_AVAILABLE_VEHICLES, reciveData));

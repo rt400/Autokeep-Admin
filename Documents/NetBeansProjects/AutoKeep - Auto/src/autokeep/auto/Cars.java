@@ -7,20 +7,15 @@ package autokeep.auto;
 
 import autokeep.auto.AdminModels.VehicleModel;
 import autokeep.auto.Communication.adminSocket;
-import static com.google.gson.internal.bind.TypeAdapters.URL;
 import java.awt.Image;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
@@ -39,10 +34,10 @@ public class Cars extends javax.swing.JFrame {
     DefaultTableModel tableModel;
     List<VehicleModel> carsList;
 
-    private void setUserList() {
+    private void setCarsList() {
         this.carsList.clear();
-        while (!adminSocket.getUsersList().isEmpty()) {
-            //this.carsList.add(adminSocket.getUsersList().poll());
+        while (!adminSocket.getCarsList().isEmpty()) {
+            this.carsList.add(adminSocket.getCarsList().poll());
         }
     }
 
@@ -50,10 +45,10 @@ public class Cars extends javax.swing.JFrame {
         this.carsList = new ArrayList<>();
         initComponents();
         tableModel = (DefaultTableModel) carsTable.getModel();
-        if (adminSocket.getUsersList() == null) {
-            // sendAlert("The DB is Empty !");
+        if (adminSocket.getCarsList() == null) {
+            sendAlert("The DB is Empty !");
         } else {
-            setUserList();
+            setCarsList();
             displayItems();
 
         }
@@ -249,7 +244,7 @@ public class Cars extends javax.swing.JFrame {
             ex.printStackTrace();
         }
 
-        kmText.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
+        kmText.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
 
         imagePNG.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
         imagePNG.setDebugGraphicsOptions(javax.swing.DebugGraphics.FLASH_OPTION);
@@ -446,7 +441,8 @@ public class Cars extends javax.swing.JFrame {
     }//GEN-LAST:event_plateTextActionPerformed
 
     private void plateTextFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_plateTextFocusLost
-        if (!plateText.getText().matches("^\\d{2}-?\\d{3}-?\\d{2}$|^\\d{3}-?\\d{2}-?\\d{3}$")) {
+        
+        if (!plateText.getText().matches("^\\d{2}-?\\d{3}-?\\d{2}$|^\\d{3}-?\\d{2}-?\\d{3}$") && (!plateText.getText().isEmpty())) {
             sendAlert("Wrong Plate!!\n"
                     + "\nPlease type again\n"
                     + "only XX-XXX-XX , XXX-XX-XXX format!");
@@ -528,7 +524,7 @@ public class Cars extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
-        
+
         //</editor-fold>
         //</editor-fold>
 
@@ -661,8 +657,8 @@ public class Cars extends javax.swing.JFrame {
 
     private void refreshData() {
         try {
-            adminSocket.getInstance().SendUsers();
-            setUserList();
+            adminSocket.getInstance().SendCars();
+            setCarsList();
         } catch (IOException ex) {
             Logger.getLogger(Cars.class.getName()).log(Level.SEVERE, null, ex);
         }
