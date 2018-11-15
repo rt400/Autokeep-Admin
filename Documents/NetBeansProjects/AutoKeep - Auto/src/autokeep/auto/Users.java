@@ -6,7 +6,8 @@
 package autokeep.auto;
 
 import autokeep.auto.AdminModels.UserModel;
-import autokeep.auto.Communication.adminSocket;
+import autokeep.auto.Communication.AdminSocket;
+import autokeep.auto.Communication.MessageControl;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -31,25 +31,24 @@ public class Users extends javax.swing.JFrame {
 
     private void setUserList() {
         this.userList.clear();
-        while (!adminSocket.getUsersList().isEmpty()) {
-            this.userList.add(adminSocket.getUsersList().poll());
+        while (!AdminSocket.getUsersList().isEmpty()) {
+            this.userList.add(AdminSocket.getUsersList().poll());
         }
     }
 
     public Users() {
         this.userList = new ArrayList<>();
         initComponents();
+        this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         tableModel = (DefaultTableModel) userTable.getModel();
-        if(adminSocket.getUsersList() == null){
-            sendAlert("The DB is Empty !");
-        }
-        else {
+        if (AdminSocket.getUsersList() == null) {
+            MessageControl.getInstance().sendError("The DB is Empty !");
+        } else {
             setUserList();
             displayItems();
-        
+
         }
-        
-        
+
     }
 
     /**
@@ -61,11 +60,51 @@ public class Users extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        updelDialog = new javax.swing.JDialog();
+        jLabel5 = new javax.swing.JLabel();
+        firstnameText1 = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        familyText1 = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
+        adminText1 = new javax.swing.JComboBox<>();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        idSpinner1 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        bitrthdateText1 = new javax.swing.JFormattedTextField();
+        emailText1 = new javax.swing.JTextField();
+        passwordText1 = new javax.swing.JTextField();
+        jLabel17 = new javax.swing.JLabel();
+        phoneText1 = new javax.swing.JFormattedTextField();
+        updateDialogButton = new javax.swing.JButton();
+        deleteDialogButtun = new javax.swing.JButton();
+        returnDialogButtun = new javax.swing.JButton();
+        jLabel18 = new javax.swing.JLabel();
+        newUserDialog = new javax.swing.JDialog();
+        jLabel19 = new javax.swing.JLabel();
+        firstnameText2 = new javax.swing.JTextField();
+        jLabel20 = new javax.swing.JLabel();
+        familyText2 = new javax.swing.JTextField();
+        jLabel21 = new javax.swing.JLabel();
+        adminText2 = new javax.swing.JComboBox<>();
+        jLabel22 = new javax.swing.JLabel();
+        jLabel23 = new javax.swing.JLabel();
+        jLabel24 = new javax.swing.JLabel();
+        idSpinner2 = new javax.swing.JLabel();
+        jLabel25 = new javax.swing.JLabel();
+        bitrthdateText2 = new javax.swing.JFormattedTextField();
+        emailText2 = new javax.swing.JTextField();
+        passwordText2 = new javax.swing.JTextField();
+        jLabel26 = new javax.swing.JLabel();
+        phoneText2 = new javax.swing.JFormattedTextField();
+        newuserOKButton = new javax.swing.JButton();
+        newUserCancelButtun = new javax.swing.JButton();
+        jLabel27 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         userTable = new javax.swing.JTable();
         returnButton = new javax.swing.JButton();
         newButton = new javax.swing.JButton();
-        deleteButton = new javax.swing.JButton();
         updateButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -86,6 +125,343 @@ public class Users extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         idSpinner = new javax.swing.JLabel();
         bitrthdateText = new javax.swing.JFormattedTextField();
+
+        jLabel5.setText("Password :");
+
+        firstnameText1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                firstnameText1FocusLost(evt);
+            }
+        });
+        firstnameText1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                firstnameText1ActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setText("Birth Date (YYYY-MM-DD) :");
+
+        familyText1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                familyText1FocusLost(evt);
+            }
+        });
+
+        jLabel12.setText("Family Name :");
+
+        adminText1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "True", "False" }));
+
+        jLabel13.setText("First Name :");
+
+        jLabel14.setText("ID :");
+
+        jLabel15.setText("Phone :");
+
+        jLabel16.setText("Administrator");
+
+        bitrthdateText1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("yyyy-MM-dd"))));
+
+        emailText1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                emailText1FocusLost(evt);
+            }
+        });
+        emailText1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                emailText1KeyTyped(evt);
+            }
+        });
+
+        passwordText1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                passwordText1FocusLost(evt);
+            }
+        });
+
+        jLabel17.setText("Email :");
+
+        phoneText1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                phoneText1FocusLost(evt);
+            }
+        });
+
+        updateDialogButton.setText("Update");
+        updateDialogButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateDialogButtonActionPerformed(evt);
+            }
+        });
+
+        deleteDialogButtun.setText("Delete");
+        deleteDialogButtun.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteDialogButtunActionPerformed(evt);
+            }
+        });
+
+        returnDialogButtun.setText("Return");
+        returnDialogButtun.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                returnDialogButtunActionPerformed(evt);
+            }
+        });
+
+        jLabel18.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        jLabel18.setText("Update / Delete User Menu");
+
+        javax.swing.GroupLayout updelDialogLayout = new javax.swing.GroupLayout(updelDialog.getContentPane());
+        updelDialog.getContentPane().setLayout(updelDialogLayout);
+        updelDialogLayout.setHorizontalGroup(
+            updelDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(updelDialogLayout.createSequentialGroup()
+                .addGap(44, 44, 44)
+                .addGroup(updelDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(updelDialogLayout.createSequentialGroup()
+                        .addComponent(jLabel18)
+                        .addContainerGap(36, Short.MAX_VALUE))
+                    .addGroup(updelDialogLayout.createSequentialGroup()
+                        .addComponent(updateDialogButton, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(37, 37, 37)
+                        .addComponent(deleteDialogButtun, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(returnDialogButtun, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(51, 51, 51))))
+            .addGroup(updelDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(updelDialogLayout.createSequentialGroup()
+                    .addGap(49, 49, 49)
+                    .addGroup(updelDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel5)
+                        .addComponent(jLabel17)
+                        .addComponent(jLabel7)
+                        .addComponent(jLabel13)
+                        .addComponent(jLabel12)
+                        .addComponent(jLabel16)
+                        .addComponent(jLabel15)
+                        .addComponent(jLabel14))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
+                    .addGroup(updelDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(idSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(updelDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(emailText1, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(passwordText1, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(phoneText1, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(firstnameText1, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(familyText1, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(adminText1, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(bitrthdateText1, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGap(50, 50, 50)))
+        );
+        updelDialogLayout.setVerticalGroup(
+            updelDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, updelDialogLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 443, Short.MAX_VALUE)
+                .addGroup(updelDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(updateDialogButton)
+                    .addComponent(deleteDialogButtun)
+                    .addComponent(returnDialogButtun))
+                .addContainerGap())
+            .addGroup(updelDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(updelDialogLayout.createSequentialGroup()
+                    .addGap(79, 79, 79)
+                    .addGroup(updelDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(idSpinner1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGap(18, 18, 18)
+                    .addGroup(updelDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(emailText1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel17))
+                    .addGap(26, 26, 26)
+                    .addGroup(updelDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(passwordText1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel5))
+                    .addGap(32, 32, 32)
+                    .addGroup(updelDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel7)
+                        .addComponent(bitrthdateText1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(26, 26, 26)
+                    .addGroup(updelDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel13)
+                        .addComponent(firstnameText1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(31, 31, 31)
+                    .addGroup(updelDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel12)
+                        .addComponent(familyText1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(31, 31, 31)
+                    .addGroup(updelDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(phoneText1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel15))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                    .addGroup(updelDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel16)
+                        .addComponent(adminText1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(79, 79, 79)))
+        );
+
+        jLabel19.setText("Password :");
+
+        firstnameText2.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                firstnameText2FocusLost(evt);
+            }
+        });
+        firstnameText2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                firstnameText2ActionPerformed(evt);
+            }
+        });
+
+        jLabel20.setText("Birth Date (YYYY-MM-DD) :");
+
+        familyText2.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                familyText2FocusLost(evt);
+            }
+        });
+
+        jLabel21.setText("Family Name :");
+
+        adminText2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "True", "False" }));
+
+        jLabel22.setText("First Name :");
+
+        jLabel23.setText("ID :");
+
+        jLabel24.setText("Phone :");
+
+        jLabel25.setText("Administrator");
+
+        bitrthdateText2.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("yyyy-MM-dd"))));
+
+        emailText2.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                emailText2FocusLost(evt);
+            }
+        });
+        emailText2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                emailText2KeyTyped(evt);
+            }
+        });
+
+        passwordText2.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                passwordText2FocusLost(evt);
+            }
+        });
+
+        jLabel26.setText("Email :");
+
+        phoneText2.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                phoneText2FocusLost(evt);
+            }
+        });
+
+        newuserOKButton.setText("OK");
+        newuserOKButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newuserOKButtonActionPerformed(evt);
+            }
+        });
+
+        newUserCancelButtun.setText("Cancel");
+        newUserCancelButtun.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newUserCancelButtunActionPerformed(evt);
+            }
+        });
+
+        jLabel27.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        jLabel27.setText("New User Menu");
+
+        javax.swing.GroupLayout newUserDialogLayout = new javax.swing.GroupLayout(newUserDialog.getContentPane());
+        newUserDialog.getContentPane().setLayout(newUserDialogLayout);
+        newUserDialogLayout.setHorizontalGroup(
+            newUserDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(newUserDialogLayout.createSequentialGroup()
+                .addGap(44, 44, 44)
+                .addComponent(newuserOKButton, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(newUserCancelButtun, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(51, 51, 51))
+            .addGroup(newUserDialogLayout.createSequentialGroup()
+                .addGap(142, 142, 142)
+                .addComponent(jLabel27)
+                .addContainerGap(147, Short.MAX_VALUE))
+            .addGroup(newUserDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(newUserDialogLayout.createSequentialGroup()
+                    .addGap(49, 49, 49)
+                    .addGroup(newUserDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel19)
+                        .addComponent(jLabel26)
+                        .addComponent(jLabel20)
+                        .addComponent(jLabel22)
+                        .addComponent(jLabel21)
+                        .addComponent(jLabel25)
+                        .addComponent(jLabel24)
+                        .addComponent(jLabel23))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
+                    .addGroup(newUserDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(idSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(newUserDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(emailText2, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(passwordText2, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(phoneText2, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(firstnameText2, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(familyText2, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(adminText2, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(bitrthdateText2, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGap(50, 50, 50)))
+        );
+        newUserDialogLayout.setVerticalGroup(
+            newUserDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, newUserDialogLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel27)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 446, Short.MAX_VALUE)
+                .addGroup(newUserDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(newuserOKButton)
+                    .addComponent(newUserCancelButtun))
+                .addContainerGap())
+            .addGroup(newUserDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(newUserDialogLayout.createSequentialGroup()
+                    .addGap(79, 79, 79)
+                    .addGroup(newUserDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jLabel23, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(idSpinner2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGap(18, 18, 18)
+                    .addGroup(newUserDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(emailText2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel26))
+                    .addGap(26, 26, 26)
+                    .addGroup(newUserDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(passwordText2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel19))
+                    .addGap(32, 32, 32)
+                    .addGroup(newUserDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel20)
+                        .addComponent(bitrthdateText2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(26, 26, 26)
+                    .addGroup(newUserDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel22)
+                        .addComponent(firstnameText2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(31, 31, 31)
+                    .addGroup(newUserDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel21)
+                        .addComponent(familyText2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(31, 31, 31)
+                    .addGroup(newUserDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(phoneText2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel24))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                    .addGroup(newUserDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel25)
+                        .addComponent(adminText2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(79, 79, 79)))
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -135,14 +511,7 @@ public class Users extends javax.swing.JFrame {
             }
         });
 
-        deleteButton.setText("Delete");
-        deleteButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteButtonActionPerformed(evt);
-            }
-        });
-
-        updateButton.setText("Update");
+        updateButton.setText("Update / Delete");
         updateButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 updateButtonActionPerformed(evt);
@@ -166,6 +535,7 @@ public class Users extends javax.swing.JFrame {
 
         jLabel11.setText("Administrator");
 
+        emailText.setEditable(false);
         emailText.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 emailTextFocusLost(evt);
@@ -177,6 +547,7 @@ public class Users extends javax.swing.JFrame {
             }
         });
 
+        passwordText.setEditable(false);
         passwordText.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 passwordTextFocusLost(evt);
@@ -202,6 +573,7 @@ public class Users extends javax.swing.JFrame {
             }
         });
 
+        phoneText.setEditable(false);
         
         phoneText.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -209,6 +581,7 @@ public class Users extends javax.swing.JFrame {
             }
         });
 
+        firstnameText.setEditable(false);
         firstnameText.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 firstnameTextFocusLost(evt);
@@ -220,6 +593,7 @@ public class Users extends javax.swing.JFrame {
             }
         });
 
+        familyText.setEditable(false);
         familyText.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 familyTextFocusLost(evt);
@@ -227,9 +601,11 @@ public class Users extends javax.swing.JFrame {
         });
 
         adminText.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "True", "False" }));
+        adminText.setEnabled(false);
 
         jLabel3.setText("ID :");
 
+        bitrthdateText.setEditable(false);
         bitrthdateText.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("yyyy-MM-dd"))));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -238,46 +614,41 @@ public class Users extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(newButton, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel4)
                     .addComponent(jLabel2)
-                    .addComponent(jLabel6)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel9)
                     .addComponent(jLabel8)
                     .addComponent(jLabel11)
                     .addComponent(jLabel10)
-                    .addComponent(jLabel3))
+                    .addComponent(jLabel3)
+                    .addComponent(newButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(updateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(refreshButton, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(clearFileds, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(updateButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(611, 611, 611)
                         .addComponent(returnButton, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(emailText, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(passwordText, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(phoneText, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(firstnameText, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(familyText, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(adminText, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(bitrthdateText, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(idSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(idSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(305, 305, 305)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(emailText, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(passwordText, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(phoneText, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(firstnameText, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(familyText, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(adminText, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(bitrthdateText, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 721, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(refreshButton, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(29, 29, 29)
+                                .addComponent(clearFileds, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 721, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -326,7 +697,6 @@ public class Users extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(returnButton)
-                    .addComponent(deleteButton)
                     .addComponent(updateButton)
                     .addComponent(newButton)
                     .addComponent(clearFileds)
@@ -357,16 +727,16 @@ public class Users extends javax.swing.JFrame {
     }//GEN-LAST:event_userTableMouseClicked
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
-        if (checkFields()) {
-            try {
-                adminSocket.getInstance().SendUserData(addItem(),"New");
-                refreshData();
-            } catch (IOException ex) {
-                Logger.getLogger(Users.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
+        if (!userList.isEmpty()) {
+            newUserDialog.setVisible(true);
+            newUserDialog.pack();
+            newUserDialog.setLocationRelativeTo(null);
+            newUserDialog.setDefaultCloseOperation(Users.DISPOSE_ON_CLOSE);
+            this.setEnabled(false);
+            int row = userTable.getSelectedRow();
+            showIteminDialog(userList.get(row));
         } else {
-            sendAlert("Some Filleds are empty!\n\nPlease fill again");
+            MessageControl.getInstance().sendError("DataBase is Empty !");
         }
 
     }//GEN-LAST:event_newButtonActionPerformed
@@ -380,21 +750,11 @@ public class Users extends javax.swing.JFrame {
     }//GEN-LAST:event_emailTextKeyTyped
 
     private void passwordTextFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_passwordTextFocusLost
-        if (!passwordText.getText().isEmpty()) {
-            if (passwordText.getText().length() < 6 || passwordValidation(passwordText.getText())) {
-                sendAlert("Password didn't match patterns!\n\nPlease type again");
-                passwordText.setText("");
-            }
-        }
+
     }//GEN-LAST:event_passwordTextFocusLost
 
     private void emailTextFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_emailTextFocusLost
-        if (!emailText.getText().isEmpty()) {
-            if (!validateEmail(emailText.getText())) {
-                sendAlert("Email didn't match patterns!\n\nPlease type again");
-                emailText.setText("");
-            }
-        }
+
     }//GEN-LAST:event_emailTextFocusLost
 
     private void firstnameTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_firstnameTextActionPerformed
@@ -402,71 +762,208 @@ public class Users extends javax.swing.JFrame {
     }//GEN-LAST:event_firstnameTextActionPerformed
 
     private void phoneTextFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_phoneTextFocusLost
-        if (!phoneText.getText().isEmpty()) {
-            if (!phoneText.getText().matches("[0-9+/. ()-]{9,11}")) {
-                sendAlert("Phone need only number!\n\nPlease type again");
-                phoneText.setText("");
-            }
-        }
+
     }//GEN-LAST:event_phoneTextFocusLost
 
     private void firstnameTextFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_firstnameTextFocusLost
-        if (!firstnameText.getText().isEmpty()) {
-            if (!firstnameText.getText().matches("[A-Za-z]+")) {
-                sendAlert("Name cannot contains numbers!\n\nPlease type again");
-                firstnameText.setText("");
-            }
-        }
+
     }//GEN-LAST:event_firstnameTextFocusLost
 
     private void familyTextFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_familyTextFocusLost
-        if (!familyText.getText().isEmpty()) {
-            if (!familyText.getText().matches("[A-Za-z]+")) {
-                sendAlert("Family cannot contains numbers!\n\nPlease type again");
-                familyText.setText("");
-            }
-        }
+
     }//GEN-LAST:event_familyTextFocusLost
 
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
-        int row = userTable.getSelectedRow();
-        if (row > -1) {
-            userList.get(row).setEmailAddress(emailText.getText());
-            userList.get(row).setPassword(passwordText.getText());
-            userList.get(row).setDateOfBirth(bitrthdateText.getText());
-            userList.get(row).setFirstName(firstnameText.getText());
-            userList.get(row).setLastName(familyText.getText());
-            userList.get(row).setPhoneNumber(phoneText.getText());
-            userList.get(row).setIsAdministrator(isAdmin());
-            if (checkFields()) {
-            try {
-                adminSocket.getInstance().SendUserData(userList.get(row),"Update");
-                refreshData();
-            } catch (IOException ex) {
-                Logger.getLogger(Users.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
+        if (!userList.isEmpty()) {
+            updelDialog.setVisible(true);
+            updelDialog.pack();
+            updelDialog.setLocationRelativeTo(null);
+            updelDialog.setDefaultCloseOperation(Users.DISPOSE_ON_CLOSE);
+            this.setEnabled(false);
+            int row = userTable.getSelectedRow();
+            showIteminDialog(userList.get(row));
         } else {
-            sendAlert("Some Filleds are empty!\n\nPlease fill again");
+            MessageControl.getInstance().sendError("DataBase is Empty !");
         }
-            clearFields();
-        }
+
+
     }//GEN-LAST:event_updateButtonActionPerformed
 
-    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+    private void firstnameText1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_firstnameText1FocusLost
+        if (!firstnameText1.getText().isEmpty()) {
+            if (!firstnameText1.getText().matches("[A-Za-z]+")) {
+                MessageControl.getInstance().sendError("Name cannot contains numbers!\n\nPlease type again");
+                firstnameText1.setText("");
+            }
+        }
+    }//GEN-LAST:event_firstnameText1FocusLost
+
+    private void firstnameText1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_firstnameText1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_firstnameText1ActionPerformed
+
+    private void familyText1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_familyText1FocusLost
+        if (!familyText1.getText().isEmpty()) {
+            if (!familyText1.getText().matches("[A-Za-z]+")) {
+                MessageControl.getInstance().sendError("Family cannot contains numbers!\n\nPlease type again");
+                familyText1.setText("");
+            }
+        }
+    }//GEN-LAST:event_familyText1FocusLost
+
+    private void emailText1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_emailText1FocusLost
+        if (!emailText1.getText().isEmpty()) {
+            if (!validateEmail(emailText1.getText())) {
+                MessageControl.getInstance().sendError("Email didn't match patterns!\n\nPlease type again");
+                emailText1.setText("");
+            }
+        }
+    }//GEN-LAST:event_emailText1FocusLost
+
+    private void emailText1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_emailText1KeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_emailText1KeyTyped
+
+    private void passwordText1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_passwordText1FocusLost
+        if (!passwordText1.getText().isEmpty()) {
+            if (passwordText1.getText().length() < 6 || passwordValidation(passwordText1.getText())) {
+                MessageControl.getInstance().sendError("Password didn't match patterns!\n\nPlease type again");
+                passwordText1.setText("");
+            }
+        }
+    }//GEN-LAST:event_passwordText1FocusLost
+
+    private void phoneText1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_phoneText1FocusLost
+        if (!phoneText1.getText().isEmpty()) {
+            if (!phoneText1.getText().matches("[0-9+/. ()-]{9,11}")) {
+                MessageControl.getInstance().sendError("Phone need only number!\n\nPlease type again");
+                phoneText1.setText("");
+            }
+        }
+    }//GEN-LAST:event_phoneText1FocusLost
+
+    private void returnDialogButtunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_returnDialogButtunActionPerformed
+        updelDialog.dispose();
+        this.setEnabled(true);
+    }//GEN-LAST:event_returnDialogButtunActionPerformed
+
+    private void updateDialogButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateDialogButtonActionPerformed
+        int row = userTable.getSelectedRow();
+        if (row > -1) {
+            userList.get(row).setEmailAddress(emailText1.getText());
+            userList.get(row).setPassword(passwordText1.getText());
+            userList.get(row).setDateOfBirth(bitrthdateText1.getText());
+            userList.get(row).setFirstName(firstnameText1.getText());
+            userList.get(row).setLastName(familyText1.getText());
+            userList.get(row).setPhoneNumber(phoneText1.getText());
+            userList.get(row).setIsAdministrator(isAdmin1());
+            if (checkFields()) {
+                try {
+                    AdminSocket.getInstance().SendUserData(userList.get(row), "Update");
+                    updelDialog.dispose();
+                    refreshData();
+                    this.setEnabled(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(Users.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            } else {
+                MessageControl.getInstance().sendError("Some Filleds are empty!\n\nPlease fill again");
+            }
+            clearFields();
+        }
+    }//GEN-LAST:event_updateDialogButtonActionPerformed
+
+    private void deleteDialogButtunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteDialogButtunActionPerformed
         int row = userTable.getSelectedRow();
         if (row > -1) {
             try {
-                adminSocket.getInstance().SendUserData(userList.get(row),"Delete");
+                AdminSocket.getInstance().SendUserData(userList.get(row), "Delete");
                 userList.remove(row);
                 refreshData();
             } catch (IOException ex) {
                 Logger.getLogger(Users.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
             clearFields();
         }
-    }//GEN-LAST:event_deleteButtonActionPerformed
+        updelDialog.dispose();
+        this.setEnabled(true);
+    }//GEN-LAST:event_deleteDialogButtunActionPerformed
+
+    private void firstnameText2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_firstnameText2FocusLost
+        if (!firstnameText2.getText().isEmpty()) {
+            if (!firstnameText2.getText().matches("[A-Za-z]+")) {
+                MessageControl.getInstance().sendError("Name cannot contains numbers!\n\nPlease type again");
+                firstnameText2.setText("");
+            }
+        }
+    }//GEN-LAST:event_firstnameText2FocusLost
+
+    private void firstnameText2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_firstnameText2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_firstnameText2ActionPerformed
+
+    private void familyText2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_familyText2FocusLost
+        if (!familyText2.getText().isEmpty()) {
+            if (!familyText2.getText().matches("[A-Za-z]+")) {
+                MessageControl.getInstance().sendError("Family cannot contains numbers!\n\nPlease type again");
+                familyText2.setText("");
+            }
+        }
+    }//GEN-LAST:event_familyText2FocusLost
+
+    private void emailText2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_emailText2FocusLost
+        if (!emailText2.getText().isEmpty()) {
+            if (!validateEmail(emailText2.getText())) {
+                MessageControl.getInstance().sendError("Email didn't match patterns!\n\nPlease type again");
+                emailText2.setText("");
+            }
+        }
+    }//GEN-LAST:event_emailText2FocusLost
+
+    private void emailText2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_emailText2KeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_emailText2KeyTyped
+
+    private void passwordText2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_passwordText2FocusLost
+        if (!passwordText1.getText().isEmpty()) {
+            if (passwordText1.getText().length() < 6 || passwordValidation(passwordText1.getText())) {
+                MessageControl.getInstance().sendError("Password didn't match patterns!\n\nPlease type again");
+                passwordText1.setText("");
+            }
+        }
+    }//GEN-LAST:event_passwordText2FocusLost
+
+    private void phoneText2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_phoneText2FocusLost
+        if (!phoneText2.getText().isEmpty()) {
+            if (!phoneText2.getText().matches("[0-9+/. ()-]{9,11}")) {
+                MessageControl.getInstance().sendError("Phone need only number!\n\nPlease type again");
+                phoneText2.setText("");
+            }
+        }
+    }//GEN-LAST:event_phoneText2FocusLost
+
+    private void newuserOKButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newuserOKButtonActionPerformed
+        if (checkFields()) {
+            try {
+                AdminSocket.getInstance().SendUserData(addItem(), "New");
+                refreshData();
+                newUserDialog.dispose();
+                this.setEnabled(true);
+            } catch (IOException ex) {
+                Logger.getLogger(Users.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        } else {
+            MessageControl.getInstance().sendAlert("Some Filleds are empty!\n\nPlease fill again");
+        }
+    }//GEN-LAST:event_newuserOKButtonActionPerformed
+
+    private void newUserCancelButtunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newUserCancelButtunActionPerformed
+        newUserDialog.dispose();
+        this.setEnabled(true);
+    }//GEN-LAST:event_newUserCancelButtunActionPerformed
 
     /**
      * @param args the command line arguments
@@ -503,29 +1000,69 @@ public class Users extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> adminText;
+    private javax.swing.JComboBox<String> adminText1;
+    private javax.swing.JComboBox<String> adminText2;
     private javax.swing.JFormattedTextField bitrthdateText;
+    private javax.swing.JFormattedTextField bitrthdateText1;
+    private javax.swing.JFormattedTextField bitrthdateText2;
     private javax.swing.JButton clearFileds;
-    private javax.swing.JButton deleteButton;
+    private javax.swing.JButton deleteDialogButtun;
     private javax.swing.JTextField emailText;
+    private javax.swing.JTextField emailText1;
+    private javax.swing.JTextField emailText2;
     private javax.swing.JTextField familyText;
+    private javax.swing.JTextField familyText1;
+    private javax.swing.JTextField familyText2;
     private javax.swing.JTextField firstnameText;
+    private javax.swing.JTextField firstnameText1;
+    private javax.swing.JTextField firstnameText2;
     private javax.swing.JLabel idSpinner;
+    private javax.swing.JLabel idSpinner1;
+    private javax.swing.JLabel idSpinner2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton newButton;
+    private javax.swing.JButton newUserCancelButtun;
+    private javax.swing.JDialog newUserDialog;
+    private javax.swing.JButton newuserOKButton;
     private javax.swing.JTextField passwordText;
+    private javax.swing.JTextField passwordText1;
+    private javax.swing.JTextField passwordText2;
     private javax.swing.JFormattedTextField phoneText;
+    private javax.swing.JFormattedTextField phoneText1;
+    private javax.swing.JFormattedTextField phoneText2;
     private javax.swing.JButton refreshButton;
     private javax.swing.JButton returnButton;
+    private javax.swing.JButton returnDialogButtun;
     private javax.swing.JButton updateButton;
+    private javax.swing.JButton updateDialogButton;
+    private javax.swing.JDialog updelDialog;
     private javax.swing.JTable userTable;
     // End of variables declaration//GEN-END:variables
 
@@ -540,6 +1077,17 @@ public class Users extends javax.swing.JFrame {
         adminText.setSelectedIndex(getIsAdmin(item.IsAdministrator()));
     }
 
+    public void showIteminDialog(UserModel item) {
+        idSpinner1.setText(String.valueOf(item.getId()));
+        emailText1.setText(item.getEmailAddress());
+        passwordText1.setText(item.getPassword());
+        bitrthdateText1.setText(item.getDateOfBirth());
+        firstnameText1.setText(item.getFirstName());
+        familyText1.setText(item.getLastName());
+        phoneText1.setText(item.getPhoneNumber());
+        adminText.setSelectedIndex(getIsAdmin(item.IsAdministrator()));
+    }
+
     public int getIsAdmin(boolean data) {
         if (!data) {
             return 1;
@@ -548,38 +1096,43 @@ public class Users extends javax.swing.JFrame {
     }
 
     public boolean isAdmin() {
-        if (adminText.getSelectedIndex() == 0) {
-            return true;
-        }
-        return false;
+        return adminText.getSelectedIndex() == 0;
+    }
+
+    public boolean isAdmin1() {
+        return adminText1.getSelectedIndex() == 0;
+    }
+
+    public boolean isAdmin2() {
+        return adminText2.getSelectedIndex() == 0;
     }
 
     public UserModel addItem() {
         return new UserModel(
-                emailText.getText(),
-                passwordText.getText(),
-                bitrthdateText.getText(),
-                firstnameText.getText(),
-                familyText.getText(),
-                phoneText.getText(),
-                isAdmin());
+                emailText2.getText(),
+                passwordText2.getText(),
+                bitrthdateText2.getText(),
+                firstnameText2.getText(),
+                familyText2.getText(),
+                phoneText2.getText(),
+                isAdmin2());
     }
 
     public void clearFields() {
-        idSpinner.setText("");
-        emailText.setText("");
-        bitrthdateText.setText("");
-        passwordText.setText("");
-        bitrthdateText.setText("");
-        firstnameText.setText("");
-        familyText.setText("");
-        phoneText.setText("");
+        idSpinner1.setText("");
+        emailText1.setText("");
+        bitrthdateText1.setText("");
+        passwordText1.setText("");
+        bitrthdateText1.setText("");
+        firstnameText1.setText("");
+        familyText1.setText("");
+        phoneText1.setText("");
     }
 
     private void displayItems() {
         tableModel.setRowCount(0);
         userList.forEach(item -> {
-            Object[] rowdata = new Object[]{item.getId(),item.getEmailAddress(), item.getPassword(), item.getDateOfBirth(),
+            Object[] rowdata = new Object[]{item.getId(), item.getEmailAddress(), item.getPassword(), item.getDateOfBirth(),
                 item.getFirstName(), item.getLastName(), item.getPhoneNumber(), item.IsAdministrator()};
             tableModel.insertRow(tableModel.getRowCount(), rowdata);
         });
@@ -610,9 +1163,9 @@ public class Users extends javax.swing.JFrame {
                 || phoneText.getText().isEmpty());
     }
 
-    private void refreshData(){
+    private void refreshData() {
         try {
-            adminSocket.getInstance().SendUsers();
+            AdminSocket.getInstance().SendUsers();
             setUserList();
         } catch (IOException ex) {
             Logger.getLogger(Users.class.getName()).log(Level.SEVERE, null, ex);
@@ -620,11 +1173,5 @@ public class Users extends javax.swing.JFrame {
         displayItems();
         clearFields();
     }
-    
-    private void sendAlert(String msg) {
-        JOptionPane.showMessageDialog(null,
-                msg,
-                "Error",
-                JOptionPane.WARNING_MESSAGE);
-    }
+
 }

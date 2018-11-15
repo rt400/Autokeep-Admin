@@ -7,8 +7,8 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 
 public class Protocol {
-    private ObjectInputStream in;
-    private ObjectOutputStream out;
+    private final ObjectInputStream in;
+    private final ObjectOutputStream out;
 
     // ***** constructor ***** //
 
@@ -32,14 +32,15 @@ public class Protocol {
      *
      * @return Message
      * @throws IOException            - thrown by the socket
-     * @throws ClassNotFoundException - thrown by serialization
+     * @throws java.lang.InterruptedException
      */
-    public String read() throws IOException {
+    public String read() throws IOException, InterruptedException {
         String msg = null;
+        
         try {
             msg = (String) in.readObject();
+            
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         }
         return msg;
     }

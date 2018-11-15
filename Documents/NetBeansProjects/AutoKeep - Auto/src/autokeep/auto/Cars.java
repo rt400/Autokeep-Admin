@@ -6,7 +6,8 @@
 package autokeep.auto;
 
 import autokeep.auto.AdminModels.VehicleModel;
-import autokeep.auto.Communication.adminSocket;
+import autokeep.auto.Communication.AdminSocket;
+import autokeep.auto.Communication.MessageControl;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
@@ -19,7 +20,6 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -36,17 +36,18 @@ public class Cars extends javax.swing.JFrame {
 
     private void setCarsList() {
         this.carsList.clear();
-        while (!adminSocket.getCarsList().isEmpty()) {
-            this.carsList.add(adminSocket.getCarsList().poll());
+        while (!AdminSocket.getCarsList().isEmpty()) {
+            this.carsList.add(AdminSocket.getCarsList().poll());
         }
     }
 
     public Cars() {
         this.carsList = new ArrayList<>();
         initComponents();
+        this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         tableModel = (DefaultTableModel) carsTable.getModel();
-        if (adminSocket.getCarsList() == null) {
-            sendAlert("The DB is Empty !");
+        if (AdminSocket.getCarsList() == null) {
+            MessageControl.getInstance().sendError("The DB is Empty !");
         } else {
             setCarsList();
             displayItems();
@@ -416,14 +417,14 @@ public class Cars extends javax.swing.JFrame {
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
         if (checkFields()) {
             try {
-                adminSocket.getInstance().SendCarsData(addItem(), "New");
+                AdminSocket.getInstance().SendCarsData(addItem(), "New");
                 refreshData();
             } catch (IOException ex) {
                 Logger.getLogger(Cars.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         } else {
-            sendAlert("Some Filleds are empty!\n\nPlease fill again");
+            MessageControl.getInstance().sendError("Some Filleds are empty!\n\nPlease fill again");
         }
 
     }//GEN-LAST:event_newButtonActionPerformed
@@ -443,7 +444,7 @@ public class Cars extends javax.swing.JFrame {
     private void plateTextFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_plateTextFocusLost
         
         if (!plateText.getText().matches("^\\d{2}-?\\d{3}-?\\d{2}$|^\\d{3}-?\\d{2}-?\\d{3}$") && (!plateText.getText().isEmpty())) {
-            sendAlert("Wrong Plate!!\n"
+            MessageControl.getInstance().sendError("Wrong Plate!!\n"
                     + "\nPlease type again\n"
                     + "only XX-XXX-XX , XXX-XX-XXX format!");
             plateText.setText("");
@@ -467,14 +468,14 @@ public class Cars extends javax.swing.JFrame {
             carsList.get(row).setVehicleImage(imageText.getText());
             if (checkFields()) {
                 try {
-                    adminSocket.getInstance().SendCarsData(carsList.get(row), "Update");
+                    AdminSocket.getInstance().SendCarsData(carsList.get(row), "Update");
                     refreshData();
                 } catch (IOException ex) {
                     Logger.getLogger(Cars.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
             } else {
-                sendAlert("Some Filleds are empty!\n\nPlease fill again");
+                MessageControl.getInstance().sendError("Some Filleds are empty!\n\nPlease fill again");
             }
             clearFields();
         }
@@ -484,7 +485,7 @@ public class Cars extends javax.swing.JFrame {
         int row = carsTable.getSelectedRow();
         if (row > -1) {
             try {
-                adminSocket.getInstance().SendCarsData(carsList.get(row), "Delete");
+                AdminSocket.getInstance().SendCarsData(carsList.get(row), "Delete");
                 carsList.remove(row);
                 refreshData();
             } catch (IOException ex) {
@@ -657,7 +658,7 @@ public class Cars extends javax.swing.JFrame {
 
     private void refreshData() {
         try {
-            adminSocket.getInstance().SendCars();
+            AdminSocket.getInstance().SendCars();
             setCarsList();
         } catch (IOException ex) {
             Logger.getLogger(Cars.class.getName()).log(Level.SEVERE, null, ex);
@@ -680,10 +681,4 @@ public class Cars extends javax.swing.JFrame {
         imagePNG.setIcon(imgnew);
     }
 
-    private void sendAlert(String msg) {
-        JOptionPane.showMessageDialog(null,
-                msg,
-                "Error",
-                JOptionPane.WARNING_MESSAGE);
-    }
 }

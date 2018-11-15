@@ -110,4 +110,8 @@ public class UserModel {
     public boolean IsAdministrator() {
         return IsAdministrator;
     }
+    
+    public String getFullName(){
+        return this.firstName + " " + this.lastName;
+    }
 }

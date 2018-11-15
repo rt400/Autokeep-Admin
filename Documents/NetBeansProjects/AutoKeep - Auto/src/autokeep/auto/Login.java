@@ -9,7 +9,8 @@ package autokeep.auto;
  *
  * @author Yuval
  */
-import autokeep.auto.Communication.adminSocket;
+import autokeep.auto.Communication.AdminSocket;
+import autokeep.auto.Communication.MessageControl;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,6 +22,7 @@ public class Login extends javax.swing.JFrame {
      */
     public Login() {
         initComponents();
+        this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     }
 
     /**
@@ -56,7 +58,12 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jLabel1.setText("AutoKeep ADMIN");
+
+        passwordAdmin.setText("@m1234");
+
+        emailAdmin.setText("yuval.teltech@gmail.com");
 
         jLabel2.setText("Password");
 
@@ -82,17 +89,17 @@ public class Login extends javax.swing.JFrame {
                             .addComponent(passwordAdmin, javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE)
                             .addComponent(emailAdmin))))
                 .addGap(94, 94, 94))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(229, 229, 229)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(133, 133, 133))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(49, 49, 49)
+                .addGap(29, 29, 29)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(emailAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -112,19 +119,24 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
-        if (adminSocket.getInstance().connection()) {
+        if (AdminSocket.getInstance().connection()) {
             try {
-              adminSocket.getInstance().SendLogin(emailAdmin.getText(), passwordAdmin.getText());
-            } catch (IOException ex) {
-               Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-           }
-
-          if (adminSocket.getStatusData().equals("OK")) {
+                AdminSocket.getInstance().SendLogin(emailAdmin.getText(), passwordAdmin.getText());
+                if (AdminSocket.getStatusData().equals("OK")) {
                 Menu adminMenu = new Menu();
                 adminMenu.setVisible(true);
                 dispose();
-           }
-       }
+            } else if (AdminSocket.getStatusData().equals("ERROR")) {
+                MessageControl.getInstance().sendAlert(AdminSocket.getServerMSG());
+                AdminSocket.getInstance().close();
+            }
+            } catch (IOException | NullPointerException ex) {
+                //Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                MessageControl.getInstance().sendError("Server send no data !");
+            }
+
+            
+        } 
 
     }//GEN-LAST:event_loginButtonActionPerformed
 

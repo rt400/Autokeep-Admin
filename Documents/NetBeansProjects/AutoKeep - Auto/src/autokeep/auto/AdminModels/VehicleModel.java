@@ -128,4 +128,7 @@ public class VehicleModel {
         return isUsable;
     }
 
+    public String getFullVehicle(){
+        return this.plateNumber +" , " + this.manufactureName + " " + this.model + " " + this.manufactureYear;
+    }
 }

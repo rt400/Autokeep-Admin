@@ -59,40 +59,37 @@ public class CommunicationInterpreter {
                 case OK:
                 case CREATE_NEW_USER:
                 case UPDATE_USER:
-                case DELETE_USER:    
+                case DELETE_USER:
                 case USER_MODEL:
                     jsonObj.add("user", gson.toJsonTree((UserModel) obj, UserModel.class));
                     return jsonObj.toString();
-
-                case SEARCH_VEHICLE:
-                case RESERVATION_MODEL:
-                    jsonObj.add("reservation", gson.toJsonTree((ReservationModel) obj, ReservationModel.class));
-                    return jsonObj.toString();
-                case UPDATE_VEHICLE:
-                case DELETE_VEHICLE:    
-                case VEHICLE_MODEL:
-                    jsonObj.add("vehicle", gson.toJsonTree((VehicleModel)obj,VehicleModel.class));
-                    return jsonObj.toString();
-
                 case USER_MODEL_LIST:
                     listType = new TypeToken<Queue<UserModel>>() {
                     }.getType();
                     jsonObj.add("users", gson.toJsonTree(obj, listType));
                     return jsonObj.toString();
-
-                case HISTORY_RESULT:
+                case CREATE_NEW_VEHICLE:        
+                case UPDATE_VEHICLE:
+                case DELETE_VEHICLE:
+                case VEHICLE_MODEL:
+                    jsonObj.add("vehicle", gson.toJsonTree((VehicleModel) obj, VehicleModel.class));
+                    return jsonObj.toString();
+                case VEHICLE_MODEL_LIST:
+                    listType = new TypeToken<Queue<VehicleModel>>() {
+                    }.getType();
+                    jsonObj.add("vehicles", gson.toJsonTree(obj, listType));
+                    return jsonObj.toString();
+                case CREATE_NEW_RESERVATION:        
+                case UPDATE_RESERVATION:
+                case CANCEL_RESERVATION: 
+                case RESERVATION_MODEL:
+                    jsonObj.add("reservation", gson.toJsonTree((ReservationModel) obj, ReservationModel.class));
+                    return jsonObj.toString();        
                 case RESERVATION_MODEL_LIST:
                     listType = new TypeToken<Queue<ReservationModel>>() {
                     }.getType();
                     jsonObj.add("reservations", gson.toJsonTree(obj, listType));
                     return jsonObj.toString();
-
-                case VEHICLE_MODEL_LIST:
-                    listType = new TypeToken<Queue<VehicleModel>>() {
-                    }.getType();
-                    jsonObj.add("vehicles", gson.toJsonTree(obj,listType));
-                    return jsonObj.toString();
-
                 default:
                     jsonObj.add("message", gson.toJsonTree((String) obj, String.class));
                     return jsonObj.toString();
@@ -142,7 +139,7 @@ public class CommunicationInterpreter {
             case VEHICLE_MODEL_LIST:
                 listType = new TypeToken<Queue<VehicleModel>>() {
                 }.getType();
-                Queue<VehicleModel> vechiles = gson.fromJson(jsonObj.get("vehicles").toString(),listType);
+                Queue<VehicleModel> vechiles = gson.fromJson(jsonObj.get("vehicles").toString(), listType);
                 return vechiles;
 
             default:

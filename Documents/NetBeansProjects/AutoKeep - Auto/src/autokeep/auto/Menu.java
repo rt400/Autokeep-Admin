@@ -5,7 +5,8 @@
  */
 package autokeep.auto;
 
-import autokeep.auto.Communication.adminSocket;
+import autokeep.auto.Communication.AdminSocket;
+import autokeep.auto.Communication.MessageControl;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,6 +22,7 @@ public class Menu extends javax.swing.JFrame {
      */
     public Menu() {
         initComponents();
+        this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     }
 
     /**
@@ -34,9 +36,9 @@ public class Menu extends javax.swing.JFrame {
 
         carsButton = new javax.swing.JButton();
         ordersButton = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        exitButton = new javax.swing.JButton();
         usersButton = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        logoffButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -48,12 +50,17 @@ public class Menu extends javax.swing.JFrame {
             }
         });
 
-        ordersButton.setText("Orders");
-
-        jButton4.setText("Exit");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        ordersButton.setText("Reservations");
+        ordersButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                ordersButtonActionPerformed(evt);
+            }
+        });
+
+        exitButton.setText("Exit");
+        exitButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exitButtonActionPerformed(evt);
             }
         });
 
@@ -64,10 +71,10 @@ public class Menu extends javax.swing.JFrame {
             }
         });
 
-        jButton6.setText("Logoff");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
+        logoffButton.setText("Logoff");
+        logoffButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
+                logoffButtonActionPerformed(evt);
             }
         });
 
@@ -80,9 +87,9 @@ public class Menu extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(logoffButton, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(exitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(69, Short.MAX_VALUE)
@@ -109,28 +116,29 @@ public class Menu extends javax.swing.JFrame {
                 .addComponent(ordersButton, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(exitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(logoffButton, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
+        AdminSocket.getInstance().close();
         System.exit(0);
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_exitButtonActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        adminSocket.getInstance().close();
+    private void logoffButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoffButtonActionPerformed
+        AdminSocket.getInstance().close();
         Login loginAdmin = new Login();
         loginAdmin.setVisible(true);
         dispose();
-    }//GEN-LAST:event_jButton6ActionPerformed
+    }//GEN-LAST:event_logoffButtonActionPerformed
 
     private void usersButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usersButtonActionPerformed
         try {
-            adminSocket.getInstance().SendUsers();
+            AdminSocket.getInstance().SendUsers();
         } catch (IOException ex) {
             Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -141,7 +149,7 @@ public class Menu extends javax.swing.JFrame {
 
     private void carsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_carsButtonActionPerformed
         try {
-            adminSocket.getInstance().SendCars();
+            AdminSocket.getInstance().SendCars();
         } catch (IOException ex) {
             Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -149,6 +157,22 @@ public class Menu extends javax.swing.JFrame {
         carsMenu.setVisible(true);
         dispose();
     }//GEN-LAST:event_carsButtonActionPerformed
+
+    private void ordersButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ordersButtonActionPerformed
+        try {
+            AdminSocket.getInstance().SendOrders();
+        } catch (IOException ex) {
+            MessageControl.getInstance().sendError(ex.toString());
+            AdminSocket.getInstance().close();
+            Login loginAdmin = new Login();
+            loginAdmin.setVisible(true);
+            dispose();
+
+        }
+        Reservations ordersMenu = new Reservations();
+        ordersMenu.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_ordersButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -185,9 +209,9 @@ public class Menu extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton carsButton;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton6;
+    private javax.swing.JButton exitButton;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton logoffButton;
     private javax.swing.JButton ordersButton;
     private javax.swing.JButton usersButton;
     // End of variables declaration//GEN-END:variables
