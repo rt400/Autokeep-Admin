@@ -61,6 +61,7 @@ public class UserNewOrders extends AppCompatActivity {
                         android.R.style.Theme_Holo_Light_Dialog_MinWidth,
                         mDateSetListener_Start,
                         year, month, day);
+                dialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.show();
             }
@@ -78,6 +79,7 @@ public class UserNewOrders extends AppCompatActivity {
                         android.R.style.Theme_Holo_Light_Dialog_MinWidth,
                         mDateSetListener_End,
                         year, month, day);
+                dialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.show();
             }
