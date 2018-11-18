@@ -44,7 +44,7 @@ public class UserSearchResult extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(recyclerView.getContext());
                 builder.setTitle("Car Keep :");
                 builder.setMessage(selectedCar.getVehicleFullName() + " " + selectedCar.getManufactureYear() + "\n" +
-                        selectedCar.getCarShortdesc() + "\nID: " + selectedCar.getCarFixedID() + "\n\nPlease confirm ?");
+                        selectedCar.getCarShortdesc() + "\nID: " + selectedCar.getCarFixedID() + "\n\nConfirm ?");
                 builder.setPositiveButton("No", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                     }

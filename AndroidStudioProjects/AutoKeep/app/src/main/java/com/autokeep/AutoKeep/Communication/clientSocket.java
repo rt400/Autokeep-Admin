@@ -117,7 +117,7 @@ public class clientSocket extends AsyncTask <Void, Void, Boolean> {
         try {
             reciveData = protocol.read();
         } catch (IOException | ClassNotFoundException e1) {
-            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+
         }
         status = "";
         serverMSG = "";

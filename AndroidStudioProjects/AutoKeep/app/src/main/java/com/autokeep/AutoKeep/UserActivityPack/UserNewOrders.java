@@ -127,7 +127,7 @@ public class UserNewOrders extends AppCompatActivity {
                 }
                 if (sDate.after(eDate)) {
                     endDate.setError("");
-                    endDate.setText("Date can not be early !! ");
+                    endDate.setText("End date can't be earlier! ");
                 } else {
                     endDate.setText(day + "/" + month + "/" + year);
                 }
@@ -218,7 +218,7 @@ public class UserNewOrders extends AppCompatActivity {
             Toast.makeText(getBaseContext(), "Start Date is not set Please Fill The Date", Toast.LENGTH_LONG).show();
             return false;
         } else if (endDate.getText().toString().equals("End Date")) {
-            Toast.makeText(getBaseContext(), "Start Date is not set Please Fill The Date", Toast.LENGTH_LONG).show();
+            Toast.makeText(getBaseContext(), "End Date is not set Please Fill The Date", Toast.LENGTH_LONG).show();
             return false;
         }
         if (carType.getSelectedItem() == null) {
