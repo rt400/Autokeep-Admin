@@ -13,7 +13,7 @@ import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
 
 public class LogOutTimerUtil {
-    static final int LOGOUT_TIME = 60000; // delay in milliseconds i.e. 5 min = 300000 ms or use timeout argument
+    static final int LOGOUT_TIME = 240000; // delay in milliseconds i.e. 5 min = 300000 ms or use timeout argument
     static Timer longTimer;
 
     public static synchronized void startLogoutTimer(final Context context, final LogOutListener logOutListener) {
