@@ -5,7 +5,7 @@
     <string name="action_settings">Settings</string>
     <string-array name="cartype">
         <item>Family</item>
-        <item>Mini Van</item>
+        <item>MiniVan</item>
         <item>Commercial</item>
     </string-array>
     <string-array name="carsit">

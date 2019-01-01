@@ -2,11 +2,13 @@ package com.autokeep.AutoKeep.UserActivityPack;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.autokeep.AutoKeep.Communication.LogOutTimerUtil;
 import com.autokeep.AutoKeep.Communication.clientSocket;
 import com.autokeep.AutoKeep.R;
 
@@ -15,9 +17,11 @@ import java.io.IOException;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.autokeep.AutoKeep.Communication.LogOutTimerUtil.startLogoutTimer;
+import static com.autokeep.AutoKeep.Communication.LogOutTimerUtil.stopLogoutTimer;
 import static com.autokeep.AutoKeep.UserActivityPack.LoginActivity.passwordValidation;
 
-public class UserChangePassword extends AppCompatActivity {
+public class UserChangePassword extends AppCompatActivity implements LogOutTimerUtil.LogOutListener {
     private static final String TAG = "UserChangePassword";
 
     @BindView(R.id._old_password)
@@ -100,5 +104,41 @@ public class UserChangePassword extends AppCompatActivity {
         }
         retypePassword.setError("Password not match");
         return false;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        startLogoutTimer(this, this);
+        Log.e(TAG, "OnStart () &&& Starting timer");
+    }
+
+    @Override
+    public void onUserInteraction() {
+        super.onUserInteraction();
+        startLogoutTimer(this, this);
+        Log.e(TAG, "User interacting with screen , Timer Start");
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        startLogoutTimer(this, this);
+        Log.e(TAG, "onPause()");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        stopLogoutTimer();
+        Log.e(TAG, "onResume()");
+    }
+
+    /**
+     * Performing idle time logout
+     */
+    @Override
+    public void doLogout() {
     }
 }

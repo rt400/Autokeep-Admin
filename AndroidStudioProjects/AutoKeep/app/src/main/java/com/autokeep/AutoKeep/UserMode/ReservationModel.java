@@ -108,7 +108,7 @@ public class ReservationModel {
             endDate = sdf.parse(reservationEndDate);
             endDate = addDays(endDate, 1);
             if (startDate.before(new Date()) && endDate.before(new Date())) {
-                return "Order is Pass";
+                return "Order has Passed";
             } else if ((startDate.equals(new Date()) && endDate.after(new Date())) ||
                     (startDate.before(new Date()) && endDate.after(new Date())) ||
                     (startDate.before(new Date()) && endDate.equals(new Date()))
@@ -118,7 +118,7 @@ public class ReservationModel {
         } catch (ParseException e) {
             return e.toString();
         }
-        return "Order is Waiting";
+        return "Order is Scheduled";
     }
 
     public Date addDays(Date date, int days) {

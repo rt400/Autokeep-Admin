@@ -140,6 +140,13 @@ public class CommunicationInterpreter {
                 Queue <VehicleModel> vehicles = gson.fromJson(jsonObj.get("vehicles").toString(), listType);
                 return vehicles;
 
+            case USER_IS_BANNED:
+            case TOO_MANY_AUTHENTICATION_RETRIES:
+                listType = new TypeToken <Queue <Object>>() {
+                }.getType();
+                Queue <Object> banMessage = gson.fromJson(jsonObj.get("banMessage").toString(), listType);
+                return banMessage;
+
             default:
                 listType = new TypeToken <String>() {
                 }.getType();

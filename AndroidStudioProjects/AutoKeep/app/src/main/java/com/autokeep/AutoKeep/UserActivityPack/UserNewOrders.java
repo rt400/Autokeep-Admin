@@ -16,6 +16,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.autokeep.AutoKeep.Communication.LogOutTimerUtil;
 import com.autokeep.AutoKeep.Communication.clientSocket;
 import com.autokeep.AutoKeep.R;
 
@@ -28,7 +29,10 @@ import java.util.Date;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class UserNewOrders extends AppCompatActivity {
+import static com.autokeep.AutoKeep.Communication.LogOutTimerUtil.startLogoutTimer;
+import static com.autokeep.AutoKeep.Communication.LogOutTimerUtil.stopLogoutTimer;
+
+public class UserNewOrders extends AppCompatActivity implements LogOutTimerUtil.LogOutListener {
     private static final String TAG = "UserNewOrders";
     public String start_Date, end_Date, car_type, sit_car;
     @BindView(R.id._start_date)
@@ -102,9 +106,10 @@ public class UserNewOrders extends AppCompatActivity {
                 }
                 if (now.after(sDate)) {
                     startDate.setError("");
-                    startDate.setText("Date can not be in the past !! ");
+                    startDate.setText("Date can't be earlier than current date !! ");
                 } else {
                     startDate.setText(day + "/" + month + "/" + year);
+                    endDate.setText(day + "/" + month + "/" + year);
                 }
             }
         };
@@ -127,7 +132,7 @@ public class UserNewOrders extends AppCompatActivity {
                 }
                 if (sDate.after(eDate)) {
                     endDate.setError("");
-                    endDate.setText("End date can't be earlier! ");
+                    endDate.setText("End date can't be earlier than Start Date! ");
                 } else {
                     endDate.setText(day + "/" + month + "/" + year);
                 }
@@ -206,7 +211,7 @@ public class UserNewOrders extends AppCompatActivity {
                                     }
                                     progressDialog.dismiss();
                                 }
-                            }, 3000);
+                            }, 2500);
                 }
             }
         });
@@ -232,6 +237,42 @@ public class UserNewOrders extends AppCompatActivity {
             sit_car = carSit.getSelectedItem().toString();
         }
         return true;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        startLogoutTimer(this, this);
+        Log.e(TAG, "OnStart () &&& Starting timer");
+    }
+
+    @Override
+    public void onUserInteraction() {
+        super.onUserInteraction();
+        startLogoutTimer(this, this);
+        Log.e(TAG, "User interacting with screen , Timer Start");
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        startLogoutTimer(this, this);
+        Log.e(TAG, "onPause()");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        stopLogoutTimer();
+        Log.e(TAG, "onResume()");
+    }
+
+    /**
+     * Performing idle time logout
+     */
+    @Override
+    public void doLogout() {
     }
 }
 

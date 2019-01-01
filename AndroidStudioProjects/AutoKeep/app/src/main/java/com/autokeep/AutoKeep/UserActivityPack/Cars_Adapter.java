@@ -83,4 +83,5 @@ public class Cars_Adapter extends RecyclerView.Adapter <Cars_Adapter.CarsViewHol
             imageView = itemView.findViewById(R.id.imageView);
         }
     }
+
 }

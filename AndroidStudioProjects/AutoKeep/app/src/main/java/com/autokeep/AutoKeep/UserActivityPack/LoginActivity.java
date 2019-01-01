@@ -74,7 +74,7 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher, Com
         _passwordText.setText(sharedPreferences.getString(KEY_PASS, ""));
         if (sharedPreferences.getBoolean(KEY_REMEMBER, false)) {
             if (validate()) {
-                login();
+                //login();
             }
             remember.setChecked(true);
         } else
@@ -128,7 +128,7 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher, Com
                         }
                         progressDialog.dismiss();
                     }
-                }, 3000);
+                }, 2500);
         _loginButton.setEnabled(true);
     }
 
@@ -170,14 +170,14 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher, Com
         if (clientSocket.getStatusData().equals("BANNED")) {
             _loginButton.setEnabled(false);
             clientSocket.getInstance().close();
-            new CountDownTimer(60000, 1000) {
+            new CountDownTimer(clientSocket.getBanDuration() * 1000, 1000) {
                 public void onTick(long millisUntilFinished) {
                     _msg.setText("You are BANNED !\nseconds remaining: " + millisUntilFinished / 1000);
                 }
 
                 public void onFinish() {
                     _loginButton.setEnabled(true);
-                    _msg.setText("done!");
+                    _msg.setText("You can now Connect!");
                 }
 
             }.start();

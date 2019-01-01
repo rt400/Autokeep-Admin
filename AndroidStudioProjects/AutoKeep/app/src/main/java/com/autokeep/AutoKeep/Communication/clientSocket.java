@@ -16,6 +16,7 @@ public class clientSocket extends AsyncTask <Void, Void, Boolean> {
     private static String reciveData;
     private static String status;
     private static String serverMSG;
+    private static int banDuration;
     private static Socket socket;
     private static Queue <VehicleModel> carList;
 
@@ -37,6 +38,10 @@ public class clientSocket extends AsyncTask <Void, Void, Boolean> {
             return serverMSG;
         }
         return "";
+    }
+
+    public static int getBanDuration() {
+        return banDuration;
     }
 
     public static String getStatusData() {
@@ -133,7 +138,9 @@ public class clientSocket extends AsyncTask <Void, Void, Boolean> {
                 break;
             case TOO_MANY_AUTHENTICATION_RETRIES:
                 status = "BANNED";
-                serverMSG = ((String) dataConverter.decodeFromJsonToObj(ProtocolMessage.TOO_MANY_AUTHENTICATION_RETRIES, reciveData));
+                Queue <Object> message = (Queue <Object>) dataConverter.decodeFromJsonToObj(ProtocolMessage.TOO_MANY_AUTHENTICATION_RETRIES, reciveData);
+                serverMSG = (String) message.poll();
+                banDuration = ((Double) message.poll()).intValue();
                 break;
             case USER_ALREADY_CONNECTED:
                 status = "ERROR";
@@ -141,7 +148,9 @@ public class clientSocket extends AsyncTask <Void, Void, Boolean> {
                 break;
             case USER_IS_BANNED:
                 status = "BANNED";
-                serverMSG = ((String) dataConverter.decodeFromJsonToObj(ProtocolMessage.USER_IS_BANNED, reciveData));
+                Queue <Object> banMessage = (Queue <Object>) dataConverter.decodeFromJsonToObj(ProtocolMessage.USER_IS_BANNED, reciveData);
+                serverMSG = (String) banMessage.poll();
+                banDuration = ((Double) banMessage.poll()).intValue();
                 break;
             case VEHICLE_MODEL_LIST:
                 status = "OK";
