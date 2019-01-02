@@ -110,6 +110,7 @@ public class UserNewOrders extends AppCompatActivity implements LogOutTimerUtil.
                 } else {
                     startDate.setText(day + "/" + month + "/" + year);
                     endDate.setText(day + "/" + month + "/" + year);
+                    end_Date = start_Date;
                 }
             }
         };

@@ -183,7 +183,7 @@ public class LoginActivity extends AppCompatActivity implements TextWatcher, Com
             }.start();
         }
         _msg.setText("");
-
+        clientSocket.getInstance().close();
     }
 
     public boolean validate() {

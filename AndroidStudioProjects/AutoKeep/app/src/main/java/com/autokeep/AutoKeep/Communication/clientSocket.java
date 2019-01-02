@@ -80,6 +80,7 @@ public class clientSocket extends AsyncTask <Void, Void, Boolean> {
                 + ",vehicle:{vehicleType:" + vehicleType + ",seatsNumber:" + seatsNumber + "}}");
         String str = dataConverter.encodeParametersToJson(ProtocolMessage.SEARCH_VEHICLE, keys, values);
         System.out.println(str);
+        System.out.println(reservationEndDate);
         protocol.write(str);
         protocol.flush();
         readFromServer();

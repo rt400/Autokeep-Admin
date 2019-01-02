@@ -50,7 +50,7 @@ public class UserSearchResult extends AppCompatActivity implements LogOutTimerUt
                 selectedCar = adapter.getCarSelected(position);
                 AlertDialog.Builder builder = new AlertDialog.Builder(recyclerView.getContext());
                 builder.setTitle("Car Keep :");
-                builder.setMessage(selectedCar.getVehicleFullName() + " " + selectedCar.getManufactureYear() + "\n" +
+                builder.setMessage(selectedCar.getVehicleFullName() + "\n" +
                         selectedCar.getCarShortdesc() + "\nID: " + selectedCar.getCarFixedID() + "\n\nConfirm ?");
                 builder.setPositiveButton("No", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {

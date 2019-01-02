@@ -13,6 +13,15 @@ public class ReservationModel {
     private String reservationStartDate;
     private String reservationEndDate;
 
+    private boolean isCanceled;
+    private String cancelationDate;
+    private String cancelationReason;
+
+    public boolean isCanceled() {
+        return isCanceled;
+    }
+
+
     public ReservationModel(int reservationID, UserModel user, VehicleModel vehicle, String reservationDate,
                             String reservationStartDate, String reservationEndDate) {
         super();
@@ -107,6 +116,9 @@ public class ReservationModel {
             startDate = sdf.parse(reservationStartDate);
             endDate = sdf.parse(reservationEndDate);
             endDate = addDays(endDate, 1);
+            if (isCanceled()) {
+                return "Order has Cancelled";
+            }
             if (startDate.before(new Date()) && endDate.before(new Date())) {
                 return "Order has Passed";
             } else if ((startDate.equals(new Date()) && endDate.after(new Date())) ||
