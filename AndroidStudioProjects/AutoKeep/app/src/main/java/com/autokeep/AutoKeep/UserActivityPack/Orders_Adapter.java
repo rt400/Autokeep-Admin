@@ -46,7 +46,7 @@ public class Orders_Adapter extends RecyclerView.Adapter <Orders_Adapter.OrdersV
         holder.orderCarID.setText(order.orderIsActive());
         if (order.orderIsActive().equals("Order is Active")) {
             holder.orderCarID.setBackgroundColor(Color.parseColor("red"));
-        } else if (order.orderIsActive().equals("Order is Waiting")) {
+        } else if (order.orderIsActive().equals("Order is Scheduled")) {
             holder.orderCarID.setBackgroundColor(Color.parseColor("green"));
         } else if (order.orderIsActive().equals("Order is Cancelled")) {
             holder.orderCarID.setBackgroundColor(Color.parseColor("white"));
