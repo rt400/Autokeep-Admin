@@ -201,8 +201,12 @@ public class clientSocket extends AsyncTask <Void, Void, Boolean> {
 
     public boolean close() {
         try {
-            protocol.close();
-            socket.close();
+            if (protocol != null) {
+                protocol.close();
+            }
+            if (socket != null) {
+                socket.close();
+            }
             socket = null;
         } catch (NullPointerException | IOException e) {
             System.out.println("Socket close");
