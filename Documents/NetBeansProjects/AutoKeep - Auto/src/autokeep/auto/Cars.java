@@ -418,6 +418,7 @@ public class Cars extends javax.swing.JFrame {
         if (checkFields()) {
             try {
                 AdminSocket.getInstance().SendCarsData(addItem(), "New");
+                MessageControl.getInstance().sendMSG();
                 refreshData();
             } catch (IOException ex) {
                 Logger.getLogger(Cars.class.getName()).log(Level.SEVERE, null, ex);
@@ -469,6 +470,7 @@ public class Cars extends javax.swing.JFrame {
             if (checkFields()) {
                 try {
                     AdminSocket.getInstance().SendCarsData(carsList.get(row), "Update");
+                    MessageControl.getInstance().sendMSG();
                     refreshData();
                 } catch (IOException ex) {
                     Logger.getLogger(Cars.class.getName()).log(Level.SEVERE, null, ex);
@@ -486,6 +488,7 @@ public class Cars extends javax.swing.JFrame {
         if (row > -1) {
             try {
                 AdminSocket.getInstance().SendCarsData(carsList.get(row), "Delete");
+                MessageControl.getInstance().sendMSG();
                 carsList.remove(row);
                 refreshData();
             } catch (IOException ex) {

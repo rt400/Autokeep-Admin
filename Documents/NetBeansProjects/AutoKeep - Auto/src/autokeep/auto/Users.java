@@ -728,13 +728,14 @@ public class Users extends javax.swing.JFrame {
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
         if (!userList.isEmpty()) {
-            newUserDialog.setVisible(true);
+
             newUserDialog.pack();
             newUserDialog.setLocationRelativeTo(null);
             newUserDialog.setDefaultCloseOperation(Users.DISPOSE_ON_CLOSE);
             this.setEnabled(false);
-            int row = userTable.getSelectedRow();
-            showIteminDialog(userList.get(row));
+            newUserDialog.setVisible(true);
+            //int row = userTable.getSelectedRow();
+            //showIteminDialog(userList.get(row));
         } else {
             MessageControl.getInstance().sendError("DataBase is Empty !");
         }
@@ -742,7 +743,7 @@ public class Users extends javax.swing.JFrame {
     }//GEN-LAST:event_newButtonActionPerformed
 
     private void clearFiledsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearFiledsActionPerformed
-        clearFields();
+        clearFields("show");
     }//GEN-LAST:event_clearFiledsActionPerformed
 
     private void emailTextKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_emailTextKeyTyped
@@ -790,12 +791,7 @@ public class Users extends javax.swing.JFrame {
     }//GEN-LAST:event_updateButtonActionPerformed
 
     private void firstnameText1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_firstnameText1FocusLost
-        if (!firstnameText1.getText().isEmpty()) {
-            if (!firstnameText1.getText().matches("[A-Za-z]+")) {
-                MessageControl.getInstance().sendError("Name cannot contains numbers!\n\nPlease type again");
-                firstnameText1.setText("");
-            }
-        }
+
     }//GEN-LAST:event_firstnameText1FocusLost
 
     private void firstnameText1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_firstnameText1ActionPerformed
@@ -803,21 +799,11 @@ public class Users extends javax.swing.JFrame {
     }//GEN-LAST:event_firstnameText1ActionPerformed
 
     private void familyText1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_familyText1FocusLost
-        if (!familyText1.getText().isEmpty()) {
-            if (!familyText1.getText().matches("[A-Za-z]+")) {
-                MessageControl.getInstance().sendError("Family cannot contains numbers!\n\nPlease type again");
-                familyText1.setText("");
-            }
-        }
+
     }//GEN-LAST:event_familyText1FocusLost
 
     private void emailText1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_emailText1FocusLost
-        if (!emailText1.getText().isEmpty()) {
-            if (!validateEmail(emailText1.getText())) {
-                MessageControl.getInstance().sendError("Email didn't match patterns!\n\nPlease type again");
-                emailText1.setText("");
-            }
-        }
+
     }//GEN-LAST:event_emailText1FocusLost
 
     private void emailText1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_emailText1KeyTyped
@@ -825,26 +811,18 @@ public class Users extends javax.swing.JFrame {
     }//GEN-LAST:event_emailText1KeyTyped
 
     private void passwordText1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_passwordText1FocusLost
-        if (!passwordText1.getText().isEmpty()) {
-            if (passwordText1.getText().length() < 6 || passwordValidation(passwordText1.getText())) {
-                MessageControl.getInstance().sendError("Password didn't match patterns!\n\nPlease type again");
-                passwordText1.setText("");
-            }
-        }
+
     }//GEN-LAST:event_passwordText1FocusLost
 
     private void phoneText1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_phoneText1FocusLost
-        if (!phoneText1.getText().isEmpty()) {
-            if (!phoneText1.getText().matches("[0-9+/. ()-]{9,11}")) {
-                MessageControl.getInstance().sendError("Phone need only number!\n\nPlease type again");
-                phoneText1.setText("");
-            }
-        }
+
     }//GEN-LAST:event_phoneText1FocusLost
 
     private void returnDialogButtunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_returnDialogButtunActionPerformed
-        updelDialog.dispose();
+
         this.setEnabled(true);
+        updelDialog.dispose();
+        clearFields("show");
     }//GEN-LAST:event_returnDialogButtunActionPerformed
 
     private void updateDialogButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateDialogButtonActionPerformed
@@ -857,20 +835,21 @@ public class Users extends javax.swing.JFrame {
             userList.get(row).setLastName(familyText1.getText());
             userList.get(row).setPhoneNumber(phoneText1.getText());
             userList.get(row).setIsAdministrator(isAdmin1());
-            if (checkFields()) {
+            if (checkFields("update")) {
                 try {
                     AdminSocket.getInstance().SendUserData(userList.get(row), "Update");
-                    updelDialog.dispose();
+                    MessageControl.getInstance().sendMSG();
                     refreshData();
                     this.setEnabled(true);
+                    updelDialog.dispose();
                 } catch (IOException ex) {
                     Logger.getLogger(Users.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
             } else {
-                MessageControl.getInstance().sendError("Some Filleds are empty!\n\nPlease fill again");
+                //MessageControl.getInstance().sendError("Some Filleds are empty!\n\nPlease fill again");
             }
-            clearFields();
+            clearFields("show");
         }
     }//GEN-LAST:event_updateDialogButtonActionPerformed
 
@@ -879,25 +858,21 @@ public class Users extends javax.swing.JFrame {
         if (row > -1) {
             try {
                 AdminSocket.getInstance().SendUserData(userList.get(row), "Delete");
+                MessageControl.getInstance().sendMSG();
                 userList.remove(row);
                 refreshData();
             } catch (IOException ex) {
                 Logger.getLogger(Users.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            clearFields();
+            clearFields("show");
         }
-        updelDialog.dispose();
         this.setEnabled(true);
+        updelDialog.dispose();
     }//GEN-LAST:event_deleteDialogButtunActionPerformed
 
     private void firstnameText2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_firstnameText2FocusLost
-        if (!firstnameText2.getText().isEmpty()) {
-            if (!firstnameText2.getText().matches("[A-Za-z]+")) {
-                MessageControl.getInstance().sendError("Name cannot contains numbers!\n\nPlease type again");
-                firstnameText2.setText("");
-            }
-        }
+
     }//GEN-LAST:event_firstnameText2FocusLost
 
     private void firstnameText2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_firstnameText2ActionPerformed
@@ -905,21 +880,11 @@ public class Users extends javax.swing.JFrame {
     }//GEN-LAST:event_firstnameText2ActionPerformed
 
     private void familyText2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_familyText2FocusLost
-        if (!familyText2.getText().isEmpty()) {
-            if (!familyText2.getText().matches("[A-Za-z]+")) {
-                MessageControl.getInstance().sendError("Family cannot contains numbers!\n\nPlease type again");
-                familyText2.setText("");
-            }
-        }
+
     }//GEN-LAST:event_familyText2FocusLost
 
     private void emailText2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_emailText2FocusLost
-        if (!emailText2.getText().isEmpty()) {
-            if (!validateEmail(emailText2.getText())) {
-                MessageControl.getInstance().sendError("Email didn't match patterns!\n\nPlease type again");
-                emailText2.setText("");
-            }
-        }
+
     }//GEN-LAST:event_emailText2FocusLost
 
     private void emailText2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_emailText2KeyTyped
@@ -927,42 +892,34 @@ public class Users extends javax.swing.JFrame {
     }//GEN-LAST:event_emailText2KeyTyped
 
     private void passwordText2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_passwordText2FocusLost
-        if (!passwordText1.getText().isEmpty()) {
-            if (passwordText1.getText().length() < 6 || passwordValidation(passwordText1.getText())) {
-                MessageControl.getInstance().sendError("Password didn't match patterns!\n\nPlease type again");
-                passwordText1.setText("");
-            }
-        }
+
     }//GEN-LAST:event_passwordText2FocusLost
 
     private void phoneText2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_phoneText2FocusLost
-        if (!phoneText2.getText().isEmpty()) {
-            if (!phoneText2.getText().matches("[0-9+/. ()-]{9,11}")) {
-                MessageControl.getInstance().sendError("Phone need only number!\n\nPlease type again");
-                phoneText2.setText("");
-            }
-        }
+
     }//GEN-LAST:event_phoneText2FocusLost
 
     private void newuserOKButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newuserOKButtonActionPerformed
-        if (checkFields()) {
+        if (checkFields("new")) {
             try {
                 AdminSocket.getInstance().SendUserData(addItem(), "New");
+                MessageControl.getInstance().sendMSG();
                 refreshData();
-                newUserDialog.dispose();
                 this.setEnabled(true);
+                newUserDialog.dispose();
             } catch (IOException ex) {
                 Logger.getLogger(Users.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         } else {
-            MessageControl.getInstance().sendAlert("Some Filleds are empty!\n\nPlease fill again");
+            //MessageControl.getInstance().sendAlert("Some Filleds are empty!\n\nPlease fill again");
         }
     }//GEN-LAST:event_newuserOKButtonActionPerformed
 
     private void newUserCancelButtunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newUserCancelButtunActionPerformed
-        newUserDialog.dispose();
         this.setEnabled(true);
+        newUserDialog.dispose();
+        clearFields("show");
     }//GEN-LAST:event_newUserCancelButtunActionPerformed
 
     /**
@@ -1118,15 +1075,30 @@ public class Users extends javax.swing.JFrame {
                 isAdmin2());
     }
 
-    public void clearFields() {
-        idSpinner1.setText("");
-        emailText1.setText("");
-        bitrthdateText1.setText("");
-        passwordText1.setText("");
-        bitrthdateText1.setText("");
-        firstnameText1.setText("");
-        familyText1.setText("");
-        phoneText1.setText("");
+    public void clearFields(String mode) {
+        switch (mode) {
+            case "new":
+                idSpinner1.setText("");
+                emailText1.setText("");
+                bitrthdateText1.setText("");
+                passwordText1.setText("");
+                bitrthdateText1.setText("");
+                firstnameText1.setText("");
+                familyText1.setText("");
+                phoneText1.setText("");
+                break;
+            case "show":
+                idSpinner.setText("");
+                emailText.setText("");
+                bitrthdateText.setText("");
+                passwordText.setText("");
+                bitrthdateText.setText("");
+                firstnameText.setText("");
+                familyText.setText("");
+                phoneText.setText("");
+                break;
+        }
+
     }
 
     private void displayItems() {
@@ -1154,13 +1126,25 @@ public class Users extends javax.swing.JFrame {
         return false;
     }
 
-    public boolean checkFields() {
-        return !(emailText.getText().isEmpty()
-                || passwordText.getText().isEmpty()
-                || bitrthdateText.getText().isEmpty()
-                || firstnameText.getText().isEmpty()
-                || familyText.getText().isEmpty()
-                || phoneText.getText().isEmpty());
+    public boolean checkFields(String mode) {
+        String data;
+        switch (mode) {
+            case "new":
+                data = checkData("new");
+                if (data.equals("")) {
+                    return true;
+                }
+                MessageControl.getInstance().sendError(data);
+                return false;
+            case "update":
+                data = checkData("update");
+                if (data.equals("")) {
+                    return true;
+                }
+                MessageControl.getInstance().sendError(data);
+                return false;
+        }
+        return false;
     }
 
     private void refreshData() {
@@ -1171,7 +1155,93 @@ public class Users extends javax.swing.JFrame {
             Logger.getLogger(Users.class.getName()).log(Level.SEVERE, null, ex);
         }
         displayItems();
-        clearFields();
+        clearFields("show");
     }
 
+    private String checkData(String mode) {
+        String result = "";
+        switch (mode) {
+            case "new":
+                if (!emailText2.getText().isEmpty()) {
+                    if (!validateEmail(emailText2.getText())) {
+                        result += "Email didn't match patterns!\n";
+                    }
+                } else {
+                    result += "Email cannot be empty!\n";
+                }
+                if (!passwordText2.getText().isEmpty()) {
+                    if (passwordText2.getText().length() < 6 || passwordValidation(passwordText2.getText())) {
+                        result += "Password didn't match patterns!\n";
+                    }
+                } else {
+                    result += "Password cannot be empty !\n";
+                }
+                if (bitrthdateText2.getText().isEmpty()) {
+                    result += "Birth Date cannot be empty !\n";
+                }
+                if (!firstnameText2.getText().isEmpty()) {
+                    if (!firstnameText2.getText().matches("[A-Za-z]+")) {
+                        result += "Name cannot contains numbers!\n";
+                    }
+                } else {
+                    result += "FirstName cannot be empty !\n";
+                }
+                if (!familyText2.getText().isEmpty()) {
+                    if (!familyText2.getText().matches("[A-Za-z]+")) {
+                        result += "Family cannot contains numbers!\n";
+                    }
+                } else {
+                    result += "Family cannot be empty !\n";
+                }
+                if (!phoneText2.getText().isEmpty()) {
+                    if (!phoneText2.getText().matches("[0-9+/. ()-]{9,11}")) {
+                        result += "Phone can be only number!\n";
+                    }
+                } else {
+                    result += "Phone cannot be empty\n";
+                }
+                break;
+            case "update":
+                if (!emailText1.getText().isEmpty()) {
+                    if (!validateEmail(emailText1.getText())) {
+                        result += "Email didn't match patterns!\n";
+                    }
+                } else {
+                    result += "Email cannot be empty!\n";
+                }
+                if (!passwordText1.getText().isEmpty()) {
+                    if (passwordText1.getText().length() < 6 || passwordValidation(passwordText1.getText())) {
+                        result += "Password didn't match patterns!\n";
+                    }
+                } else {
+                    result += "Password cannot be empty !\n";
+                }
+                if (bitrthdateText1.getText().isEmpty()) {
+                    result += "Birth Date cannot be empty !\n";
+                }
+                if (!firstnameText1.getText().isEmpty()) {
+                    if (!firstnameText1.getText().matches("[A-Za-z]+")) {
+                        result += "Name cannot contains numbers!\n";
+                    }
+                } else {
+                    result += "FirstName cannot be empty !\n";
+                }
+                if (!familyText1.getText().isEmpty()) {
+                    if (!familyText1.getText().matches("[A-Za-z]+")) {
+                        result += "Family cannot contains numbers!\n";
+                    }
+                } else {
+                    result += "Family cannot be empty !\n";
+                }
+                if (!phoneText1.getText().isEmpty()) {
+                    if (!phoneText1.getText().matches("[0-9+/. ()-]{9,11}")) {
+                        result += "Phone can be only number!\n";
+                    }
+                } else {
+                    result += "Phone cannot be empty\n";
+                }
+                break;
+        }
+        return result;
+    }
 }

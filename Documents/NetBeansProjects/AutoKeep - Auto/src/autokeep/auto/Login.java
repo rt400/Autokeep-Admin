@@ -132,7 +132,7 @@ public class Login extends javax.swing.JFrame {
             }
             } catch (IOException | NullPointerException ex) {
                 //Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-                MessageControl.getInstance().sendError("Server send no data !");
+                MessageControl.getInstance().sendError(ex.toString());
             }
 
             

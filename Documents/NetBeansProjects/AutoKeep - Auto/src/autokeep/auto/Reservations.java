@@ -11,9 +11,12 @@ import autokeep.auto.AdminModels.VehicleModel;
 import autokeep.auto.Communication.AdminSocket;
 import autokeep.auto.Communication.MessageControl;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -80,8 +83,6 @@ public class Reservations extends javax.swing.JFrame {
         newuserOKButton = new javax.swing.JButton();
         newUserCancelButtun = new javax.swing.JButton();
         jLabel27 = new javax.swing.JLabel();
-        newStartDateText = new javax.swing.JFormattedTextField();
-        newEndDateText = new javax.swing.JFormattedTextField();
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
@@ -92,12 +93,12 @@ public class Reservations extends javax.swing.JFrame {
         newCreateDateText = new javax.swing.JFormattedTextField();
         newCarComboBox = new javax.swing.JComboBox<>();
         newNameComboBox = new javax.swing.JComboBox<>();
+        newStartDateText = new datechooser.beans.DateChooserCombo();
+        newEndDateText = new datechooser.beans.DateChooserCombo();
         updateCancelReservationDialog = new javax.swing.JDialog();
         updateCancelOKButton = new javax.swing.JButton();
         updateCancelButtun = new javax.swing.JButton();
         jLabel30 = new javax.swing.JLabel();
-        newStartDateText1 = new javax.swing.JFormattedTextField();
-        newEndDateText1 = new javax.swing.JFormattedTextField();
         jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
@@ -119,6 +120,8 @@ public class Reservations extends javax.swing.JFrame {
         jLabel24 = new javax.swing.JLabel();
         cancelReasonsText1 = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JSeparator();
+        newStartDateText1 = new datechooser.beans.DateChooserCombo();
+        newEndDateText1 = new datechooser.beans.DateChooserCombo();
         jScrollPane1 = new javax.swing.JScrollPane();
         reservationsTable = new javax.swing.JTable();
         returnButton = new javax.swing.JButton();
@@ -165,13 +168,9 @@ public class Reservations extends javax.swing.JFrame {
         jLabel27.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jLabel27.setText("New Reservation Menu");
 
-        newStartDateText.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat(""))));
-
-        newEndDateText.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat(""))));
-
         jLabel14.setText("Car Details");
 
-        jLabel15.setText("Start Date");
+        jLabel15.setText("Start Date ");
 
         jLabel16.setText("Create Date");
 
@@ -214,181 +213,393 @@ public class Reservations extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout newReservationDialogLayout = new javax.swing.GroupLayout(newReservationDialog.getContentPane());
-        newReservationDialog.getContentPane().setLayout(newReservationDialogLayout);
-        newReservationDialogLayout.setHorizontalGroup(
-            newReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, newReservationDialogLayout.createSequentialGroup()
-                .addContainerGap(82, Short.MAX_VALUE)
-                .addComponent(jLabel27)
-                .addGap(75, 75, 75))
+        newStartDateText.setCurrentView(new datechooser.view.appearance.AppearancesList("Bordered",
+            new datechooser.view.appearance.ViewAppearance("custom",
+                new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 16),
+                    new java.awt.Color(0, 0, 0),
+                    new java.awt.Color(0, 0, 255),
+                    false,
+                    true,
+                    new datechooser.view.appearance.swing.ButtonPainter()),
+                new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 16),
+                    new java.awt.Color(0, 0, 0),
+                    new java.awt.Color(0, 0, 255),
+                    true,
+                    true,
+                    new datechooser.view.appearance.swing.ButtonPainter()),
+                new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 16),
+                    new java.awt.Color(0, 0, 255),
+                    new java.awt.Color(0, 0, 255),
+                    false,
+                    true,
+                    new datechooser.view.appearance.swing.ButtonPainter()),
+                new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 16),
+                    new java.awt.Color(128, 128, 128),
+                    new java.awt.Color(0, 0, 255),
+                    false,
+                    true,
+                    new datechooser.view.appearance.swing.LabelPainter()),
+                new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 16),
+                    new java.awt.Color(0, 0, 0),
+                    new java.awt.Color(0, 0, 255),
+                    false,
+                    true,
+                    new datechooser.view.appearance.swing.LabelPainter()),
+                new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 16),
+                    new java.awt.Color(0, 0, 0),
+                    new java.awt.Color(255, 0, 0),
+                    false,
+                    false,
+                    new datechooser.view.appearance.swing.ButtonPainter()),
+                (datechooser.view.BackRenderer)null,
+                false,
+                true)));
+    newStartDateText.setNothingAllowed(false);
+    newStartDateText.setWeekStyle(datechooser.view.WeekDaysStyle.FULL);
+    newStartDateText.setFieldFont(new java.awt.Font("Tahoma", java.awt.Font.BOLD, 16));
+    newStartDateText.setLocale(new java.util.Locale("iw", "IL", ""));
+    newStartDateText.setBehavior(datechooser.model.multiple.MultyModelBehavior.SELECT_SINGLE);
+
+    newEndDateText.setCurrentView(new datechooser.view.appearance.AppearancesList("Bordered",
+        new datechooser.view.appearance.ViewAppearance("custom",
+            new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 16),
+                new java.awt.Color(0, 0, 0),
+                new java.awt.Color(0, 0, 255),
+                false,
+                true,
+                new datechooser.view.appearance.swing.ButtonPainter()),
+            new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 16),
+                new java.awt.Color(0, 0, 0),
+                new java.awt.Color(0, 0, 255),
+                true,
+                true,
+                new datechooser.view.appearance.swing.ButtonPainter()),
+            new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 16),
+                new java.awt.Color(0, 0, 255),
+                new java.awt.Color(0, 0, 255),
+                false,
+                true,
+                new datechooser.view.appearance.swing.ButtonPainter()),
+            new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 16),
+                new java.awt.Color(128, 128, 128),
+                new java.awt.Color(0, 0, 255),
+                false,
+                true,
+                new datechooser.view.appearance.swing.LabelPainter()),
+            new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 16),
+                new java.awt.Color(0, 0, 0),
+                new java.awt.Color(0, 0, 255),
+                false,
+                true,
+                new datechooser.view.appearance.swing.LabelPainter()),
+            new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 16),
+                new java.awt.Color(0, 0, 0),
+                new java.awt.Color(255, 0, 0),
+                false,
+                false,
+                new datechooser.view.appearance.swing.ButtonPainter()),
+            (datechooser.view.BackRenderer)null,
+            false,
+            true)));
+newEndDateText.setWeekStyle(datechooser.view.WeekDaysStyle.FULL);
+newEndDateText.setFieldFont(new java.awt.Font("Tahoma", java.awt.Font.BOLD, 16));
+newEndDateText.setLocale(new java.util.Locale("iw", "IL", ""));
+newEndDateText.setBehavior(datechooser.model.multiple.MultyModelBehavior.SELECT_SINGLE);
+
+javax.swing.GroupLayout newReservationDialogLayout = new javax.swing.GroupLayout(newReservationDialog.getContentPane());
+newReservationDialog.getContentPane().setLayout(newReservationDialogLayout);
+newReservationDialogLayout.setHorizontalGroup(
+    newReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, newReservationDialogLayout.createSequentialGroup()
+        .addContainerGap(82, Short.MAX_VALUE)
+        .addComponent(jLabel27)
+        .addGap(75, 75, 75))
+    .addGroup(newReservationDialogLayout.createSequentialGroup()
+        .addGap(42, 42, 42)
+        .addGroup(newReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(newReservationDialogLayout.createSequentialGroup()
-                .addGap(42, 42, 42)
+                .addComponent(newuserOKButton, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(newUserCancelButtun, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(newReservationDialogLayout.createSequentialGroup()
                 .addGroup(newReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(newReservationDialogLayout.createSequentialGroup()
-                        .addComponent(newuserOKButton, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(newUserCancelButtun, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(newReservationDialogLayout.createSequentialGroup()
-                        .addGroup(newReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel17)
-                            .addComponent(jLabel15)
-                            .addComponent(jLabel16)
-                            .addGroup(newReservationDialogLayout.createSequentialGroup()
-                                .addGap(2, 2, 2)
-                                .addGroup(newReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel28)
-                                    .addComponent(jLabel29)))
-                            .addComponent(jLabel14))
-                        .addGap(50, 50, 50)
-                        .addGroup(newReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(newEndDateText)
-                            .addComponent(newStartDateText)
-                            .addComponent(newCreateDateText)
-                            .addComponent(newCarComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(newEmailText)
-                            .addComponent(newNameComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addGap(56, 56, 56))
-        );
-        newReservationDialogLayout.setVerticalGroup(
-            newReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, newReservationDialogLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel27)
-                .addGap(14, 14, 14)
-                .addGroup(newReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel28)
-                    .addComponent(newNameComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(newReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel29)
-                    .addComponent(newEmailText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(19, 19, 19)
-                .addGroup(newReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel14)
-                    .addComponent(newCarComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(newReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel17)
+                    .addComponent(jLabel15)
                     .addComponent(jLabel16)
-                    .addComponent(newCreateDateText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(newReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(newStartDateText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel15))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(newReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(newEndDateText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel17))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
-                .addGroup(newReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(newuserOKButton)
-                    .addComponent(newUserCancelButtun))
-                .addContainerGap(26, Short.MAX_VALUE))
-        );
+                    .addGroup(newReservationDialogLayout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addGroup(newReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel28)
+                            .addComponent(jLabel29)))
+                    .addComponent(jLabel14))
+                .addGap(50, 50, 50)
+                .addGroup(newReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(newCreateDateText)
+                    .addComponent(newCarComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(newEmailText)
+                    .addComponent(newNameComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(newStartDateText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(newEndDateText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+        .addGap(56, 56, 56))
+    );
+    newReservationDialogLayout.setVerticalGroup(
+        newReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, newReservationDialogLayout.createSequentialGroup()
+            .addContainerGap()
+            .addComponent(jLabel27)
+            .addGap(14, 14, 14)
+            .addGroup(newReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(jLabel28)
+                .addComponent(newNameComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+            .addGroup(newReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(jLabel29)
+                .addComponent(newEmailText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGap(19, 19, 19)
+            .addGroup(newReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(jLabel14)
+                .addComponent(newCarComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+            .addGroup(newReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(jLabel16)
+                .addComponent(newCreateDateText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+            .addGroup(newReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jLabel15)
+                .addComponent(newStartDateText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+            .addGroup(newReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jLabel17)
+                .addComponent(newEndDateText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+            .addGroup(newReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(newuserOKButton)
+                .addComponent(newUserCancelButtun))
+            .addContainerGap(28, Short.MAX_VALUE))
+    );
 
-        updateCancelReservationDialog.setResizable(false);
+    updateCancelReservationDialog.setResizable(false);
 
-        updateCancelOKButton.setText("OK");
-        updateCancelOKButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                updateCancelOKButtonActionPerformed(evt);
-            }
-        });
+    updateCancelOKButton.setText("OK");
+    updateCancelOKButton.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            updateCancelOKButtonActionPerformed(evt);
+        }
+    });
 
-        updateCancelButtun.setText("Cancel");
-        updateCancelButtun.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                updateCancelButtunActionPerformed(evt);
-            }
-        });
+    updateCancelButtun.setText("Cancel");
+    updateCancelButtun.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            updateCancelButtunActionPerformed(evt);
+        }
+    });
 
-        jLabel30.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
-        jLabel30.setText("Update / Cancel Reservation");
+    jLabel30.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+    jLabel30.setText("Update / Cancel Reservation");
 
-        newStartDateText1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat(""))));
+    jLabel18.setText("Car Details");
 
-        newEndDateText1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("yyyy-MM-dd"))));
+    jLabel19.setText("Start Date (DD-MM-YYYY)");
 
-        jLabel18.setText("Car Details");
+    jLabel20.setText("Create Date");
 
-        jLabel19.setText("Start Date");
+    jLabel21.setText("End Date (DD-MM-YYYY)");
 
-        jLabel20.setText("Create Date");
+    newEmailText1.setEditable(false);
+    newEmailText1.setEnabled(false);
+    newEmailText1.addFocusListener(new java.awt.event.FocusAdapter() {
+        public void focusLost(java.awt.event.FocusEvent evt) {
+            newEmailText1FocusLost(evt);
+        }
+    });
 
-        jLabel21.setText("End Date");
+    jLabel31.setText("Name");
 
-        newEmailText1.setEditable(false);
-        newEmailText1.setEnabled(false);
-        newEmailText1.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                newEmailText1FocusLost(evt);
-            }
-        });
+    jLabel32.setText("Email");
 
-        jLabel31.setText("Name");
+    newCreateDateText1.setEditable(false);
+    newCreateDateText1.setEnabled(false);
 
-        jLabel32.setText("Email");
+    newCarComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            newCarComboBox1ActionPerformed(evt);
+        }
+    });
 
-        newCreateDateText1.setEditable(false);
-        newCreateDateText1.setEnabled(false);
+    newNameComboBox1.addItemListener(new java.awt.event.ItemListener() {
+        public void itemStateChanged(java.awt.event.ItemEvent evt) {
+            newNameComboBox1ItemStateChanged(evt);
+        }
+    });
+    newNameComboBox1.addFocusListener(new java.awt.event.FocusAdapter() {
+        public void focusLost(java.awt.event.FocusEvent evt) {
+            newNameComboBox1FocusLost(evt);
+        }
+    });
+    newNameComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            newNameComboBox1ActionPerformed(evt);
+        }
+    });
 
-        newCarComboBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                newCarComboBox1ActionPerformed(evt);
-            }
-        });
+    jLabel12.setText("Cancel Reaseons");
 
-        newNameComboBox1.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                newNameComboBox1ItemStateChanged(evt);
-            }
-        });
-        newNameComboBox1.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                newNameComboBox1FocusLost(evt);
-            }
-        });
-        newNameComboBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                newNameComboBox1ActionPerformed(evt);
-            }
-        });
+    idText1.setEditable(false);
+    idText1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
+    idText1.setEnabled(false);
 
-        jLabel12.setText("Cancel Reaseons");
+    cancelDateText1.setEnabled(false);
 
-        idText1.setEditable(false);
-        idText1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
-        idText1.setEnabled(false);
+    jLabel13.setText("ID :");
 
-        cancelDateText1.setEnabled(false);
+    jLabel22.setText("Canceled");
 
-        jLabel13.setText("ID :");
+    activeText1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "True", "False" }));
+    activeText1.setEnabled(false);
 
-        jLabel22.setText("Canceled");
+    jLabel23.setText("Cancel Date");
 
-        activeText1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "True", "False" }));
-        activeText1.setEnabled(false);
+    cancelReservation.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            cancelReservationActionPerformed(evt);
+        }
+    });
 
-        jLabel23.setText("Cancel Date");
+    jLabel24.setText("Do you want to cancel ?");
 
-        cancelReservation.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cancelReservationActionPerformed(evt);
-            }
-        });
+    newStartDateText1.setCurrentView(new datechooser.view.appearance.AppearancesList("Bordered",
+        new datechooser.view.appearance.ViewAppearance("custom",
+            new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 16),
+                new java.awt.Color(0, 0, 0),
+                new java.awt.Color(0, 0, 255),
+                false,
+                true,
+                new datechooser.view.appearance.swing.ButtonPainter()),
+            new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 16),
+                new java.awt.Color(0, 0, 0),
+                new java.awt.Color(0, 0, 255),
+                true,
+                true,
+                new datechooser.view.appearance.swing.ButtonPainter()),
+            new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 16),
+                new java.awt.Color(0, 0, 255),
+                new java.awt.Color(0, 0, 255),
+                false,
+                true,
+                new datechooser.view.appearance.swing.ButtonPainter()),
+            new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 16),
+                new java.awt.Color(128, 128, 128),
+                new java.awt.Color(0, 0, 255),
+                false,
+                true,
+                new datechooser.view.appearance.swing.LabelPainter()),
+            new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 16),
+                new java.awt.Color(0, 0, 0),
+                new java.awt.Color(0, 0, 255),
+                false,
+                true,
+                new datechooser.view.appearance.swing.LabelPainter()),
+            new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 16),
+                new java.awt.Color(0, 0, 0),
+                new java.awt.Color(255, 0, 0),
+                false,
+                false,
+                new datechooser.view.appearance.swing.ButtonPainter()),
+            (datechooser.view.BackRenderer)null,
+            false,
+            true)));
+newStartDateText1.setNothingAllowed(false);
+newStartDateText1.setWeekStyle(datechooser.view.WeekDaysStyle.FULL);
+newStartDateText1.setLocale(new java.util.Locale("iw", "", ""));
+newStartDateText1.setBehavior(datechooser.model.multiple.MultyModelBehavior.SELECT_SINGLE);
 
-        jLabel24.setText("Do you want to cancel ?");
+newEndDateText1.setCurrentView(new datechooser.view.appearance.AppearancesList("Bordered",
+    new datechooser.view.appearance.ViewAppearance("custom",
+        new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 16),
+            new java.awt.Color(0, 0, 0),
+            new java.awt.Color(0, 0, 255),
+            false,
+            true,
+            new datechooser.view.appearance.swing.ButtonPainter()),
+        new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 16),
+            new java.awt.Color(0, 0, 0),
+            new java.awt.Color(0, 0, 255),
+            true,
+            true,
+            new datechooser.view.appearance.swing.ButtonPainter()),
+        new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 16),
+            new java.awt.Color(0, 0, 255),
+            new java.awt.Color(0, 0, 255),
+            false,
+            true,
+            new datechooser.view.appearance.swing.ButtonPainter()),
+        new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 16),
+            new java.awt.Color(128, 128, 128),
+            new java.awt.Color(0, 0, 255),
+            false,
+            true,
+            new datechooser.view.appearance.swing.LabelPainter()),
+        new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 16),
+            new java.awt.Color(0, 0, 0),
+            new java.awt.Color(0, 0, 255),
+            false,
+            true,
+            new datechooser.view.appearance.swing.LabelPainter()),
+        new datechooser.view.appearance.swing.SwingCellAppearance(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 16),
+            new java.awt.Color(0, 0, 0),
+            new java.awt.Color(255, 0, 0),
+            false,
+            false,
+            new datechooser.view.appearance.swing.ButtonPainter()),
+        (datechooser.view.BackRenderer)null,
+        false,
+        true)));
+newEndDateText1.setNothingAllowed(false);
+newEndDateText1.setWeekStyle(datechooser.view.WeekDaysStyle.FULL);
+newEndDateText1.setLocale(new java.util.Locale("iw", "IL", ""));
+newEndDateText1.setBehavior(datechooser.model.multiple.MultyModelBehavior.SELECT_SINGLE);
 
-        javax.swing.GroupLayout updateCancelReservationDialogLayout = new javax.swing.GroupLayout(updateCancelReservationDialog.getContentPane());
-        updateCancelReservationDialog.getContentPane().setLayout(updateCancelReservationDialogLayout);
-        updateCancelReservationDialogLayout.setHorizontalGroup(
-            updateCancelReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, updateCancelReservationDialogLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel30)
-                .addGap(56, 56, 56))
+javax.swing.GroupLayout updateCancelReservationDialogLayout = new javax.swing.GroupLayout(updateCancelReservationDialog.getContentPane());
+updateCancelReservationDialog.getContentPane().setLayout(updateCancelReservationDialogLayout);
+updateCancelReservationDialogLayout.setHorizontalGroup(
+updateCancelReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+.addGroup(javax.swing.GroupLayout.Alignment.TRAILING, updateCancelReservationDialogLayout.createSequentialGroup()
+    .addGap(0, 0, Short.MAX_VALUE)
+    .addComponent(jLabel30)
+    .addGap(56, 56, 56))
+    .addGroup(updateCancelReservationDialogLayout.createSequentialGroup()
+        .addGap(42, 42, 42)
+        .addGroup(updateCancelReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(updateCancelReservationDialogLayout.createSequentialGroup()
-                .addGap(42, 42, 42)
+                .addGroup(updateCancelReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(updateCancelReservationDialogLayout.createSequentialGroup()
+                        .addComponent(jLabel23)
+                        .addGap(49, 49, 49)
+                        .addComponent(cancelDateText1))
+                    .addGroup(updateCancelReservationDialogLayout.createSequentialGroup()
+                        .addGroup(updateCancelReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel22)
+                            .addComponent(jLabel13))
+                        .addGap(69, 69, 69)
+                        .addGroup(updateCancelReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(activeText1, javax.swing.GroupLayout.PREFERRED_SIZE, 426, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(idText1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, updateCancelReservationDialogLayout.createSequentialGroup()
+                        .addComponent(updateCancelOKButton, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(updateCancelButtun, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(updateCancelReservationDialogLayout.createSequentialGroup()
+                        .addComponent(jLabel12)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cancelReasonsText1)))
+                .addGap(0, 38, Short.MAX_VALUE))
+            .addGroup(updateCancelReservationDialogLayout.createSequentialGroup()
+                .addComponent(jLabel24)
+                .addGap(18, 18, 18)
+                .addComponent(cancelReservation, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(updateCancelReservationDialogLayout.createSequentialGroup()
                 .addGroup(updateCancelReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jSeparator1)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, updateCancelReservationDialogLayout.createSequentialGroup()
@@ -404,339 +615,310 @@ public class Reservations extends javax.swing.JFrame {
                             .addComponent(jLabel18))
                         .addGap(50, 50, 50)
                         .addGroup(updateCancelReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(newStartDateText1)
                             .addComponent(newCreateDateText1)
                             .addComponent(newCarComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(newEmailText1)
                             .addComponent(newNameComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(newEndDateText1)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, updateCancelReservationDialogLayout.createSequentialGroup()
-                        .addGroup(updateCancelReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(updateCancelReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(updateCancelReservationDialogLayout.createSequentialGroup()
-                                    .addComponent(jLabel23)
-                                    .addGap(49, 49, 49)
-                                    .addComponent(cancelDateText1))
-                                .addGroup(updateCancelReservationDialogLayout.createSequentialGroup()
-                                    .addGroup(updateCancelReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel22)
-                                        .addComponent(jLabel13))
-                                    .addGap(69, 69, 69)
-                                    .addGroup(updateCancelReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(activeText1, javax.swing.GroupLayout.PREFERRED_SIZE, 426, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(idText1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGap(0, 0, Short.MAX_VALUE))
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, updateCancelReservationDialogLayout.createSequentialGroup()
-                                    .addComponent(updateCancelOKButton, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(updateCancelButtun, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(updateCancelReservationDialogLayout.createSequentialGroup()
-                                    .addComponent(jLabel12)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(cancelReasonsText1)))
-                            .addGroup(updateCancelReservationDialogLayout.createSequentialGroup()
-                                .addComponent(jLabel24)
-                                .addGap(18, 18, 18)
-                                .addComponent(cancelReservation, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addGap(38, 38, 38))
-        );
-        updateCancelReservationDialogLayout.setVerticalGroup(
-            updateCancelReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, updateCancelReservationDialogLayout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addComponent(jLabel30)
-                .addGap(18, 18, 18)
-                .addGroup(updateCancelReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel31)
-                    .addComponent(newNameComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(updateCancelReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel32)
-                    .addComponent(newEmailText1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(19, 19, 19)
-                .addGroup(updateCancelReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel18)
-                    .addComponent(newCarComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(updateCancelReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel20)
-                    .addComponent(newCreateDateText1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(updateCancelReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(newStartDateText1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel19))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(updateCancelReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel21)
-                    .addComponent(newEndDateText1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(updateCancelReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel24)
-                    .addComponent(cancelReservation))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
-                .addGroup(updateCancelReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cancelDateText1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel23))
-                .addGap(16, 16, 16)
-                .addGroup(updateCancelReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel12)
-                    .addComponent(cancelReasonsText1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(updateCancelReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(activeText1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel22))
-                .addGap(18, 18, 18)
-                .addGroup(updateCancelReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(idText1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel13))
-                .addGap(43, 43, 43)
-                .addGroup(updateCancelReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(updateCancelOKButton)
-                    .addComponent(updateCancelButtun))
-                .addGap(33, 33, 33))
-        );
+                            .addComponent(newStartDateText1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(newEndDateText1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(38, 38, 38))))
+    );
+    updateCancelReservationDialogLayout.setVerticalGroup(
+        updateCancelReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, updateCancelReservationDialogLayout.createSequentialGroup()
+            .addGap(12, 12, 12)
+            .addComponent(jLabel30)
+            .addGap(18, 18, 18)
+            .addGroup(updateCancelReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(jLabel31)
+                .addComponent(newNameComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+            .addGroup(updateCancelReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(jLabel32)
+                .addComponent(newEmailText1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGap(19, 19, 19)
+            .addGroup(updateCancelReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(jLabel18)
+                .addComponent(newCarComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+            .addGroup(updateCancelReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(jLabel20)
+                .addComponent(newCreateDateText1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+            .addGroup(updateCancelReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jLabel19)
+                .addComponent(newStartDateText1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+            .addGroup(updateCancelReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addComponent(jLabel21)
+                .addComponent(newEndDateText1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+            .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addGroup(updateCancelReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addComponent(jLabel24)
+                .addComponent(cancelReservation))
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+            .addGroup(updateCancelReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(cancelDateText1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel23))
+            .addGap(16, 16, 16)
+            .addGroup(updateCancelReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addComponent(jLabel12)
+                .addComponent(cancelReasonsText1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+            .addGroup(updateCancelReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(activeText1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel22))
+            .addGap(18, 18, 18)
+            .addGroup(updateCancelReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(idText1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel13))
+            .addGap(43, 43, 43)
+            .addGroup(updateCancelReservationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(updateCancelOKButton)
+                .addComponent(updateCancelButtun))
+            .addGap(33, 33, 33))
+    );
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setResizable(false);
+    setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+    setResizable(false);
 
-        reservationsTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+    reservationsTable.setModel(new javax.swing.table.DefaultTableModel(
+        new Object [][] {
 
-            },
-            new String [] {
-                "ID", "Name", "Email", "Car Plate", "Reservation Create Date", "Start Date", "End Date", "Cancel Date", "Cancel Reasons", "Is Cancel"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false
-            };
+        },
+        new String [] {
+            "ID", "Name", "Email", "Car Plate", "Reservation Create Date", "Start Date", "End Date", "Cancel Date", "Cancel Reasons", "Is Cancel"
+        }
+    ) {
+        Class[] types = new Class [] {
+            java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
+        };
+        boolean[] canEdit = new boolean [] {
+            false, false, false, false, false, false, false, false, false, false
+        };
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
+        public Class getColumnClass(int columnIndex) {
+            return types [columnIndex];
+        }
 
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        reservationsTable.setColumnSelectionAllowed(true);
-        reservationsTable.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                reservationsTableMouseClicked(evt);
-            }
-        });
-        jScrollPane1.setViewportView(reservationsTable);
-        reservationsTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        public boolean isCellEditable(int rowIndex, int columnIndex) {
+            return canEdit [columnIndex];
+        }
+    });
+    reservationsTable.setColumnSelectionAllowed(true);
+    reservationsTable.addMouseListener(new java.awt.event.MouseAdapter() {
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            reservationsTableMouseClicked(evt);
+        }
+    });
+    jScrollPane1.setViewportView(reservationsTable);
+    reservationsTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
-        returnButton.setText("Return");
-        returnButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                returnButtonActionPerformed(evt);
-            }
-        });
+    returnButton.setText("Return");
+    returnButton.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            returnButtonActionPerformed(evt);
+        }
+    });
 
-        newButton.setText("New Reservation ");
-        newButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                newButtonActionPerformed(evt);
-            }
-        });
+    newButton.setText("New Reservation ");
+    newButton.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            newButtonActionPerformed(evt);
+        }
+    });
 
-        updateDeleteButton.setText("Update / Delete");
-        updateDeleteButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                updateDeleteButtonActionPerformed(evt);
-            }
-        });
+    updateDeleteButton.setText("Update / Delete");
+    updateDeleteButton.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            updateDeleteButtonActionPerformed(evt);
+        }
+    });
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
-        jLabel1.setText("Reservations Menu");
+    jLabel1.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+    jLabel1.setText("Reservations Menu");
 
-        jLabel2.setText("Name");
+    jLabel2.setText("Name");
 
-        jLabel4.setText("Email");
+    jLabel4.setText("Email");
 
-        jLabel6.setText("Car Details");
+    jLabel6.setText("Car Details");
 
-        jLabel8.setText("Start Date");
+    jLabel8.setText("Start Date");
 
-        jLabel9.setText("Create Date");
+    jLabel9.setText("Create Date");
 
-        jLabel10.setText("End Date");
+    jLabel10.setText("End Date");
 
-        jLabel11.setText("Is Cancel ?");
+    jLabel11.setText("Is Cancel ?");
 
-        emailText.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                emailTextFocusLost(evt);
-            }
-        });
+    emailText.addFocusListener(new java.awt.event.FocusAdapter() {
+        public void focusLost(java.awt.event.FocusEvent evt) {
+            emailTextFocusLost(evt);
+        }
+    });
 
-        refreshButton.setText("Refresh");
-        refreshButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                refreshButtonMouseClicked(evt);
-            }
-        });
-        refreshButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                refreshButtonActionPerformed(evt);
-            }
-        });
+    refreshButton.setText("Refresh");
+    refreshButton.addMouseListener(new java.awt.event.MouseAdapter() {
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            refreshButtonMouseClicked(evt);
+        }
+    });
+    refreshButton.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            refreshButtonActionPerformed(evt);
+        }
+    });
 
-        usernameText.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                usernameTextFocusLost(evt);
-            }
-        });
-        usernameText.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                usernameTextActionPerformed(evt);
-            }
-        });
+    usernameText.addFocusListener(new java.awt.event.FocusAdapter() {
+        public void focusLost(java.awt.event.FocusEvent evt) {
+            usernameTextFocusLost(evt);
+        }
+    });
+    usernameText.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            usernameTextActionPerformed(evt);
+        }
+    });
 
-        activeText.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "True", "False" }));
+    activeText.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "True", "False" }));
 
-        jLabel5.setText("Cancel Date");
+    jLabel5.setText("Cancel Date");
 
-        jLabel7.setText("Cancel Reaseons");
+    jLabel7.setText("Cancel Reaseons");
 
-        startDateText.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("yyyy"))));
+    startDateText.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("yyyy"))));
 
-        endDateText.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("yyyy-MM-dd"))));
+    endDateText.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("yyyy-MM-dd"))));
 
-        idText.setEditable(false);
-        idText.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
-        idText.setEnabled(false);
+    idText.setEditable(false);
+    idText.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
+    idText.setEnabled(false);
 
-        jLabel3.setText("ID :");
+    jLabel3.setText("ID :");
 
-        cancelReasonsText.setEditable(false);
-        cancelReasonsText.setEnabled(false);
+    cancelReasonsText.setEditable(false);
+    cancelReasonsText.setEnabled(false);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
+    javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+    getContentPane().setLayout(layout);
+    layout.setHorizontalGroup(
+        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(layout.createSequentialGroup()
+            .addContainerGap()
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel4)
+                        .addComponent(jLabel2)
+                        .addComponent(jLabel6)
+                        .addComponent(jLabel9)
+                        .addComponent(jLabel8)
+                        .addComponent(jLabel5)
+                        .addComponent(jLabel10)
+                        .addComponent(jLabel7))
+                    .addGap(11, 11, 11)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addGap(0, 1064, Short.MAX_VALUE)
+                            .addComponent(idSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(513, 513, 513))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(emailText, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
+                                .addComponent(createDateText, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
+                                .addComponent(usernameText, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
+                                .addComponent(activeText, 0, 213, Short.MAX_VALUE)
+                                .addComponent(startDateText)
+                                .addComponent(endDateText)
+                                .addComponent(carPlateText, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
+                                .addComponent(cancelReasonsText)
+                                .addComponent(cancelDateText))
+                            .addGap(18, 18, 18)
+                            .addComponent(jScrollPane1))))
+                .addGroup(layout.createSequentialGroup()
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel11)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel3)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(idText, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGap(0, 1376, Short.MAX_VALUE))
+                .addGroup(layout.createSequentialGroup()
+                    .addComponent(newButton, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(updateDeleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(18, 18, 18)
+                    .addComponent(refreshButton, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(returnButton, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))
+            .addContainerGap())
+    );
+    layout.setVerticalGroup(
+        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(layout.createSequentialGroup()
+            .addGap(25, 25, 25)
+            .addComponent(jLabel1)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(idSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createSequentialGroup()
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(6, 6, 6)
                             .addComponent(jLabel2)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel9)
-                            .addComponent(jLabel8)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel10)
-                            .addComponent(jLabel7))
-                        .addGap(11, 11, 11)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(0, 1064, Short.MAX_VALUE)
-                                .addComponent(idSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(513, 513, 513))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(emailText, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
-                                    .addComponent(createDateText, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
-                                    .addComponent(usernameText, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
-                                    .addComponent(activeText, 0, 213, Short.MAX_VALUE)
-                                    .addComponent(startDateText)
-                                    .addComponent(endDateText)
-                                    .addComponent(carPlateText, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
-                                    .addComponent(cancelReasonsText)
-                                    .addComponent(cancelDateText))
-                                .addGap(18, 18, 18)
-                                .addComponent(jScrollPane1))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel11)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(idText, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 1376, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(newButton, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(updateDeleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(refreshButton, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(returnButton, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(idSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(jLabel2)
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel4)
-                                    .addComponent(emailText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(15, 15, 15)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel6)
-                                    .addComponent(carPlateText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(usernameText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel9)
-                            .addComponent(createDateText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(19, 19, 19)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel8)
-                            .addComponent(startDateText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel10)
-                            .addComponent(endDateText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5)
-                            .addComponent(cancelDateText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel7)
-                            .addComponent(cancelReasonsText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel11)
-                            .addComponent(activeText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(idText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(returnButton)
-                    .addComponent(updateDeleteButton)
-                    .addComponent(newButton)
-                    .addComponent(refreshButton))
-                .addGap(18, 18, 18))
-        );
+                            .addGap(18, 18, 18)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel4)
+                                .addComponent(emailText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(15, 15, 15)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel6)
+                                .addComponent(carPlateText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(usernameText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel9)
+                        .addComponent(createDateText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(19, 19, 19)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel8)
+                        .addComponent(startDateText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(18, 18, 18)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel10)
+                        .addComponent(endDateText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(18, 18, 18)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel5)
+                        .addComponent(cancelDateText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(18, 18, 18)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel7)
+                        .addComponent(cancelReasonsText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(18, 18, 18)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel11)
+                        .addComponent(activeText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(jLabel3)
+                .addComponent(idText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(returnButton)
+                .addComponent(updateDeleteButton)
+                .addComponent(newButton)
+                .addComponent(refreshButton))
+            .addGap(18, 18, 18))
+    );
 
-        pack();
+    pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void returnButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_returnButtonActionPerformed
@@ -762,6 +944,8 @@ public class Reservations extends javax.swing.JFrame {
         if (createUserData()) {
             if (createCarsData()) {
                 newCreateDateText.setText(new Date().toString());
+                newStartDateText.setMinDate(Calendar.getInstance());
+                newEndDateText.setMinDate(Calendar.getInstance());
                 if (!reservationsList.isEmpty()) {
                     newReservationDialog.setVisible(true);
                     newReservationDialog.pack();
@@ -810,13 +994,13 @@ public class Reservations extends javax.swing.JFrame {
                         MessageControl.getInstance().sendError("DataBase is Empty !");
                     }
                 } else {
-                    MessageControl.getInstance().sendError("No Users DB and Cars DB ! \n\nWithout this you cannot create a New Reservation .");
+                    MessageControl.getInstance().sendError("No Users DB and Cars DB ! \n\nWithout this you cannot update/delete the reservation .");
                 }
             } else {
-                MessageControl.getInstance().sendError("No Users DB and Cars DB ! \n\nWithout this you cannot create a New Reservation .");
+                MessageControl.getInstance().sendError("No Users DB and Cars DB ! \n\nWithout this you cannot update/delete the reservation .");
             }
         } else {
-            MessageControl.getInstance().sendInfo("Please select reservation from table first. then press update");
+            MessageControl.getInstance().sendInfo("Please select reservation from table first. then press update/delete");
         }
     }//GEN-LAST:event_updateDeleteButtonActionPerformed
 
@@ -845,32 +1029,36 @@ public class Reservations extends javax.swing.JFrame {
     private void newUserCancelButtunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newUserCancelButtunActionPerformed
         this.setEnabled(true);
         newReservationDialog.dispose();
+        refreshData();
 
     }//GEN-LAST:event_newUserCancelButtunActionPerformed
 
     private void newuserOKButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newuserOKButtonActionPerformed
-        if (checkFields()) {
+        if (checkFields("new")) {
             try {
                 AdminSocket.getInstance().SendOrderData(addItem(0), "New");
+                MessageControl.getInstance().sendMSG();
                 refreshData();
-                newReservationDialog.dispose();
                 this.setEnabled(true);
+                newReservationDialog.dispose();
             } catch (IOException ex) {
                 Logger.getLogger(Users.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         } else {
-            MessageControl.getInstance().sendAlert("Some Filleds are empty!\n\nPlease fill again");
+            //MessageControl.getInstance().sendAlert("Some Filleds are empty!\n\nPlease fill again");
         }
     }//GEN-LAST:event_newuserOKButtonActionPerformed
 
     private void updateCancelOKButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateCancelOKButtonActionPerformed
-        if (!cancelReservation.isSelected()) {
+        if (!cancelReservation.isSelected() && checkFields("update")) {
             try {
                 AdminSocket.getInstance().SendOrderData(addItem(1), "Update");
+                MessageControl.getInstance().sendMSG();
                 refreshData();
                 this.setEnabled(true);
                 updateCancelReservationDialog.dispose();
+                refreshData();
             } catch (IOException ex) {
                 Logger.getLogger(Users.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -878,19 +1066,23 @@ public class Reservations extends javax.swing.JFrame {
         } else {
             try {
                 AdminSocket.getInstance().SendOrderData(addItem(2), "Cancel");
+                MessageControl.getInstance().sendMSG();
                 refreshData();
                 this.setEnabled(true);
                 updateCancelReservationDialog.dispose();
+                refreshData();
             } catch (IOException ex) {
                 Logger.getLogger(Users.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+
     }//GEN-LAST:event_updateCancelOKButtonActionPerformed
 
     private void updateCancelButtunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateCancelButtunActionPerformed
         this.setEnabled(true);
+        cancelReservation.setSelected(false);
         updateCancelReservationDialog.dispose();
-
+        refreshData();
     }//GEN-LAST:event_updateCancelButtunActionPerformed
 
     private void newEmailText1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_newEmailText1FocusLost
@@ -916,15 +1108,17 @@ public class Reservations extends javax.swing.JFrame {
     }//GEN-LAST:event_newNameComboBox1ActionPerformed
 
     private void cancelReservationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelReservationActionPerformed
-        if (cancelReservation.isSelected()) {
-            activeText1.setSelectedIndex(0);
-            cancelDateText1.setText(LocalDate.now().toString());
-            cancelReasonsText1.setEnabled(true);
-        } else {
-            cancelDateText1.setText("");
-            activeText1.setSelectedIndex(1);
-            cancelReasonsText1.setEnabled(false);
-        }
+
+            if (cancelReservation.isSelected()) {
+                activeText1.setSelectedIndex(0);
+                cancelDateText1.setText(LocalDate.now().toString());
+                cancelReasonsText1.setEnabled(true);
+            } else {
+                cancelDateText1.setText("");
+                activeText1.setSelectedIndex(1);
+                cancelReasonsText1.setText("");
+                cancelReasonsText1.setEnabled(false);
+            }
     }//GEN-LAST:event_cancelReservationActionPerformed
 
     /**
@@ -1018,13 +1212,13 @@ public class Reservations extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField newCreateDateText1;
     private javax.swing.JTextField newEmailText;
     private javax.swing.JTextField newEmailText1;
-    private javax.swing.JFormattedTextField newEndDateText;
-    private javax.swing.JFormattedTextField newEndDateText1;
+    private datechooser.beans.DateChooserCombo newEndDateText;
+    private datechooser.beans.DateChooserCombo newEndDateText1;
     private javax.swing.JComboBox<String> newNameComboBox;
     private javax.swing.JComboBox<String> newNameComboBox1;
     private javax.swing.JDialog newReservationDialog;
-    private javax.swing.JFormattedTextField newStartDateText;
-    private javax.swing.JFormattedTextField newStartDateText1;
+    private datechooser.beans.DateChooserCombo newStartDateText;
+    private datechooser.beans.DateChooserCombo newStartDateText1;
     private javax.swing.JButton newUserCancelButtun;
     private javax.swing.JButton newuserOKButton;
     private javax.swing.JButton refreshButton;
@@ -1039,6 +1233,14 @@ public class Reservations extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     public void showItem(ReservationModel item, String mode) {
+        Calendar start = Calendar.getInstance(), end = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-dd-MM");
+        try {
+            start.setTime(sdf.parse(item.getReservationStartDate()));
+            end.setTime(sdf.parse(item.getReservationEndDate()));
+        } catch (ParseException ex) {
+            Logger.getLogger(Reservations.class.getName()).log(Level.SEVERE, null, ex);
+        }
         switch (mode) {
             case "displayMenu":
                 idText.setText(String.valueOf(item.getReservationID()));
@@ -1058,11 +1260,20 @@ public class Reservations extends javax.swing.JFrame {
                 newEmailText1.setText(item.getUser().getEmailAddress());
                 newCarComboBox1.setSelectedIndex(getFullCarPosition());
                 newCreateDateText1.setText(item.getReservationDate());
-                newStartDateText1.setText(item.getReservationStartDate());
-                newEndDateText1.setText(item.getReservationEndDate());
+                newStartDateText1.setSelectedDate(start);
+                newEndDateText1.setSelectedDate(end);
                 cancelDateText1.setText(item.getCancelationDate());
                 cancelReasonsText1.setText(item.getCancelationReason());
                 activeText1.setSelectedIndex(getIsCanceled(item.isCanceled()));
+                if (activeText1.getSelectedIndex() == 0) {
+                    cancelReservation.setEnabled(false);
+                    cancelReasonsText1.setEnabled(false);
+                }
+                else{
+                    cancelReservation.setEnabled(true);
+                    cancelReasonsText1.setEnabled(true);
+                }
+                break;
         }
 
     }
@@ -1166,12 +1377,35 @@ public class Reservations extends javax.swing.JFrame {
         });
     }
 
-    public boolean checkFields() {
-        return !(newNameComboBox.getSelectedIndex() == -1
-                || emailText.getText().isEmpty()
-                || newCarComboBox.getSelectedIndex() == -1
-                || startDateText.getText().isEmpty()
-                || endDateText.getText().isEmpty());
+    public boolean checkFields(String mode) {
+        switch (mode) {
+            case "new":
+                if (newNameComboBox.getSelectedIndex() == -1) {
+                    MessageControl.getInstance().sendError("No Name Select !!!");
+                    return false;
+                } else if (newCarComboBox.getSelectedIndex() == -1) {
+                    MessageControl.getInstance().sendError("No Car Select !!!");
+                    return false;
+                } else if (newStartDateText.getSelectedDate().after(newEndDateText.getSelectedDate())) {
+                    MessageControl.getInstance().sendError("Start date cannot be After End Date");
+                    return false;
+                }
+                break;
+            case "update":
+                if (newNameComboBox1.getSelectedIndex() == -1) {
+                    MessageControl.getInstance().sendError("No Name Select !!!");
+                    return false;
+                } else if (newCarComboBox1.getSelectedIndex() == -1) {
+                    MessageControl.getInstance().sendError("No Car Select !!!");
+                    return false;
+                } else if (newStartDateText1.getSelectedDate().after(newEndDateText1.getSelectedDate())) {
+                    MessageControl.getInstance().sendError("Start date cannot be After End Date");
+                    return false;
+                }
+                break;
+        }
+
+        return true;
     }
 
     private void refreshData() {

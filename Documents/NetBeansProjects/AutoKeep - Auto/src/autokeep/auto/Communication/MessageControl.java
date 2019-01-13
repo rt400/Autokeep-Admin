@@ -29,7 +29,20 @@ public class MessageControl {
                 "Warning",
                 JOptionPane.WARNING_MESSAGE);
     }
-    
+    public void sendMSG() {
+        if(AdminSocket.getStatusData().equals("ERROR")){
+        JOptionPane.showMessageDialog(null,
+                AdminSocket.getServerMSG(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+        }
+        if(AdminSocket.getStatusData().equals("OK")){
+        JOptionPane.showMessageDialog(null,
+                AdminSocket.getServerMSG(),
+                "Information",
+                JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
     public void sendError(String msg) {
         JOptionPane.showMessageDialog(null,
                 msg,
